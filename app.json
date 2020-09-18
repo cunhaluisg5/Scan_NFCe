@@ -1,0 +1,12 @@
+{
+  "name": "Scan_NFCe",
+  "displayName": "Scan_NFCe",
+  "expo": {
+    "name": "Scan_NFCe",
+    "slug": "Scan_NFCe",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
