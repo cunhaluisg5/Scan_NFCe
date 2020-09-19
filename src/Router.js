@@ -29,22 +29,18 @@ const MainNavigator = createStackNavigator(
   
   const DrawerStack = createDrawerNavigator(
     {
+      Auth: Login,
       Main: MainNavigator
     },
     {
       drawerPosition: 'left',
-      initialRouteName: 'Main',
+      initialRouteName: 'Auth',
       drawerWidth: 250,
       contentComponent: DrawerContainer
     }
   );
-  
-  const AuthNavigation = createSwitchNavigator({
-    Auth: Login,
-    Main: DrawerStack
-  });
    
-  const AppContainer = createAppContainer(AuthNavigation);
+  const AppContainer = createAppContainer(DrawerStack);
   
   export default AppContainer;
   

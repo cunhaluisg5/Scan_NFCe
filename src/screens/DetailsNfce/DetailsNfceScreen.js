@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import { Button } from 'react-native';
+import MenuIcon from '../../components/MenuIcon/MenuIcon';
+import MenuButton from '../../components/MenuButton/MenuButton';
 
 import {
   Container,
@@ -14,6 +17,16 @@ import {
 } from './Style';
 
 export default class DetailsNfceScreen extends Component {
+  static navigationOptions = ({ navigation }) => ({
+    title: 'Início',
+    headerLeft: () => (
+      <MenuIcon
+        onPress={() => {
+          navigation.openDrawer();
+        }}
+      />
+    )
+  });
 
   constructor(props) {
     super(props);
@@ -22,10 +35,21 @@ export default class DetailsNfceScreen extends Component {
   render() {
     const { navigation } = this.props;
     const item = navigation.getParam('item');
+    const isRecord = navigation.getParam('isRecord');
     const { items } = item;
 
     return (
       <Container>
+        {isRecord &&
+          <MenuButton
+            title="SALVAR"
+            name="save"
+            onPress={() => {
+              navigation.navigate('Home');
+            }}
+          />
+        }
+
         <ItemHeader>
           <ItemTitle>{item.socialName}</ItemTitle>
           <ItemSubtitle>CNPJ: {item.cnpj}, UF: {item.uf}</ItemSubtitle>

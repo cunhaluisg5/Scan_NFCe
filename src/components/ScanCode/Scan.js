@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Vibration, Alert } from 'react-native';
+import { StyleSheet, Vibration, Alert, ActivityIndicator } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 
 import OpenURL from '../OpenURL/OpenURL';
-import { Content, Text, Button } from './Style';
+import { Content, Text, Button, Indicator } from './Style';
 import Api from '../../services/Api'
 
 export default props => {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
-  const [nfce, setNfce] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -31,13 +31,22 @@ export default props => {
     setScanned(true);
     Vibration.vibrate();
 
+    setIsLoading(true);
+
     try {
       const response = await Api.post('/crawler', {
         url: data
       });
-      console.log(response.data)
 
-      const res = gravar(response.data)
+      const item = {
+        ...response.data.nfce.details,
+        ...response.data.nfce.detailsNfce,
+        items: [...response.data.nfce.items]
+      }
+      props.navigate('Detalhes da NFCe', { item: item, isRecord: true });
+      setIsLoading(false);
+
+      /*const res = gravar(response.data)
 
       //navigation.goBack();
       console.log('Gravado: ', res)
@@ -45,7 +54,7 @@ export default props => {
         [
           { text: 'Pesquisar', onPress: () => OpenURL(`${data}`) },
           { text: 'Cancelar', onPress: () => console.log('Cancelado'), },
-        ]);
+        ]);*/
     } catch (err) {
       console.log('Erro ', err)
     }
@@ -72,6 +81,14 @@ export default props => {
     } catch (err) {
       console.log('Erro ao salvar ', err)
     }
+  }
+
+  if (isLoading) {
+    return (
+      <Indicator>
+        <ActivityIndicator size="large" color="#1CB5E0" />
+      </Indicator>
+    )
   }
 
   return (

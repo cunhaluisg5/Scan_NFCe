@@ -23,8 +23,8 @@ export default class Login extends Component {
     state = {
         stageNew: false,
         name: '',
-        email: 'ana@ana.com',
-        password: '12345678',
+        email: '',
+        password: '',
         confirmPassword: '',
         isLoading: false,
         loggedInUser: null,
@@ -51,6 +51,7 @@ export default class Login extends Component {
             this.setState({ loggedInUser: user });
 
             this.props.navigation.navigate('Home', {user})
+            this.setState({ isLoading: false })
         } catch (response) {
             this.setState({ isLoading: false })
             this.setState({ errorMessage: response.data.error })

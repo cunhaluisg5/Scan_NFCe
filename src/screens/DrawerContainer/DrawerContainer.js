@@ -9,8 +9,8 @@ export default class DrawerContainer extends Component {
 
   logoff = async () => {
     try {
-      await AsyncStorage.removeItem('@TCC:token')
-      await AsyncStorage.removeItem('@TCC:user')
+      await AsyncStorage.removeItem('@APP:token')
+      await AsyncStorage.removeItem('@APP:user')
       console.log("Fez logout")
     } catch(error) {
       console.log("Não conseguiu fazer logout ", error)
@@ -34,7 +34,7 @@ export default class DrawerContainer extends Component {
             title="LEITOR"
             name="qrcode"
             onPress={() => {
-              navigation.navigate('Scan');
+              navigation.navigate('Scan', navigation);
               navigation.closeDrawer();
             }}
           />

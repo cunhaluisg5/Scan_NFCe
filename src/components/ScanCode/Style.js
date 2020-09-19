@@ -28,3 +28,11 @@ export const ButtonBack = styled.TouchableOpacity`
 export const Button = styled(ButtonBack)`
     background: ${props => `${props.background}`};
 `;
+
+export const Indicator = styled.View`
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    background: #000000
+`;
