@@ -50,7 +50,7 @@ export default class Login extends Component {
 
             this.setState({ loggedInUser: user });
 
-            Alert.alert('Logado')
+            this.props.navigation.navigate('Home', {user})
         } catch (response) {
             this.setState({ isLoading: false })
             this.setState({ errorMessage: response.data.error })
@@ -120,7 +120,7 @@ export default class Login extends Component {
 
         return (
             <Container>
-                <TitleHeader>App</TitleHeader>
+                <TitleHeader>Scan NFCe</TitleHeader>
                 <FormContainer>
                     <SubtitleHeader>
                         {this.state.stageNew ?
