@@ -5,10 +5,12 @@ import {createStackNavigator} from 'react-navigation-stack';
 import DrawerContainer from './screens/DrawerContainer/DrawerContainer';
 import Login from './screens/Authentication/Login';
 import HomeScreen from './screens/Home/HomeScreen';
+import DetailsNfceScreen from './screens/DetailsNfce/DetailsNfceScreen';
 
 const MainNavigator = createStackNavigator(
     {
-      Home: HomeScreen
+      Home: HomeScreen,
+      "Detalhes da NFCe": DetailsNfceScreen
     },
     {
       initialRouteName: 'Home',
