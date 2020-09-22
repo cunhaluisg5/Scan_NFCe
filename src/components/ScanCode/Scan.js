@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Vibration, Alert, ActivityIndicator } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 
-import OpenURL from '../OpenURL/OpenURL';
 import { Content, Text, Button, Indicator } from './Style';
 import Api from '../../services/Api'
 
@@ -43,18 +42,8 @@ export default props => {
         ...response.data.nfce.detailsNfce,
         items: [...response.data.nfce.items]
       }
-      props.navigate('Detalhes da NFCe', { item: item, isRecord: true });
+      props.navigate('Detalhes da NFCe', { item: item, isRecord: true, da: response.data });
       setIsLoading(false);
-
-      /*const res = gravar(response.data)
-
-      //navigation.goBack();
-      console.log('Gravado: ', res)
-      Alert.alert('Resultado', `Tipo: ${typeData(type)} \nConteúdo: ${data}`,
-        [
-          { text: 'Pesquisar', onPress: () => OpenURL(`${data}`) },
-          { text: 'Cancelar', onPress: () => console.log('Cancelado'), },
-        ]);*/
     } catch (err) {
       console.log('Erro ', err)
     }
@@ -68,18 +57,6 @@ export default props => {
         return 'QRCode'
       default:
         return 'Indefinido'
-    }
-  }
-
-  const gravar = async (nfce) => {
-    try {
-      const response = await Api.post('/nfces', nfce);
-
-      //const { nfce } = response.data;
-
-      Alert.alert('Atenção', 'Salvo com sucesso!');
-    } catch (err) {
-      console.log('Erro ao salvar ', err)
     }
   }
 

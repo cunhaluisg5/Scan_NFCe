@@ -40,6 +40,10 @@ export default class HomeScreen extends Component {
     this.getNfces();
   }
 
+  async componentDidUpdate() {
+    this.getNfces();
+  }
+
   getNfces = async () => {
     try {
       const { _id } = JSON.parse(await AsyncStorage.getItem('@APP:user'));

@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import { Button } from 'react-native';
+import { Alert } from 'react-native';
 import MenuIcon from '../../components/MenuIcon/MenuIcon';
 import MenuButton from '../../components/MenuButton/MenuButton';
+
+import Api from '../../services/Api';
 
 import {
   Container,
@@ -32,10 +34,23 @@ export default class DetailsNfceScreen extends Component {
     super(props);
   }
 
+  gravar = async (nfce) => {
+    try {
+      const response = await Api.post('/nfces', nfce);
+
+      //const { nfce } = response.data;
+
+      Alert.alert('Atenção', 'Salvo com sucesso!');
+    } catch (err) {
+      console.log('Erro ao salvar ', err)
+    }
+  }
+
   render() {
     const { navigation } = this.props;
     const item = navigation.getParam('item');
     const isRecord = navigation.getParam('isRecord');
+    const da = navigation.getParam('da');
     const { items } = item;
 
     return (
@@ -45,6 +60,7 @@ export default class DetailsNfceScreen extends Component {
             title="SALVAR"
             name="save"
             onPress={() => {
+              this.gravar(da);
               navigation.navigate('Home');
             }}
           />
