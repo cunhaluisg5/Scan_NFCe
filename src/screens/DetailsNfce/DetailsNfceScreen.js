@@ -46,6 +46,18 @@ export default class DetailsNfceScreen extends Component {
     }
   }
 
+  remover = async (nfce) => {
+    try {
+      const response = await Api.delete('/nfces', nfce._id);
+
+      //const { nfce } = response.data;
+
+      Alert.alert('Atenção', 'Excluído com sucesso!');
+    } catch (err) {
+      console.log('Erro ao excluir ', err)
+    }
+  }
+
   render() {
     const { navigation } = this.props;
     const item = navigation.getParam('item');
@@ -55,12 +67,20 @@ export default class DetailsNfceScreen extends Component {
 
     return (
       <Container>
-        {isRecord &&
+        {isRecord ?
           <MenuButton
             title="SALVAR"
             name="save"
             onPress={() => {
               this.gravar(da);
+              navigation.navigate('Home');
+            }}
+          /> :
+          <MenuButton
+            title="EXCLUIR"
+            name="trash-o"
+            onPress={() => {
+              this.remover(item);
               navigation.navigate('Home');
             }}
           />

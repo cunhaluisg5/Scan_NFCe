@@ -81,6 +81,6 @@ export const ContainerItems = styled.View`
 
 export const ItemText = styled.Text`
     margin-top: 10px;
-    font-size: 16px;
+    font-size: 14px;
     color: #fff
 `;

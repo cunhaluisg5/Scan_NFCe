@@ -26,26 +26,36 @@ export default props => {
       <Text fontSize={16} fontWeight={'normal'} marginTop={30} > Sem acesso à câmera. </Text>);
   }
 
+  const validateURL = (url) => {
+    if((url.search(/nfce.fazenda.mg.gov.br/i) !== -1) && (url.length === 156)) {
+      return true;
+    }
+    return false;
+  }
+
   const handleBarCodeScanned = async ({ type, data }) => {
-    setScanned(true);
-    Vibration.vibrate();
+    if (validateURL(data)) {
+      console.log("LINK: ", data)
+      setScanned(true);
+      Vibration.vibrate();
 
-    setIsLoading(true);
+      setIsLoading(true);
 
-    try {
-      const response = await Api.post('/crawler', {
-        url: data
-      });
+      try {
+        const response = await Api.post('/crawler', {
+          url: data
+        });
 
-      const item = {
-        ...response.data.nfce.details,
-        ...response.data.nfce.detailsNfce,
-        items: [...response.data.nfce.items]
+        const item = {
+          ...response.data.nfce.details,
+          ...response.data.nfce.detailsNfce,
+          items: [...response.data.nfce.items]
+        }
+        props.navigate('Detalhes da NFCe', { item: item, isRecord: true, da: response.data });
+        setIsLoading(false);
+      } catch (err) {
+        console.log('Erro ', err)
       }
-      props.navigate('Detalhes da NFCe', { item: item, isRecord: true, da: response.data });
-      setIsLoading(false);
-    } catch (err) {
-      console.log('Erro ', err)
     }
   };
 
