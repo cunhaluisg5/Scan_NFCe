@@ -6,12 +6,14 @@ import DrawerContainer from './screens/DrawerContainer/DrawerContainer';
 import Login from './screens/Authentication/Login';
 import HomeScreen from './screens/Home/HomeScreen';
 import ScanScreen from './screens/Scan/ScanScreen';
+import Settings from './screens/Settings/Settings'
 import DetailsNfceScreen from './screens/DetailsNfce/DetailsNfceScreen';
 
 const MainNavigator = createStackNavigator(
     {
       Home: HomeScreen,
       Scan: ScanScreen,
+      Settings: Settings,
       "Detalhes da NFCe": DetailsNfceScreen
     },
     {

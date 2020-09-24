@@ -15,3 +15,8 @@ export const Container = styled.View`
     align-items: flex-start;
     padding: 20px
 `;
+
+export const User = styled.Text`
+    font-size: 20px;
+    color: #fff
+`;
