@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Alert } from 'react-native';
-import MenuIcon from '../../components/MenuIcon/MenuIcon';
+import BackButton from '../../components/BackButton/BackButton';
 import MenuButton from '../../components/MenuButton/MenuButton';
 
 import Api from '../../services/Api';
@@ -19,16 +19,20 @@ import {
 } from './Style';
 
 export default class DetailsNfceScreen extends Component {
-  static navigationOptions = ({ navigation }) => ({
-    title: 'Início',
-    headerLeft: () => (
-      <MenuIcon
-        onPress={() => {
-          navigation.openDrawer();
-        }}
-      />
-    )
-  });
+
+  static navigationOptions = ({ navigation }) => {
+    return {
+      headerTransparent: 'true',
+      headerLeft: (
+        <BackButton
+          name="home"
+          onPress={() => {
+            navigation.goBack();
+          }}
+        />
+      )
+    };
+  };
 
   constructor(props) {
     super(props);
