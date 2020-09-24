@@ -35,7 +35,6 @@ export default props => {
 
   const handleBarCodeScanned = async ({ type, data }) => {
     if (validateURL(data)) {
-      console.log("LINK: ", data)
       setScanned(true);
       Vibration.vibrate();
 

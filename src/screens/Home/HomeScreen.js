@@ -58,7 +58,7 @@ export default class HomeScreen extends Component {
   }
 
   onPressNfce = item => {
-    this.props.navigation.navigate('Detalhes da NFCe', { item });
+    this.props.navigation.navigate('Detalhes da NFCe', { item: item, isRecord: false });
   };
 
   renderNfce = ({ item }) => (

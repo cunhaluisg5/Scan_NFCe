@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Alert } from 'react-native';
+import { Alert, ActivityIndicator } from 'react-native';
 import BackButton from '../../components/BackButton/BackButton';
 import MenuButton from '../../components/MenuButton/MenuButton';
 
@@ -15,7 +15,8 @@ import {
   ItemScroll,
   Items,
   ContainerItems,
-  ItemText
+  ItemText,
+  Indicator
 } from './Style';
 
 export default class DetailsNfceScreen extends Component {
@@ -38,27 +39,37 @@ export default class DetailsNfceScreen extends Component {
     super(props);
   }
 
+  state = {
+    isLoading: false
+  };
+
   gravar = async (nfce) => {
     try {
+      this.setState({ isLoading: true })
       const response = await Api.post('/nfces', nfce);
 
       //const { nfce } = response.data;
 
       Alert.alert('Atenção', 'Salvo com sucesso!');
+      this.setState({ isLoading: false })
     } catch (err) {
       console.log('Erro ao salvar ', err)
+      this.setState({ isLoading: false })
     }
   }
 
   remover = async (nfce) => {
     try {
-      const response = await Api.delete('/nfces', nfce._id);
+      this.setState({ isLoading: true })
+      const response = await Api.delete('/nfces/' + nfce._id);
 
       //const { nfce } = response.data;
 
       Alert.alert('Atenção', 'Excluído com sucesso!');
+      this.setState({ isLoading: false })
     } catch (err) {
       console.log('Erro ao excluir ', err)
+      this.setState({ isLoading: false })
     }
   }
 
@@ -68,6 +79,14 @@ export default class DetailsNfceScreen extends Component {
     const isRecord = navigation.getParam('isRecord');
     const da = navigation.getParam('da');
     const { items } = item;
+
+    if (this.state.isLoading) {
+      return (
+        <Indicator>
+          <ActivityIndicator size="large" color="#1CB5E0" />
+        </Indicator>
+      )
+    }
 
     return (
       <Container>

@@ -84,3 +84,11 @@ export const ItemText = styled.Text`
     font-size: 14px;
     color: #fff
 `;
+
+export const Indicator = styled.View`
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    background: #000000
+`;
