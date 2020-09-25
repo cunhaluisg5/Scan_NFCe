@@ -37,7 +37,6 @@ export default props => {
     if (validateURL(data)) {
       setScanned(true);
       Vibration.vibrate();
-
       setIsLoading(true);
 
       try {

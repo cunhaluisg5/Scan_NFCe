@@ -46,14 +46,17 @@ export default class DetailsNfceScreen extends Component {
   gravar = async (nfce) => {
     try {
       this.setState({ isLoading: true })
-      const response = await Api.post('/nfces', nfce);
+      const response = await Api.post('/nfces', nfce).then((data) => {
+        console.log('Salvo com sucesso!')
+      })
 
       //const { nfce } = response.data;
 
       Alert.alert('Atenção', 'Salvo com sucesso!');
       this.setState({ isLoading: false })
     } catch (err) {
-      console.log('Erro ao salvar ', err)
+      console.log('Erro ao salvar ', err.data.error)
+      Alert.alert('Atenção', err.data.error)
       this.setState({ isLoading: false })
     }
   }
@@ -69,6 +72,7 @@ export default class DetailsNfceScreen extends Component {
       this.setState({ isLoading: false })
     } catch (err) {
       console.log('Erro ao excluir ', err)
+      Alert.alert('Atenção', 'Erro ao excluir');
       this.setState({ isLoading: false })
     }
   }

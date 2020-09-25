@@ -13,15 +13,15 @@ export const Content = styled(Container)`
 `;
 
 export const Text = styled.Text`
-    font-size: ${props => `${props.fontSize}`}
-    color: ${props => `${props.color}`}
-    margin-top: ${props => `${props.marginTop}`}
-    margin-bottom: ${props => `${props.marginBottom}`}
+    font-size: ${props => `${props.fontSize}`};
+    color: ${props => `${props.color}`};
+    margin-top: ${props => `${props.marginTop}`};
+    margin-bottom: ${props => `${props.marginBottom}`};
     font-weight: ${props => `${props.fontWeight}`}
 `;
 
 export const ButtonBack = styled.TouchableOpacity`
-    margin-top: ${props => `${props.marginTop}`}
+    margin-top: ${props => `${props.marginTop}`};
     padding: ${props => `${props.padding}px`}
 `;
 
