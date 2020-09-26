@@ -1,8 +1,36 @@
 import { createStackNavigator } from 'react-navigation-stack';
 import React from 'react';
+import { Alert } from 'react-native';
 import Header from '../components/Header/Header';
 import HomeScreen from '../screens/Home/HomeScreen';
 import DetailsNfceScreen from '../screens/DetailsNfce/DetailsNfceScreen';
+
+import MenuButton from '../components/MenuButton/MenuButton';
+import Api from '../services/Api';
+
+const gravar = async (nfce) => {
+  try {
+    const response = await Api.post('/nfces', nfce).then((data) => {
+      console.log('Salvo com sucesso!')
+    })
+
+    Alert.alert('Atenção', 'Salvo com sucesso!');
+  } catch (err) {
+    console.log('Erro ao salvar ', err.data.error)
+    Alert.alert('Atenção', err.data.error)
+  }
+}
+
+const remover = async (nfce) => {
+  try {
+    const response = await Api.delete('/nfces/' + nfce._id);
+
+    Alert.alert('Atenção', 'Excluído com sucesso!');
+  } catch (err) {
+    console.log('Erro ao excluir ', err)
+    Alert.alert('Atenção', 'Erro ao excluir');
+  }
+}
 
 const screens = {
   HomeScreen: {
@@ -15,9 +43,34 @@ const screens = {
   },
   DetailsNfceScreen: {
     screen: DetailsNfceScreen,
-    navigationOptions: {
-      title: 'Detalhes da NFCe'
-    }
+    navigationOptions: ({ navigation }) => {
+      const item = navigation.getParam('item');
+      const isRecord = navigation.getParam('isRecord');
+      const da = navigation.getParam('da');
+      var buttonTop;
+
+      isRecord ?
+      buttonTop = <MenuButton
+          name="save"
+          onPress={() => {
+            gravar(da);
+            navigation.navigate('HomeScreen');
+          }}
+        /> :
+        buttonTop = <MenuButton
+          name="trash-o"
+          onPress={() => {
+            remover(item);
+            navigation.navigate('HomeScreen');
+          }}
+        />
+
+      return {
+        title: 'Detalhes da NFCe',
+        headerRight:
+          buttonTop
+      }
+    },
   },
 };
 

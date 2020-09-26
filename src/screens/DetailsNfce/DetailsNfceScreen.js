@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
-import { Alert, ActivityIndicator } from 'react-native';
-import MenuButton from '../../components/MenuButton/MenuButton';
-
-import Api from '../../services/Api';
+import { ActivityIndicator } from 'react-native';
 
 import { Container, ItemHeader,  ItemBody,  ItemFooter,  ItemTitle,  ItemSubtitle,
          ItemScroll,  Items,  ContainerItems,  ItemText,  Indicator
@@ -18,41 +15,9 @@ export default class DetailsNfceScreen extends Component {
     isLoading: false
   };
 
-  gravar = async (nfce) => {
-    try {
-      this.setState({ isLoading: true })
-      const response = await Api.post('/nfces', nfce).then((data) => {
-        console.log('Salvo com sucesso!')
-      })
-
-      Alert.alert('Atenção', 'Salvo com sucesso!');
-      this.setState({ isLoading: false })
-    } catch (err) {
-      console.log('Erro ao salvar ', err.data.error)
-      Alert.alert('Atenção', err.data.error)
-      this.setState({ isLoading: false })
-    }
-  }
-
-  remover = async (nfce) => {
-    try {
-      this.setState({ isLoading: true })
-      const response = await Api.delete('/nfces/' + nfce._id);
-
-      Alert.alert('Atenção', 'Excluído com sucesso!');
-      this.setState({ isLoading: false })
-    } catch (err) {
-      console.log('Erro ao excluir ', err)
-      Alert.alert('Atenção', 'Erro ao excluir');
-      this.setState({ isLoading: false })
-    }
-  }
-
   render() {
     const { navigation } = this.props;
     const item = navigation.getParam('item');
-    const isRecord = navigation.getParam('isRecord');
-    const da = navigation.getParam('da');
     const { items } = item;
 
     if (this.state.isLoading) {
@@ -65,25 +30,6 @@ export default class DetailsNfceScreen extends Component {
 
     return (
       <Container>
-        {isRecord ?
-          <MenuButton
-            title="SALVAR"
-            name="save"
-            onPress={() => {
-              this.gravar(da);
-              navigation.navigate('HomeScreen');
-            }}
-          /> :
-          <MenuButton
-            title="EXCLUIR"
-            name="trash-o"
-            onPress={() => {
-              this.remover(item);
-              navigation.navigate('HomeScreen');
-            }}
-          />
-        }
-
         <ItemHeader>
           <ItemTitle>{item.socialName}</ItemTitle>
           <ItemSubtitle>CNPJ: {item.cnpj}, UF: {item.uf}</ItemSubtitle>
