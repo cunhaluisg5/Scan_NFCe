@@ -53,8 +53,9 @@ export default props => {
           ...response.data.nfce.details,
           ...response.data.nfce.detailsNfce,
           items: [...response.data.nfce.items]
-        }
-        props.navigate('Detalhes da NFCe', { item: item, isRecord: true, da: response.data });
+        };
+
+        props.navigation.navigate('DetailsNfceScreen', { item: item, isRecord: true, da: response.data });
         setIsLoading(false);
       } catch (err) {
         console.log('Erro ', err)
@@ -76,7 +77,7 @@ export default props => {
       style={StyleSheet.absoluteFill, {flex: 1, backgroundColor: opacity}} >
       <LayerTop background={opacity}>
         {!scanned &&
-          <AlertText color={'#ff870f'} fontSize={16} fontWeight={'normal'} textAlign={'center'}
+          <AlertText color={'#ff870f'} fontSize={16} fontWeight={'normal'} textAlign={'center'} marginTop={0}
             background={'#142541'} padding={10}>Aponte o leitor para o QRCode</AlertText>
         }
       </LayerTop>
@@ -87,7 +88,7 @@ export default props => {
       </LayerCenter>
       <LayerBottom background={opacity}>
         {scanned &&
-          <ResetButton background={'#142541'} marginTop={140} padding={0}
+          <ResetButton background={'#142541'} marginTop={125} padding={0}
             onPress={() => setScanned(false)}>
             <TextContent color={'#ff870f'} fontSize={16} fontWeight={'normal'} textAlign={'center'}
               padding={10}>Ler novamente</TextContent>

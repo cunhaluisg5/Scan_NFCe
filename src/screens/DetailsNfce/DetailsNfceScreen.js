@@ -1,39 +1,14 @@
 import React, { Component } from 'react';
 import { Alert, ActivityIndicator } from 'react-native';
-import BackButton from '../../components/BackButton/BackButton';
 import MenuButton from '../../components/MenuButton/MenuButton';
 
 import Api from '../../services/Api';
 
-import {
-  Container,
-  ItemHeader,
-  ItemBody,
-  ItemFooter,
-  ItemTitle,
-  ItemSubtitle,
-  ItemScroll,
-  Items,
-  ContainerItems,
-  ItemText,
-  Indicator
+import { Container, ItemHeader,  ItemBody,  ItemFooter,  ItemTitle,  ItemSubtitle,
+         ItemScroll,  Items,  ContainerItems,  ItemText,  Indicator
 } from './Style';
 
 export default class DetailsNfceScreen extends Component {
-
-  static navigationOptions = ({ navigation }) => {
-    return {
-      headerTransparent: 'true',
-      headerLeft: (
-        <BackButton
-          name="home"
-          onPress={() => {
-            navigation.goBack();
-          }}
-        />
-      )
-    };
-  };
 
   constructor(props) {
     super(props);
@@ -50,8 +25,6 @@ export default class DetailsNfceScreen extends Component {
         console.log('Salvo com sucesso!')
       })
 
-      //const { nfce } = response.data;
-
       Alert.alert('Atenção', 'Salvo com sucesso!');
       this.setState({ isLoading: false })
     } catch (err) {
@@ -65,8 +38,6 @@ export default class DetailsNfceScreen extends Component {
     try {
       this.setState({ isLoading: true })
       const response = await Api.delete('/nfces/' + nfce._id);
-
-      //const { nfce } = response.data;
 
       Alert.alert('Atenção', 'Excluído com sucesso!');
       this.setState({ isLoading: false })
@@ -100,7 +71,7 @@ export default class DetailsNfceScreen extends Component {
             name="save"
             onPress={() => {
               this.gravar(da);
-              navigation.navigate('Home');
+              navigation.navigate('HomeScreen');
             }}
           /> :
           <MenuButton
@@ -108,7 +79,7 @@ export default class DetailsNfceScreen extends Component {
             name="trash-o"
             onPress={() => {
               this.remover(item);
-              navigation.navigate('Home');
+              navigation.navigate('HomeScreen');
             }}
           />
         }

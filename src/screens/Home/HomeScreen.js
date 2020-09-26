@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { View, FlatList, TouchableHighlight, Text, StyleSheet, Dimensions, Image, AsyncStorage } from 'react-native';
 
-import MenuIcon from '../../components/MenuIcon/MenuIcon';
 import Api from '../../services/Api';
 import { Container, TextTitle, Subtitle, Category } from './Style';
 const moment = require('moment');
@@ -18,7 +17,7 @@ var RECIPE_ITEM_HEIGHT = 150;
 var RECIPE_ITEM_MARGIN = 20;
 
 export default class HomeScreen extends Component {
-  static navigationOptions = ({ navigation }) => ({
+  /*static navigationOptions = ({ navigation }) => ({
     title: 'Início',
     headerLeft: () => (
       <MenuIcon
@@ -27,7 +26,7 @@ export default class HomeScreen extends Component {
         }}
       />
     )
-  });
+  });*/
 
   constructor(props) {
     super(props);
@@ -58,7 +57,7 @@ export default class HomeScreen extends Component {
   }
 
   onPressNfce = item => {
-    this.props.navigation.navigate('Detalhes da NFCe', { item: item, isRecord: false });
+    this.props.navigation.navigate('DetailsNfceScreen', { item: item, isRecord: false });
   };
 
   renderNfce = ({ item }) => (

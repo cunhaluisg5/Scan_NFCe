@@ -11,11 +11,12 @@ export default class DrawerContainer extends Component {
     user: null
   };
 
-  logoff = async () => {
+  logoff = async (navigation) => {
     try {
       await AsyncStorage.removeItem('@APP:token')
       await AsyncStorage.removeItem('@APP:user')
       console.log("Fez logout")
+      await navigation.navigate('Auth');
     } catch (error) {
       console.log("Não conseguiu fazer logout ", error)
     }
@@ -67,8 +68,7 @@ export default class DrawerContainer extends Component {
             title="SAIR"
             name="power-off"
             onPress={() => {
-              this.logoff();
-              navigation.navigate('Auth');
+              this.logoff(navigation);
               navigation.closeDrawer();
             }}
           />

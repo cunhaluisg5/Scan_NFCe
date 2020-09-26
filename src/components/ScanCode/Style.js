@@ -10,6 +10,7 @@ export const TextContent = styled.Text`
 `;
 
 export const AlertText = styled.Text`
+    margin-top: ${props => `${props.marginTop}`};
     padding: ${props => `${props.padding}px`};
     color: ${props => `${props.color}`};
     background: ${props => `${props.background}`};

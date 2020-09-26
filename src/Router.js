@@ -1,48 +1,44 @@
-import { createSwitchNavigator, createAppContainer } from 'react-navigation';
 import { createDrawerNavigator } from 'react-navigation-drawer';
-import { createStackNavigator } from 'react-navigation-stack';
+import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 
 import DrawerContainer from './screens/DrawerContainer/DrawerContainer';
 import Login from './screens/Authentication/Login';
-import HomeScreen from './screens/Home/HomeScreen';
-import ScanScreen from './screens/Scan/ScanScreen';
-import Settings from './screens/Settings/Settings'
-import DetailsNfceScreen from './screens/DetailsNfce/DetailsNfceScreen';
+import HomeStack from './routes/HomeStack';
+import ScanStack from './routes/ScanStack';
+import SettingsStack from './routes/SettingsStack'
 
 const MenuRoutes = {
-  Home: HomeScreen,
-  Scan: ScanScreen,
-  Settings: Settings,
-  "Detalhes da NFCe": DetailsNfceScreen
+  Home: {
+    screen: HomeStack,
+  },
+  Scan: {
+    screen: ScanStack,
+  },
+  Settings: {
+    screen: SettingsStack,
+  },
 }
 
 const MenuConfig = {
   initialRouteName: 'Home',
-  contentComponent: DrawerContainer,
-  defaulfNavigationOptions: ({ navigation }) => ({
-    headerTitleStyle: {
-      fontWeight: 'bold',
-      textAlign: 'center',
-      alignSelf: 'center',
-      flex: 1,
-    }
-  })
+  contentComponent: DrawerContainer
 }
 
-const MenuNavigator = createDrawerNavigator(MenuRoutes, MenuConfig)
+const RootDrawerNavigator = createDrawerNavigator(MenuRoutes, MenuConfig)
 
 const MainRoutes = {
-  Auth: Login,
-  Main: MenuNavigator
+  Auth: {
+    screen: Login
+  },
+  Main: {
+    screen: RootDrawerNavigator
+  }
 }
 
 const MainNavigator = createSwitchNavigator(MainRoutes, {
-  initialRouteName: 'Auth',
-  drawerPosition: 'left',
-  drawerWidth: 250,
+  initialRouteName: 'Auth'
 })
 
 console.disableYellowBox = true;
 
-const App = createAppContainer(MainNavigator);
-export default App;
+export default createAppContainer(MainNavigator);

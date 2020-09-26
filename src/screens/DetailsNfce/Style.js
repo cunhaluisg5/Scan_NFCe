@@ -50,7 +50,7 @@ export const ItemSubtitle = styled.Text`
 
 export const ItemScroll = styled.ScrollView`
     width: 100%;
-    padding: 10px
+    padding: 1px
 `;
 
 export const Items = styled.View`
@@ -76,12 +76,11 @@ export const ContainerItems = styled.View`
     flex: 1;
     flex-direction: row;
     align-items: center;
-    justify-content: space-between
+    justify-content: space-between;    
 `;
 
 export const ItemText = styled.Text`
-    margin-top: 10px;
-    font-size: 14px;
+    font-size: 12px;
     color: #fff
 `;
 
