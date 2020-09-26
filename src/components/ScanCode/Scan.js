@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Vibration, Alert, ActivityIndicator } from 'react-native';
+import { StyleSheet, Vibration, ActivityIndicator } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 
-import { Content, Text, Button, Indicator } from './Style';
+import { TextContent, ResetButton, Indicator, AlertText, LayerTop, 
+         LayerCenter, LayerLeft, Focused, LayerRight, LayerBottom } from './Style';
 import Api from '../../services/Api'
+
+const opacity = 'rgba(0, 0, 0, .6)';
 
 export default props => {
   const [hasPermission, setHasPermission] = useState(null);
@@ -19,15 +22,17 @@ export default props => {
 
   if (hasPermission === null) {
     return (
-      <Text fontSize={16} fontWeight={'normal '} marginTop={30} > Solicitando permissão da câmera. </Text>);
+        <TextContent color={'#ffffff'} fontSize={16} fontWeight={'normal'} textAlign={'center'}
+        padding={10}>Solicitando permissão da câmera</TextContent>);
   }
   if (hasPermission === false) {
     return (
-      <Text fontSize={16} fontWeight={'normal'} marginTop={30} > Sem acesso à câmera. </Text>);
+      <TextContent color={'#ffffff'} fontSize={16} fontWeight={'normal'} textAlign={'center'}
+              padding={10}>Sem acesso à câmera</TextContent>);
   }
 
   const validateURL = (url) => {
-    if((url.search(/nfce.fazenda.mg.gov.br/i) !== -1) && (url.length === 156)) {
+    if ((url.search(/nfce.fazenda.mg.gov.br/i) !== -1) && (url.length === 156)) {
       return true;
     }
     return false;
@@ -57,35 +62,38 @@ export default props => {
     }
   };
 
-  const typeData = (type) => {
-    switch (type) {
-      case 1: case 2: case 8: case 32: case 512: case 1024:
-        return 'Código de Barras'
-      case 256:
-        return 'QRCode'
-      default:
-        return 'Indefinido'
-    }
-  }
-
   if (isLoading) {
     return (
-      <Indicator>
+      <Indicator background={'#0a0d1c'}>
         <ActivityIndicator size="large" color="#1CB5E0" />
       </Indicator>
     )
   }
 
   return (
-    <Content justifyContent={'center'} alignItems={'center'} padding={0}>
-      <BarCodeScanner
-        onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-        style={StyleSheet.absoluteFill} />
-      {scanned &&
-        <Button background={'#A9A9A9'} marginTop={530} padding={10}
-          onPress={() => setScanned(false)}>
-          <Text color={'white'} fontSize={20} fontWeight={'normal'} > Ler novamente </Text>
-        </Button>}
-    </Content>
+    <BarCodeScanner
+      onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+      style={StyleSheet.absoluteFill, {flex: 1, backgroundColor: opacity}} >
+      <LayerTop background={opacity}>
+        {!scanned &&
+          <AlertText color={'#ff870f'} fontSize={16} fontWeight={'normal'} textAlign={'center'}
+            background={'#142541'} padding={10}>Aponte o leitor para o QRCode</AlertText>
+        }
+      </LayerTop>
+      <LayerCenter>
+        <LayerLeft background={opacity} />
+        <Focused />
+        <LayerRight background={opacity} />
+      </LayerCenter>
+      <LayerBottom background={opacity}>
+        {scanned &&
+          <ResetButton background={'#142541'} marginTop={140} padding={0}
+            onPress={() => setScanned(false)}>
+            <TextContent color={'#ff870f'} fontSize={16} fontWeight={'normal'} textAlign={'center'}
+              padding={10}>Ler novamente</TextContent>
+          </ResetButton>
+        }
+      </LayerBottom>
+    </BarCodeScanner>
   )
 }

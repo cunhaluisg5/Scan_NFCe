@@ -1,32 +1,35 @@
 console.disableYellowBox = true
 import styled from 'styled-components/native';
 
-export const Container = styled.View`
-    display: flex;
-    flex: 1;
-    padding: ${props => `${props.padding}px`}
-`;
-
-export const Content = styled(Container)`
-    justify-content: ${props => `${props.justifyContent}`};
-    align-Items: ${props => `${props.alignItems}`};
-`;
-
-export const Text = styled.Text`
+export const TextContent = styled.Text`
     font-size: ${props => `${props.fontSize}`};
     color: ${props => `${props.color}`};
-    margin-top: ${props => `${props.marginTop}`};
-    margin-bottom: ${props => `${props.marginBottom}`};
-    font-weight: ${props => `${props.fontWeight}`}
+    font-weight: ${props => `${props.fontWeight}`};
+    text-align: ${props => `${props.textAlign}`};
+    padding: ${props => `${props.padding}px`};
 `;
 
-export const ButtonBack = styled.TouchableOpacity`
-    margin-top: ${props => `${props.marginTop}`};
-    padding: ${props => `${props.padding}px`}
-`;
-
-export const Button = styled(ButtonBack)`
+export const AlertText = styled.Text`
+    padding: ${props => `${props.padding}px`};
+    color: ${props => `${props.color}`};
     background: ${props => `${props.background}`};
+    font-size: ${props => `${props.fontSize}`};
+    font-weight: ${props => `${props.fontWeight}`};
+    text-align: ${props => `${props.textAlign}`};
+    border-top-width: 1px;
+    border-top-color: #7FFFD4;
+    border-bottom-width: 1px;
+    border-bottom-color: #7FFFD4;
+`;
+
+export const ResetButton = styled.TouchableOpacity`
+    margin-top: ${props => `${props.marginTop}`};
+    padding: ${props => `${props.padding}px`};
+    background: ${props => `${props.background}`};
+    border-top-width: 1px;
+    border-top-color: #7FFFD4;
+    border-bottom-width: 1px;
+    border-bottom-color: #7FFFD4;
 `;
 
 export const Indicator = styled.View`
@@ -34,5 +37,40 @@ export const Indicator = styled.View`
     flex: 1;
     align-items: center;
     justify-content: center;
-    background: #000000
+    background: ${props => `${props.background}`};
+`;
+
+export const LayerTop = styled.View`
+    display: flex;
+    flex: 1;
+    background: ${props => `${props.background}`};
+`;
+
+export const LayerCenter = styled.View`
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+`;
+
+export const LayerLeft = styled.View`
+    display: flex;
+    flex: 1;
+    background: ${props => `${props.background}`};
+`;
+
+export const Focused = styled.View`
+    display: flex;
+    flex: 10;
+`;
+
+export const LayerRight = styled.View`
+    display: flex;
+    flex: 1;
+    background: ${props => `${props.background}`};
+`;
+
+export const LayerBottom = styled.View`
+    display: flex;
+    flex: 1;
+    background: ${props => `${props.background}`};
 `;
