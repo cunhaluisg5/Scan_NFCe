@@ -43,6 +43,7 @@ export default props => {
       setScanned(true);
       Vibration.vibrate();
       setIsLoading(true);
+      console.log('URL: ', data)
 
       try {
         const response = await Api.post('/crawler', {

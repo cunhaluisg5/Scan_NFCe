@@ -67,7 +67,7 @@ export default class HomeScreen extends Component {
         <Subtitle>{item.socialName}</Subtitle>
         <Image style={styles.image} source={require('../../../assets/nfce.png')} />
         <Category>Qtde. Itens: {item.totalItems}</Category>
-        <Category>Valor Total: R$ {item.totalValue}</Category>
+        <Category>Total: R$ {item.totalValue}</Category>
       </View>
     </TouchableHighlight>
   );

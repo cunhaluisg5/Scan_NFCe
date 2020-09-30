@@ -57,6 +57,14 @@ export default class DrawerContainer extends Component {
             }}
           />
           <MenuButton
+            title="GRÁFICO"
+            name="qrcode"
+            onPress={() => {
+              navigation.navigate('Chart', navigation);
+              navigation.closeDrawer();
+            }}
+          />
+          <MenuButton
             title="CONFIGURAÇÕES"
             name="user"
             onPress={() => {
