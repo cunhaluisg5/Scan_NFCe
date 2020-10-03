@@ -1,37 +1,27 @@
 import React, { Component } from 'react';
-import { View, FlatList, TouchableHighlight, Text, StyleSheet, Dimensions, Image, AsyncStorage } from 'react-native';
+import {
+  View, FlatList, TouchableHighlight, StyleSheet,
+  Dimensions, Image, AsyncStorage
+} from 'react-native';
 
 import Api from '../../services/Api';
-import { Container, TextTitle, Subtitle, Category } from './Style';
+import { Container, TextTitle, Subtitle, Category, 
+         TextInfo, Loading, Indicator } from './Style';
 const moment = require('moment');
 moment.locale('pt-BR');
 
-// screen sizing
 var { width, height } = Dimensions.get('window');
-// orientation must fixed
 var SCREEN_WIDTH = width < height ? width : height;
-
 var recipeNumColums = 2;
-// item size
 var RECIPE_ITEM_HEIGHT = 150;
 var RECIPE_ITEM_MARGIN = 20;
 
 export default class HomeScreen extends Component {
-  /*static navigationOptions = ({ navigation }) => ({
-    title: 'Início',
-    headerLeft: () => (
-      <MenuIcon
-        onPress={() => {
-          navigation.openDrawer();
-        }}
-      />
-    )
-  });*/
-
   constructor(props) {
     super(props);
     this.state = {
-      nfces: []
+      nfces: [],
+      isLoading: false,
     }
   }
 
@@ -40,17 +30,18 @@ export default class HomeScreen extends Component {
   }
 
   async componentDidUpdate() {
-    this.getNfces();
   }
 
   getNfces = async () => {
     try {
+      this.setState({ isLoading: true })
       const { _id } = JSON.parse(await AsyncStorage.getItem('@APP:user'));
       const response = await Api.get('/nfces/user/' + _id);
 
       const { nfces } = response.data;
 
       this.setState({ nfces });
+      this.setState({ isLoading: false })
     } catch (response) {
       this.setState({ errorMessage: response.data.error });
     }
@@ -61,13 +52,13 @@ export default class HomeScreen extends Component {
   };
 
   renderNfce = ({ item }) => (
-    <TouchableHighlight underlayColor='transparent' onPress={() => this.onPressNfce(item)}>
-      <View style={styles.container}>
-        <TextTitle>{this.dateFormat(item.createdAt)}</TextTitle>
-        <Subtitle>{item.socialName}</Subtitle>
-        <Image style={styles.image} source={require('../../../assets/nfce.png')} />
-        <Category>Qtde. Itens: {item.totalItems}</Category>
-        <Category>Total: R$ {item.totalValue}</Category>
+    <TouchableHighlight underlayColor='transparent' onPress={ () => this.onPressNfce(item) }>
+      <View style={ styles.container }>
+        <TextTitle>{ this.dateFormat(item.createdAt) }</TextTitle>
+        <Subtitle>{ item.socialName }</Subtitle>
+        <Image style={ styles.image } source={ require('../../../assets/nfce.png') } />
+        <Category>Qtde. Itens: { item.totalItems }</Category>
+        <Category>Total: R$ { item.totalValue }</Category>
       </View>
     </TouchableHighlight>
   );
@@ -77,9 +68,17 @@ export default class HomeScreen extends Component {
   };
 
   render() {
+    if (this.state.isLoading) {
+      return (
+        <Indicator>
+          <Loading size="large" color="#1CB5E0" />
+        </Indicator>
+      )
+    }
+
     return (
       <Container>
-        {this.state.nfce !== null ?
+        { this.state.nfces.length > 0 ?
           <FlatList
             vertical
             showsVerticalScrollIndicator={false}
@@ -88,7 +87,7 @@ export default class HomeScreen extends Component {
             renderItem={this.renderNfce}
             keyExtractor={item => `${item._id}`}
           />
-          : <Text>Não existem notas fiscais</Text>
+          : <TextInfo>Não existem notas fiscais para exibir</TextInfo>
         }
       </Container>
     );

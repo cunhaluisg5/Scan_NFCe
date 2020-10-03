@@ -33,3 +33,17 @@ export const Indicator = styled.View`
     justify-content: center;
     background: #000000
 `;
+
+export const ButtonLogin = styled.View`
+    display: flex;
+    align-items: center;
+    background: #053480;
+    margin-top: 10px;
+    padding: 10px;
+`;
+
+export const ContainerLogin = styled.TouchableOpacity`
+`;
+
+export const Loading = styled.ActivityIndicator`
+`;

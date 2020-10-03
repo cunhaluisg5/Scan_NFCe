@@ -8,23 +8,25 @@ import DetailsNfceScreen from '../screens/DetailsNfce/DetailsNfceScreen';
 import MenuButton from '../components/MenuButton/MenuButton';
 import Api from '../services/Api';
 
-const gravar = async (nfce) => {
+const gravar = async (nfce, navigation) => {
   try {
     const response = await Api.post('/nfces', nfce).then((data) => {
       console.log('Salvo com sucesso!')
     })
 
     Alert.alert('Atenção', 'Salvo com sucesso!');
+    navigation.navigate('HomeScreen');
   } catch (err) {
     console.log('Erro ao salvar ', err.data.error)
     Alert.alert('Atenção', err.data.error)
   }
 }
 
-const remover = async (nfce) => {
+const remover = async (nfce, navigation) => {
   try {
     const response = await Api.delete('/nfces/' + nfce._id);
 
+    navigation.navigate('HomeScreen');
     Alert.alert('Atenção', 'Excluído com sucesso!');
   } catch (err) {
     console.log('Erro ao excluir ', err)
@@ -53,15 +55,13 @@ const screens = {
       buttonTop = <MenuButton
           name="save"
           onPress={() => {
-            gravar(da);
-            navigation.navigate('HomeScreen');
+            gravar(da, navigation);
           }}
         /> :
         buttonTop = <MenuButton
           name="trash-o"
           onPress={() => {
-            remover(item);
-            navigation.navigate('HomeScreen');
+            remover(item, navigation);
           }}
         />
 

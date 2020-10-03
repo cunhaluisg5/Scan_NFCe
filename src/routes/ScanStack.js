@@ -8,7 +8,7 @@ const screens = {
     screen: Scan,
     navigationOptions: ({ navigation }) => {
       return {
-        headerTitle: () => <Header title='Leitor de Código' navigation={navigation} />
+        headerTitle: () => <Header title='Leitor de Código' navigation={ navigation } />
       }
     },
   },

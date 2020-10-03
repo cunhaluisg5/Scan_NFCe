@@ -36,3 +36,22 @@ export const Category = styled.Text`
     margin-bottom: 5px;
     color: #fff
 `;
+
+export const Indicator = styled.View`
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    background: #000000
+`;
+
+export const Loading = styled.ActivityIndicator`
+`;
+
+export const TextInfo = styled.Text`
+    color: #ffffff;
+    text-align: center;
+    margin-top: 10px;
+    font-size: 16px;
+    font-family: Helvetica
+`;

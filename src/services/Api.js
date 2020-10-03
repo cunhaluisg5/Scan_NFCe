@@ -1,14 +1,14 @@
 import { AsyncStorage } from 'react-native';
-import { create  } from 'apisauce';
+import { create } from 'apisauce';
 
 const api = create({
-  baseURL: 'https://tccluis.herokuapp.com/'
+  baseURL: 'https://scannfceserver.herokuapp.com'
 });
 
 api.addAsyncRequestTransform(request => async () => {
   const token = await AsyncStorage.getItem('@APP:token');
 
-  if(token) {
+  if (token) {
     request.headers['Authorization'] = `Bearer ${token}`;
   }
 });

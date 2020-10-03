@@ -1,29 +1,19 @@
 import React, { Component } from 'react';
-import {
-    View,
-    StyleSheet,
-    AsyncStorage,
-    Alert,
-    TouchableOpacity,
-    ActivityIndicator
-} from 'react-native';
+import { AsyncStorage, Alert } from 'react-native';
 
 import Api from '../../services/Api';
 import AuthInput from '../../components/AuthInput/AuthInput';
 
-import { 
-    Container,
-    TitleHeader,
-    SubtitleHeader,
-    FormContainer,
-    Indicator
+import {
+    Container, TitleHeader, ContainerLogin, Loading, SubtitleHeader,
+    FormContainer, Indicator, ButtonLogin
 } from './Style';
 
 export default class Login extends Component {
     state = {
         stageNew: false,
         name: '',
-        email: 'lucia@lucia.com',
+        email: 'luisg5@yahoo.com.br',
         password: '123456',
         confirmPassword: '',
         isLoading: false,
@@ -37,8 +27,8 @@ export default class Login extends Component {
             const { email, password } = this.state
 
             const response = await Api.post('/auth/authenticate', {
-                email: email,
-                password: password
+                email,
+                password
             });
 
             const { user, token } = response.data;
@@ -50,12 +40,12 @@ export default class Login extends Component {
 
             this.setState({ loggedInUser: user });
 
-            this.props.navigation.navigate('Home', {user})
+            this.props.navigation.navigate('Home', { user })
             this.setState({ isLoading: false })
         } catch (response) {
             this.setState({ isLoading: false })
             this.setState({ errorMessage: response.data.error })
-            Alert.alert('Atenção!','Dados incorretos. ' + response.data.error)
+            Alert.alert('Atenção!', 'Dados incorretos. ' + response.data.error)
         }
     };
 
@@ -65,9 +55,9 @@ export default class Login extends Component {
             const { name, email, password } = this.state
 
             const response = await Api.post('/auth/register', {
-                name: name,
-                email: email,
-                password: password
+                name,
+                email,
+                password
             });
             this.setState({ isLoading: false })
             Alert.alert('Cadastro com sucesso!');
@@ -75,7 +65,7 @@ export default class Login extends Component {
         } catch (response) {
             this.setState({ isLoading: false })
             this.setState({ errorMessage: response.data.error })
-            Alert.alert('Atenção!','Erro ao cadastrar. ' + response.data.error)
+            Alert.alert('Atenção!', 'Erro ao cadastrar. ' + response.data.error)
         }
     };
 
@@ -89,7 +79,6 @@ export default class Login extends Component {
 
     async componentDidMount() {
         const token = await AsyncStorage.getItem('@APP:token');
-
         const user = JSON.parse(await AsyncStorage.getItem('@APP:user'));
 
         if (token && user) {
@@ -101,7 +90,7 @@ export default class Login extends Component {
         if (this.state.isLoading) {
             return (
                 <Indicator>
-                    <ActivityIndicator size="large" color="#1CB5E0" />
+                    <Loading size="large" color="#1CB5E0" />
                 </Indicator>
             )
         }
@@ -124,65 +113,48 @@ export default class Login extends Component {
                 <TitleHeader>Scan NFCe</TitleHeader>
                 <FormContainer>
                     <SubtitleHeader>
-                        {this.state.stageNew ?
-                            'Crie a sua conta' : 'Informe seus dados'}
+                        { this.state.stageNew ?
+                            'Crie a sua conta' : 'Informe seus dados' }
                     </SubtitleHeader>
-                    {this.state.stageNew &&
+                    { this.state.stageNew &&
                         <AuthInput icon='user' placeholder='Nome'
-                            style={styles.input}
-                            value={this.state.name}
-                            onChangeText={name =>
-                                this.setState({ name })} />}
+                            value={ this.state.name }
+                            onChangeText={ name =>
+                                this.setState({ name }) } /> }
                     <AuthInput icon='at' placeholder='E-mail'
-                        style={styles.input}
-                        value={this.state.email}
-                        onChangeText={email =>
-                            this.setState({ email })} />
+                        value={ this.state.email }
+                        onChangeText={ email =>
+                            this.setState({ email }) } />
                     <AuthInput icon='lock' secureTextEntry={true}
                         placeholder='Senha'
-                        style={styles.input}
-                        value={this.state.password}
-                        onChangeText={password =>
-                            this.setState({ password })} />
-                    {this.state.stageNew &&
+                        value={ this.state.password }
+                        onChangeText={ password =>
+                            this.setState({ password }) } />
+                    { this.state.stageNew &&
                         <AuthInput icon='asterisk'
-                            secureTextEntry={true} placeholder='Confirmação'
-                            style={styles.input}
-                            value={this.state.confirmPassword}
-                            onChangeText={confirmPassword =>
-                                this.setState({ confirmPassword })} />}
-                    <TouchableOpacity disabled={!validForm}
-                        onPress={this.signInOrSignUp}>
-                        <View style={[styles.button, !validForm ? { backgroundColor: '#AAA' } : {}]}>
+                            secureTextEntry={ true } placeholder='Confirmação'
+                            value={ this.state.confirmPassword }
+                            onChangeText={ confirmPassword =>
+                                this.setState({ confirmPassword }) } /> }
+                    <ContainerLogin disabled={ !validForm }
+                        onPress={ this.signInOrSignUp }>
+                        <ButtonLogin style={ [!validForm ? { backgroundColor: '#AAA' } : {}] }>
                             <SubtitleHeader>
-                                {this.state.stageNew ? 'Registrar' : 'Entrar'}
+                                { this.state.stageNew ? 'Registrar' : 'Entrar' }
                             </SubtitleHeader>
-                        </View>
-                    </TouchableOpacity>
+                        </ButtonLogin>
+                    </ContainerLogin>
                 </FormContainer>
-                <TouchableOpacity style={{ padding: 10 }}
+                <ContainerLogin style={{ padding: 10 }}
                     onPress={() => this.setState({
                         stageNew: !this.state.stageNew
                     })}>
                     <SubtitleHeader>
-                        {this.state.stageNew ? 'Já possui conta?'
-                            : 'Ainda não possui conta?'}
+                        { this.state.stageNew ? 'Já possui conta?'
+                            : 'Ainda não possui conta?' }
                     </SubtitleHeader>
-                </TouchableOpacity>
+                </ContainerLogin>
             </Container>
         )
     }
 }
-
-const styles = StyleSheet.create({
-    input: {
-        marginTop: 10,
-        backgroundColor: '#FFF',
-    },
-    button: {
-        backgroundColor: '#053480',
-        marginTop: 10,
-        padding: 10,
-        alignItems: 'center',
-    },
-});

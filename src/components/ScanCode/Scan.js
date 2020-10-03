@@ -22,20 +22,17 @@ export default props => {
 
   if (hasPermission === null) {
     return (
-        <TextContent color={'#ffffff'} fontSize={16} fontWeight={'normal'} textAlign={'center'}
-        padding={10}>Solicitando permissão da câmera</TextContent>);
+        <TextContent color={ '#ffffff' } fontSize={ 16 } fontWeight={ 'normal' } textAlign={ 'center' }
+        padding={ 10 }>Solicitando permissão da câmera</TextContent>);
   }
   if (hasPermission === false) {
     return (
-      <TextContent color={'#ffffff'} fontSize={16} fontWeight={'normal'} textAlign={'center'}
-              padding={10}>Sem acesso à câmera</TextContent>);
+      <TextContent color={ '#ffffff' } fontSize={ 16 } fontWeight={ 'normal' } textAlign={ 'center' }
+              padding={ 10 }>Sem acesso à câmera</TextContent>);
   }
 
   const validateURL = (url) => {
-    if ((url.search(/nfce.fazenda.mg.gov.br/i) !== -1) && (url.length === 156)) {
-      return true;
-    }
-    return false;
+    return (url.search(/nfce.fazenda.mg.gov.br/i) !== -1) && (url.length === 156);
   }
 
   const handleBarCodeScanned = async ({ type, data }) => {
@@ -43,7 +40,6 @@ export default props => {
       setScanned(true);
       Vibration.vibrate();
       setIsLoading(true);
-      console.log('URL: ', data)
 
       try {
         const response = await Api.post('/crawler', {
@@ -66,7 +62,7 @@ export default props => {
 
   if (isLoading) {
     return (
-      <Indicator background={'#0a0d1c'}>
+      <Indicator background={ '#0a0d1c' }>
         <ActivityIndicator size="large" color="#1CB5E0" />
       </Indicator>
     )

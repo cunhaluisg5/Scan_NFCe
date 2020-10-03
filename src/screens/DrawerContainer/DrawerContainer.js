@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { AsyncStorage } from 'react-native';
-import PropTypes from 'prop-types';
 
 import MenuButton from '../../components/MenuButton/MenuButton';
 import { Content, Container, User } from './Style';
@@ -38,7 +37,7 @@ export default class DrawerContainer extends Component {
       <Content>
         <Container>
           <User>
-            {this.state.user !== null && this.state.user.name}
+            { this.state.user !== null && this.state.user.name }
           </User>
           <MenuButton
             title="INÍCIO"
@@ -58,7 +57,7 @@ export default class DrawerContainer extends Component {
           />
           <MenuButton
             title="GRÁFICO"
-            name="qrcode"
+            name="bar-chart"
             onPress={() => {
               navigation.navigate('Chart', navigation);
               navigation.closeDrawer();
@@ -85,9 +84,3 @@ export default class DrawerContainer extends Component {
     );
   }
 }
-
-DrawerContainer.propTypes = {
-  navigation: PropTypes.shape({
-    navigate: PropTypes.func.isRequired
-  })
-};

@@ -33,3 +33,16 @@ export const Indicator = styled.View`
     justify-content: center;
     background: #000000
 `;
+
+export const ContainerButton = styled.View`
+    align-items: center;
+    background: #053480;
+    margin-top: 10px;
+    padding: 10px;
+`;
+
+export const ButtonEdit = styled.TouchableOpacity`
+`;
+
+export const Loading = styled.ActivityIndicator`
+`;

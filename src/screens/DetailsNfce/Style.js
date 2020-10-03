@@ -91,3 +91,6 @@ export const Indicator = styled.View`
     justify-content: center;
     background: #000000
 `;
+
+export const Loading = styled.ActivityIndicator`
+`;

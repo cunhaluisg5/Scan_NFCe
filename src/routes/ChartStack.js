@@ -8,7 +8,7 @@ const screens = {
     screen: Chart,
     navigationOptions: ({ navigation }) => {
       return {
-        headerTitle: () => <Header title='Total Gasto' navigation={navigation} />
+        headerTitle: () => <Header title='Total Gasto' navigation={ navigation } />
       }
     },
   },
