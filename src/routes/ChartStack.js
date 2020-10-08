@@ -8,7 +8,7 @@ const screens = {
     screen: Chart,
     navigationOptions: ({ navigation }) => {
       return {
-        headerTitle: () => <Header title='Total Gasto' navigation={ navigation } />
+        headerTitle: () => <Header title='Análise de Gastos' navigation={ navigation } />
       }
     },
   },
@@ -17,7 +17,7 @@ const screens = {
 const ChartStack = createStackNavigator(screens, {
   defaultNavigationOptions: {
     headerTintColor: '#444',
-    headerStyle: { backgroundColor: '#eee', height: 60 },
+    headerStyle: { backgroundColor: '#ccc', height: 60 },
   }
 });
 

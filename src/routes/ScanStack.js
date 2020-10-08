@@ -17,7 +17,7 @@ const screens = {
 const ScanStack = createStackNavigator(screens, {
   defaultNavigationOptions: {
     headerTintColor: '#444',
-    headerStyle: { backgroundColor: '#eee', height: 60 },
+    headerStyle: { backgroundColor: '#ccc', height: 60 },
   }
 });
 

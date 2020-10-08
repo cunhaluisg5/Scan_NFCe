@@ -66,7 +66,7 @@ const screens = {
         />
 
       return {
-        title: 'Detalhes da NFCe',
+        title: 'Detalhes da Nota',
         headerRight:
           buttonTop
       }
@@ -74,11 +74,10 @@ const screens = {
   },
 };
 
-// home stack navigator screens
 const HomeStack = createStackNavigator(screens, {
   defaultNavigationOptions: {
     headerTintColor: '#444',
-    headerStyle: { backgroundColor: '#eee', height: 60 }
+    headerStyle: { backgroundColor: '#ccc', height: 60 }
   }
 });
 

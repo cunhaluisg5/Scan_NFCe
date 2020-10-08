@@ -2,6 +2,7 @@ import { createDrawerNavigator } from 'react-navigation-drawer';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 
 import DrawerContainer from './screens/DrawerContainer/DrawerContainer';
+import AuthOrApp from './screens/Auth/AuthOrApp';
 import Login from './screens/Authentication/Login';
 import HomeStack from './routes/HomeStack';
 import ScanStack from './routes/ScanStack';
@@ -31,6 +32,9 @@ const MenuConfig = {
 const RootDrawerNavigator = createDrawerNavigator(MenuRoutes, MenuConfig)
 
 const MainRoutes = {
+  Loading: {
+    screen: AuthOrApp
+  },
   Auth: {
     screen: Login
   },
@@ -40,7 +44,7 @@ const MainRoutes = {
 }
 
 const MainNavigator = createSwitchNavigator(MainRoutes, {
-  initialRouteName: 'Auth'
+  initialRouteName: 'Loading'
 })
 
 console.disableYellowBox = true;

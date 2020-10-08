@@ -13,7 +13,7 @@ export default class Login extends Component {
     state = {
         stageNew: false,
         name: '',
-        email: 'luisg5@yahoo.com.br',
+        email: 'lucia@lucia.com',
         password: '123456',
         confirmPassword: '',
         isLoading: false,

@@ -80,7 +80,7 @@ export const ContainerItems = styled.View`
 `;
 
 export const ItemText = styled.Text`
-    font-size: 12px;
+    font-size: ${props => `${props.fontSize}`};
     color: #fff
 `;
 

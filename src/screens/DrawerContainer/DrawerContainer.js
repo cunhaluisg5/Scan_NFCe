@@ -48,7 +48,7 @@ export default class DrawerContainer extends Component {
             }}
           />
           <MenuButton
-            title="LEITOR"
+            title="LEITOR DE CÓDIGO"
             name="qrcode"
             onPress={() => {
               navigation.navigate('Scan', navigation);
@@ -56,7 +56,7 @@ export default class DrawerContainer extends Component {
             }}
           />
           <MenuButton
-            title="GRÁFICO"
+            title="ANÁLISE DE GASTOS"
             name="bar-chart"
             onPress={() => {
               navigation.navigate('Chart', navigation);

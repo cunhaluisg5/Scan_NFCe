@@ -1,120 +1,203 @@
-/*import React, { useState } from 'react';
-import { AsyncStorage } from 'react-native';
-import { Text } from 'react-native-svg';
-import { PieChart } from 'react-native-svg-charts';
+import React, { Component } from 'react';
+import { Dimensions, AsyncStorage } from 'react-native';
+import { LineChart } from 'react-native-chart-kit';
+
+const moment = require('moment');
+moment.locale('pt-BR');
 
 import Api from '../../services/Api';
-import { Container } from './Style';
+import {
+    Loading, Indicator, Container, TextHeader, ChartLine, Scroll,
+    ContainerText, DetailsNfce, ContainerNfce, ItemHeader, ItemTitle, ItemSubtitle
+} from './Style';
 
-export default Chart = () => {
-    const [data, setData] = useState([]);
-    const pieData = data.map((value, index) => ({
-        value,
-        key: `${index}-${value}`,
-        svg: {
-            fill: (
-                '#' + ((Math.random() * 0xffffff) << 0).toString(16) + '000000'
-            ).slice(0, 7)
+export default class LineChartExample extends Component {
+    constructor(props) {
+        super(props);
+        this.dateNow = moment().format('YYYY');
+        this.state = {
+            isLoading: false,
+            nfces: [],
+            months: [
+                {
+                    month: 'Jan',
+                    value: 0
+                },
+                {
+                    month: 'Fev',
+                    value: 0
+                },
+                {
+                    month: 'Mar',
+                    value: 0
+                },
+                {
+                    month: 'Abr',
+                    value: 0
+                },
+                {
+                    month: 'Mai',
+                    value: 0
+                },
+                {
+                    month: 'Jun',
+                    value: 0
+                },
+                {
+                    month: 'Jul',
+                    value: 0
+                },
+                {
+                    month: 'Ago',
+                    value: 0
+                },
+                {
+                    month: 'Set',
+                    value: 0
+                },
+                {
+                    month: 'Out',
+                    value: 0
+                },
+                {
+                    month: 'Nov',
+                    value: 0
+                },
+                {
+                    month: 'Dez',
+                    value: 0
+                }
+            ]
         }
-    }));
+    }
 
-    const getNfces = async () => {
+    async UNSAFE_componentWillMount() {
+        await this.getNfces();
+        this.calculateDate();
+    }
+
+    getNfces = async () => {
         try {
-            const datas = [];
+            this.setState({ isLoading: true })
             const { _id } = JSON.parse(await AsyncStorage.getItem('@APP:user'));
             const response = await Api.get('/nfces/user/' + _id);
 
             const { nfces } = response.data;
 
-            nfces.map((value, index) => {
-                datas.push(value.totalValue);
-            });
-            setData(datas);
+            this.setState({ nfces });
+            this.setState({ isLoading: false })
         } catch (response) {
-            this.setState({ errorMessage: response.data.error });
+            //this.setState({ errorMessage: response.data.error });
         }
     }
 
-    const Label = ({ slices }) => {
-        return slices.map((slice, index) => {
-            const { pieCentroid, data } = slice;
-            return (
-                <Text
-                    key={`label-${index}`}
-                    x={ pieCentroid[0] }
-                    y={ pieCentroid[1] }
-                    fill='black'
-                    textAnchor={ 'middle' }
-                    alignmentBaseline={ 'middle' }
-                    fontSize={ 22 }
-                >
-                    { data.value }
-                </Text>
-            )
+    calculateDate = () => {
+        const { nfces } = this.state;
+
+        const res = nfces.map((nfce) => {
+            const NfceYear = moment(nfce.issuanceDate, 'DD/MM/YYYY').format('YYYY');
+            const NfceMonth = moment(nfce.issuanceDate, 'DD/MM/YYYY').format('M');
+            if (NfceYear === this.dateNow) {
+                this.incrementValue(NfceMonth, parseFloat(nfce.totalValue, 10));
+            }
         })
     }
 
-    if (data.length === 0) {
-        getNfces()
+    incrementValue = (monthNfce, value) => {
+        const { months } = this.state;
+        months[monthNfce - 1].value += value;
+        this.setState({ months })
     }
 
-    return (
-        <Container>
-            <PieChart style={{ height: 400, marginLeft: 10, marginRight: 10 }} data={ pieData }>
-                <Label />
-            </PieChart>
-        </Container>
-    )
-}*/
+    calculateMaxValue = () => {
+        const { nfces } = this.state;
+        const maxValue = Math.max.apply(Math, nfces.map((nfce) => { return nfce.totalValue }))
+        const maxNfce = nfces.filter((nfce) => { return parseFloat(nfce.totalValue, 10) === maxValue });
+        return maxNfce;
+    }
 
-import React from 'react'
-import { View, TouchableHighlight } from 'react-native'
-import { BarChart, Grid } from 'react-native-svg-charts'
-import { Text } from 'react-native-svg'
-
-class BarChartHorizontalWithLabels extends React.PureComponent {
-
-    render() {
-
-        const data = [50, 10, 40, 95, 85, 2, 8, 77, 4, 5, 2, 44, 8, 69]
-
-        const CUT_OFF = 50
-        const Labels = ({ x, y, bandwidth, data }) => (
-            data.map((value, index) => (
-                <Text
-                    key={index}
-                    x={value > CUT_OFF ? x(0) + 10 : x(value) + 10}
-                    y={y(index) + (bandwidth / 2)}
-                    fontSize={14}
-                    fill={value > CUT_OFF ? 'white' : 'white'}
-                    alignmentBaseline={'middle'}
-                >
-                    {value}
-                </Text>
-            ))
-        )
+    LineChart = () => {
+        const months = this.state.months.map((month) => { return month.month });
+        const data = this.state.months.map((month) => { return month.value });
 
         return (
-                <TouchableHighlight style={{
-                    flexDirection: 'row', height: '100%', paddingVertical: 16,
-                    backgroundColor: '#0a0d1c'
-                }}>
-                    <BarChart
-                        style={{ flex: 1, marginLeft: 10, marginRight: 10,  }}
-                        data={data}
-                        horizontal={true}
-                        svg={{ fill: 'rgba(255,135,15, 0.8)' }}
-                        contentInset={{ top: 10, bottom: 10 }}
-                        spacing={0.2}
-                        gridMin={0}
-                    >
-                        <Grid direction={Grid.Direction.VERTICAL} />
-                        <Labels />
-                    </BarChart>
-                </TouchableHighlight>
+            <>
+                <ContainerText>
+                    <TextHeader>Gastos (R$/Mês) {this.dateNow}</TextHeader>
+                </ContainerText>
+                <LineChart
+                    data={{
+                        labels: months,
+                        datasets: [
+                            {
+                                data: data,
+                                strokeWidth: 2,
+                            },
+                        ],
+                    }}
+                    width={Dimensions.get('window').width - 16}
+                    height={220}
+                    chartConfig={{
+                        backgroundColor: '#1cc910',
+                        backgroundGradientFrom: '#142541',
+                        backgroundGradientTo: '#142541',
+                        decimalPlaces: 2,
+                        color: (opacity = 10) => `rgba(255, 255, 255, ${opacity})`,
+                        style: {
+                            borderRadius: 16,
+                        },
+                    }}
+                    style={{
+                        marginVertical: 8,
+                        borderRadius: 16,
+                        borderStyle: "solid",
+                        borderTopColor: "#7FFFD4",
+                        borderLeftColor: "#7FFFD4",
+                        borderRightColor: "#FFD700",
+                        borderBottomColor: "#FFD700",
+                        borderTopWidth: 1,
+                        borderLeftWidth: 1,
+                        borderRightWidth: 3,
+                        borderBottomWidth: 3
+                    }}
+                />
+            </>
+        );
+    };
+
+    render() {
+        if (this.state.isLoading) {
+            return (
+                <Indicator>
+                    <Loading size="large" color="#1CB5E0" />
+                </Indicator>
+            )
+        }
+
+        const nfces = this.calculateMaxValue().map((nfce) => {
+            return (
+                <ContainerNfce>
+                    <DetailsNfce>Nota mais cara no período</DetailsNfce>
+                    <ItemHeader>
+                        <ItemTitle>{nfce.socialName}</ItemTitle>
+                        <ItemSubtitle fontSize='14' color='#fff'>CNPJ: {nfce.cnpj}, UF: {nfce.uf}</ItemSubtitle>
+                        <ItemSubtitle fontSize='14' color='#fff'>Data Emissão : {nfce.issuanceDate}</ItemSubtitle>
+                        <ItemSubtitle fontSize='18' color='#ff870f'>Valor Total: R$ {nfce.totalValue}</ItemSubtitle>
+                    </ItemHeader>
+                </ContainerNfce>
+            );
+        });
+
+        return (
+            <Container>
+                <Scroll>
+                    <ChartLine>
+                        {this.LineChart()}
+                    </ChartLine>
+                    {nfces}
+                </Scroll>
+            </Container>
+
         )
     }
-
 }
-
-export default BarChartHorizontalWithLabels

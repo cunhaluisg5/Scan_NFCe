@@ -42,13 +42,13 @@ export default class DetailsNfceScreen extends Component {
             {items.map(item => (
               <Items key={ item._id }>
                 <ContainerItems>
-                  <ItemText>{ item.itemName }</ItemText>
-                  <ItemText>(Código: { item.itemCode })</ItemText>
+                  <ItemText fontSize='12'>{ item.itemName }</ItemText>
+                  <ItemText fontSize='12'>(Código: { item.itemCode })</ItemText>
                 </ContainerItems>
                 <ContainerItems>
-                  <ItemText>Qtde ítens: { item.qtdItem }</ItemText>
-                  <ItemText>UN: { item.unItem }</ItemText>
-                  <ItemText>Valor total R$: { item.itemValue }</ItemText>
+                  <ItemText fontSize='12'>Qtde ítens: { item.qtdItem }</ItemText>
+                  <ItemText fontSize='12'>UN: { item.unItem }</ItemText>
+                  <ItemText fontSize='12'>Valor total R$: { item.itemValue }</ItemText>
                 </ContainerItems>
               </Items>
             ))}
@@ -57,8 +57,8 @@ export default class DetailsNfceScreen extends Component {
 
         <ItemFooter>
           <ContainerItems>
-            <ItemText>Qtde total de ítens: { item.totalItems }</ItemText>
-            <ItemText>Valor total: R$ { item.totalValue }</ItemText>
+            <ItemText fontSize='14'>Qtde total de ítens: { item.totalItems }</ItemText>
+            <ItemText fontSize='14'>Valor total: R$ { item.totalValue }</ItemText>
           </ContainerItems>
         </ItemFooter>
       </Container>

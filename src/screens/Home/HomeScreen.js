@@ -29,9 +29,6 @@ export default class HomeScreen extends Component {
     this.getNfces();
   }
 
-  async componentDidUpdate() {
-  }
-
   getNfces = async () => {
     try {
       this.setState({ isLoading: true })
