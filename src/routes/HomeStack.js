@@ -14,7 +14,6 @@ const gravar = async (nfce, navigation) => {
       console.log('Salvo com sucesso!')
     })
 
-    Alert.alert('Atenção', 'Salvo com sucesso!');
     navigation.navigate('HomeScreen');
   } catch (err) {
     console.log('Erro ao salvar ', err.data.error)
@@ -27,7 +26,7 @@ const remover = async (nfce, navigation) => {
     const response = await Api.delete('/nfces/' + nfce._id);
 
     navigation.navigate('HomeScreen');
-    Alert.alert('Atenção', 'Excluído com sucesso!');
+    console.log('Excluído com sucesso!');
   } catch (err) {
     console.log('Erro ao excluir ', err)
     Alert.alert('Atenção', 'Erro ao excluir');
@@ -67,7 +66,7 @@ const screens = {
 
       return {
         title: 'Detalhes da Nota',
-        headerRight:
+        headerRight: () =>
           buttonTop
       }
     },

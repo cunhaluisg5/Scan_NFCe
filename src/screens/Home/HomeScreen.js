@@ -29,17 +29,20 @@ export default class HomeScreen extends Component {
     this.getNfces();
   }
 
+  async componentDidUpdate() {
+    this.getNfces();
+  }
+
   getNfces = async () => {
     try {
-      this.setState({ isLoading: true })
       const { _id } = JSON.parse(await AsyncStorage.getItem('@APP:user'));
       const response = await Api.get('/nfces/user/' + _id);
 
       const { nfces } = response.data;
 
       this.setState({ nfces });
-      this.setState({ isLoading: false })
     } catch (response) {
+      console.log('ERRO:   ', response)
       this.setState({ errorMessage: response.data.error });
     }
   }
@@ -52,7 +55,7 @@ export default class HomeScreen extends Component {
     <TouchableHighlight underlayColor='transparent' onPress={ () => this.onPressNfce(item) }>
       <View style={ styles.container }>
         <TextTitle>{ this.dateFormat(item.createdAt) }</TextTitle>
-        <Subtitle>{ item.socialName }</Subtitle>
+        <Subtitle>{ item.socialName.toUpperCase() }</Subtitle>
         <Image style={ styles.image } source={ require('../../../assets/nfce.png') } />
         <Category>Qtde. Itens: { item.totalItems }</Category>
         <Category>Total: R$ { item.totalValue }</Category>
@@ -80,11 +83,11 @@ export default class HomeScreen extends Component {
             vertical
             showsVerticalScrollIndicator={false}
             numColumns={2}
-            data={this.state.nfces}
+            data={this.state.nfces.reverse()}
             renderItem={this.renderNfce}
             keyExtractor={item => `${item._id}`}
           />
-          : <TextInfo>Não existem notas fiscais para exibir</TextInfo>
+          : <TextInfo></TextInfo>
         }
       </Container>
     );

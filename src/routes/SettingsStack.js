@@ -4,7 +4,7 @@ import Header from '../components/Header/Header';
 import Settings from '../screens/Settings/Settings';
 
 const screens = {
-    Settings: {
+  Settings: {
     screen: Settings,
     navigationOptions: ({ navigation }) => {
       return {

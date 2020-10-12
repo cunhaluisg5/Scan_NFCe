@@ -2,7 +2,7 @@ console.disableYellowBox = true
 import styled from 'styled-components/native';
 
 export const TextContent = styled.Text`
-    font-size: ${props => `${props.fontSize}`};
+    font-size: ${props => `${props.fontSize}px`};
     color: ${props => `${props.color}`};
     font-weight: ${props => `${props.fontWeight}`};
     text-align: ${props => `${props.textAlign}`};
@@ -14,7 +14,7 @@ export const AlertText = styled.Text`
     padding: ${props => `${props.padding}px`};
     color: ${props => `${props.color}`};
     background: ${props => `${props.background}`};
-    font-size: ${props => `${props.fontSize}`};
+    font-size: ${props => `${props.fontSize}px`};
     font-weight: ${props => `${props.fontWeight}`};
     text-align: ${props => `${props.textAlign}`};
     border-top-width: 1px;

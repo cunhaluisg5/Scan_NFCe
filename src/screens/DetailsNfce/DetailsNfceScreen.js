@@ -11,27 +11,15 @@ export default class DetailsNfceScreen extends Component {
     super(props);
   }
 
-  state = {
-    isLoading: false
-  };
-
   render() {
     const { navigation } = this.props;
     const item = navigation.getParam('item');
     const { items } = item;
 
-    if (this.state.isLoading) {
-      return (
-        <Indicator>
-          <Loading size="large" color="#1CB5E0" />
-        </Indicator>
-      )
-    }
-
     return (
       <Container>
         <ItemHeader>
-          <ItemTitle>{ item.socialName }</ItemTitle>
+          <ItemTitle>{ item.socialName.toUpperCase() }</ItemTitle>
           <ItemSubtitle>CNPJ: { item.cnpj }, UF: { item.uf }</ItemSubtitle>
           <ItemSubtitle>Inscrição Estadual: { item.stateRegistration }</ItemSubtitle>
           <ItemSubtitle>Data Emissão : { item.issuanceDate }</ItemSubtitle>

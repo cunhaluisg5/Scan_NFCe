@@ -71,24 +71,24 @@ export default class LineChartExample extends Component {
         }
     }
 
-    async UNSAFE_componentWillMount() {
+    async componentDidMount() {
         await this.getNfces();
         this.calculateDate();
     }
 
     getNfces = async () => {
+        this.setState({ isLoading: true });
         try {
-            this.setState({ isLoading: true })
             const { _id } = JSON.parse(await AsyncStorage.getItem('@APP:user'));
             const response = await Api.get('/nfces/user/' + _id);
 
             const { nfces } = response.data;
 
             this.setState({ nfces });
-            this.setState({ isLoading: false })
         } catch (response) {
             //this.setState({ errorMessage: response.data.error });
         }
+        this.setState({ isLoading: false });
     }
 
     calculateDate = () => {
@@ -179,7 +179,7 @@ export default class LineChartExample extends Component {
                 <ContainerNfce>
                     <DetailsNfce>Nota mais cara no período</DetailsNfce>
                     <ItemHeader>
-                        <ItemTitle>{nfce.socialName}</ItemTitle>
+                        <ItemTitle>{nfce.socialName.toUpperCase()}</ItemTitle>
                         <ItemSubtitle fontSize='14' color='#fff'>CNPJ: {nfce.cnpj}, UF: {nfce.uf}</ItemSubtitle>
                         <ItemSubtitle fontSize='14' color='#fff'>Data Emissão : {nfce.issuanceDate}</ItemSubtitle>
                         <ItemSubtitle fontSize='18' color='#ff870f'>Valor Total: R$ {nfce.totalValue}</ItemSubtitle>

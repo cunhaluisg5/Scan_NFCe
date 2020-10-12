@@ -90,7 +90,7 @@ export const ItemTitle = styled.Text`
 
 export const ItemSubtitle = styled.Text`
     margin-top: 10px;
-    font-size: ${props => `${props.fontSize}`};
+    font-size: ${props => `${props.fontSize}px`};
     color: ${props => `${props.color}`};
 `;
 
