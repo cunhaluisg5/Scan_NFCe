@@ -116,6 +116,10 @@ export default class LineChartExample extends Component {
         return maxNfce;
     }
 
+    onPressNfce = item => {
+        this.props.navigation.navigate('DetailsNfceScreen', { item: item, isRecord: false });
+    };
+
     LineChart = () => {
         const months = this.state.months.map((month) => { return month.month });
         const data = this.state.months.map((month) => { return month.value });
@@ -178,7 +182,7 @@ export default class LineChartExample extends Component {
             return (
                 <ContainerNfce>
                     <DetailsNfce>Nota mais cara no período</DetailsNfce>
-                    <ItemHeader>
+                    <ItemHeader onPress={() => this.onPressNfce(nfce)}>
                         <ItemTitle>{nfce.socialName.toUpperCase()}</ItemTitle>
                         <ItemSubtitle fontSize='14' color='#fff'>CNPJ: {nfce.cnpj}, UF: {nfce.uf}</ItemSubtitle>
                         <ItemSubtitle fontSize='14' color='#fff'>Data Emissão : {nfce.issuanceDate}</ItemSubtitle>

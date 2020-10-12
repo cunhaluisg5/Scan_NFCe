@@ -83,7 +83,6 @@ export default props => {
 
             <ContainerButton>
               <OpenButton width="80"
-                style={{ backgroundColor: "#2196F3" }}
                 onPress={reset}
                 disabled={!validForm}
               >
@@ -91,7 +90,6 @@ export default props => {
               </OpenButton>
 
               <OpenButton width="80"
-                style={{ backgroundColor: "#2196F3" }}
                 onPress={() => {
                   setModalEditVisible(!modalEditVisible);
                 }}
@@ -119,12 +117,11 @@ export default props => {
             <ContainerButton>
 
               <OpenButton width="80"
-                style={{ backgroundColor: "#2196F3" }}
                 onPress={() => {
                   setModalAboutVisible(!modalAboutVisible);
                 }}
               >
-                <TextStyle fontSize="14">Cancelar</TextStyle>
+                <TextStyle fontSize="14">Fechar</TextStyle>
               </OpenButton>
 
             </ContainerButton>

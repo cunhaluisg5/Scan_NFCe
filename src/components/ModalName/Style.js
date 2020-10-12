@@ -34,7 +34,7 @@ export const CenteredModal = styled.View`
 `;
 
 export const OpenButton = styled.TouchableHighlight`
-    background: #0a0d1c;
+    background: #2196F3;
     border-radius: 20px;
     padding: 10px;
     margin-left: 10px;

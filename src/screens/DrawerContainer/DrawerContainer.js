@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { AsyncStorage } from 'react-native';
 
 import MenuButton from '../../components/MenuButton/MenuButton';
-import { Content, Container, User } from './Style';
+import { Content, Container, User, Logo, TextLogo, TextEmail, ContainerTop, ContainerBody } from './Style';
 
 export default class DrawerContainer extends Component {
 
@@ -36,49 +36,57 @@ export default class DrawerContainer extends Component {
     return (
       <Content>
         <Container>
-          <User>
-            { this.state.user !== null && this.state.user.name }
-          </User>
-          <MenuButton
-            title="INÍCIO"
-            name="home"
-            onPress={() => {
-              navigation.navigate('Home');
-              navigation.closeDrawer();
-            }}
-          />
-          <MenuButton
-            title="LEITOR DE CÓDIGO"
-            name="qrcode"
-            onPress={() => {
-              navigation.navigate('Scan', navigation);
-              navigation.closeDrawer();
-            }}
-          />
-          <MenuButton
-            title="ANÁLISE DE GASTOS"
-            name="bar-chart"
-            onPress={() => {
-              navigation.navigate('Chart', navigation);
-              navigation.closeDrawer();
-            }}
-          />
-          <MenuButton
-            title="CONFIGURAÇÕES"
-            name="user"
-            onPress={() => {
-              navigation.navigate('Settings');
-              navigation.closeDrawer();
-            }}
-          />
-          <MenuButton
-            title="SAIR"
-            name="power-off"
-            onPress={() => {
-              this.logoff(navigation);
-              navigation.closeDrawer();
-            }}
-          />
+          <ContainerTop>
+            <Logo><TextLogo>Logo</TextLogo></Logo>
+            <User>
+              {this.state.user !== null && this.state.user.name}
+            </User>
+            <TextEmail>
+              {this.state.user !== null && this.state.user.email}
+            </TextEmail>
+          </ContainerTop>
+          <ContainerBody>
+            <MenuButton
+              title="INÍCIO"
+              name="home"
+              onPress={() => {
+                navigation.navigate('Home');
+                navigation.closeDrawer();
+              }}
+            />
+            <MenuButton
+              title="LEITOR DE CÓDIGO"
+              name="qrcode"
+              onPress={() => {
+                navigation.navigate('Scan', navigation);
+                navigation.closeDrawer();
+              }}
+            />
+            <MenuButton
+              title="ANÁLISE DE GASTOS"
+              name="bar-chart"
+              onPress={() => {
+                navigation.navigate('Chart', navigation);
+                navigation.closeDrawer();
+              }}
+            />
+            <MenuButton
+              title="CONFIGURAÇÕES"
+              name="user"
+              onPress={() => {
+                navigation.navigate('Settings');
+                navigation.closeDrawer();
+              }}
+            />
+            <MenuButton
+              title="SAIR"
+              name="power-off"
+              onPress={() => {
+                this.logoff(navigation);
+                navigation.closeDrawer();
+              }}
+            />
+          </ContainerBody>
         </Container>
       </Content>
     );

@@ -58,7 +58,7 @@ export const ContainerNfce = styled.View`
     justify-content: center;
 `;
 
-export const ItemHeader = styled.View`
+export const ItemHeader = styled.TouchableOpacity`
     display: flex;
     flex: 1;
     align-items: center;

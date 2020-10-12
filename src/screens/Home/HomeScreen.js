@@ -42,7 +42,7 @@ export default class HomeScreen extends Component {
 
       this.setState({ nfces });
     } catch (response) {
-      console.log('ERRO:   ', response)
+      console.log('ERRO:   ', response.data.error)
       this.setState({ errorMessage: response.data.error });
     }
   }
