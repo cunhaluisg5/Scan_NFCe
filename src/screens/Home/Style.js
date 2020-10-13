@@ -53,5 +53,4 @@ export const TextInfo = styled.Text`
     text-align: center;
     margin-top: 10px;
     font-size: 16px;
-    font-family: Helvetica
 `;

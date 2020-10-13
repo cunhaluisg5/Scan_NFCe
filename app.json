@@ -1,12 +1,19 @@
 {
-  "name": "Scan_NFCe",
-  "displayName": "Scan_NFCe",
+  "name": "ScanNFCe",
+  "displayName": "ScanNFCe",
   "expo": {
-    "name": "Scan_NFCe",
-    "slug": "Scan_NFCe",
+    "name": "ScanNFCe",
+    "slug": "ScanNFCe",
     "version": "1.0.0",
     "assetBundlePatterns": [
       "**/*"
-    ]
+    ],
+    "android": {
+      "package": "com.cunhaluisg5.Scan_NFCe"
+    }
+  },
+  "android": {
+    "package": "com.cunhaluisg5.Scan_NFCe",
+    "versionCode": 1
   }
 }

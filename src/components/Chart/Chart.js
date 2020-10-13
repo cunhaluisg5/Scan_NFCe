@@ -178,11 +178,11 @@ export default class LineChartExample extends Component {
             )
         }
 
-        const nfces = this.calculateMaxValue().map((nfce) => {
+        const nfces = this.calculateMaxValue().map((nfce, index) => {
             return (
                 <ContainerNfce>
                     <DetailsNfce>Nota mais cara no período</DetailsNfce>
-                    <ItemHeader onPress={() => this.onPressNfce(nfce)}>
+                    <ItemHeader onPress={() => this.onPressNfce(nfce)} key={index}>
                         <ItemTitle>{nfce.socialName.toUpperCase()}</ItemTitle>
                         <ItemSubtitle fontSize='14' color='#fff'>CNPJ: {nfce.cnpj}, UF: {nfce.uf}</ItemSubtitle>
                         <ItemSubtitle fontSize='14' color='#fff'>Data Emissão : {nfce.issuanceDate}</ItemSubtitle>
