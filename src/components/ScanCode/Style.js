@@ -10,27 +10,27 @@ export const TextContent = styled.Text`
 `;
 
 export const AlertText = styled.Text`
+    border-top-width: 1px;
+    border-bottom-width: 1px;
     margin-top: ${props => `${props.marginTop}`};
     padding: ${props => `${props.padding}px`};
     color: ${props => `${props.color}`};
     background: ${props => `${props.background}`};
     font-size: ${props => `${props.fontSize}px`};
     font-weight: ${props => `${props.fontWeight}`};
-    text-align: ${props => `${props.textAlign}`};
-    border-top-width: 1px;
-    border-top-color: #7FFFD4;
-    border-bottom-width: 1px;
-    border-bottom-color: #7FFFD4;
+    text-align: ${props => `${props.textAlign}`};    
+    border-top-color: ${props => `${props.borderTopColor}`};    
+    border-bottom-color: ${props => `${props.borderBottomColor}`};
 `;
 
 export const ResetButton = styled.TouchableOpacity`
+    border-top-width: 1px;
+    border-bottom-width: 1px;
     margin-top: ${props => `${props.marginTop}`};
     padding: ${props => `${props.padding}px`};
-    background: ${props => `${props.background}`};
-    border-top-width: 1px;
-    border-top-color: #7FFFD4;
-    border-bottom-width: 1px;
-    border-bottom-color: #7FFFD4;
+    background: ${props => `${props.background}`};    
+    border-top-color: ${props => `${props.borderTopColor}`};    
+    border-bottom-color: ${props => `${props.borderBottomColor}`};
 `;
 
 export const Indicator = styled.View`

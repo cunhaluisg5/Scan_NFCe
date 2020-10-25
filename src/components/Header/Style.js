@@ -15,6 +15,6 @@ export const ContainerText = styled.View`
 export const Title = styled.Text`
     font-weight: bold;
     font-size: 20px;
-    color: #333;
     letter-spacing: 1px;
+    color: ${props => `${props.color}`};
 `;

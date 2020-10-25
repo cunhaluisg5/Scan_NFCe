@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { Container, ButtonContainer, ButtonText } from './Style';
+import { AppColors } from '../../colors/AppColors';
 
 export default class MenuButton extends Component {
   render() {
@@ -11,9 +12,9 @@ export default class MenuButton extends Component {
         underlayColor="rgba(128, 128, 128, 0.1)"
       >
         <ButtonContainer>
-          <Icon name={ this.props.name } size={ 25 } 
-            style={{ height: 25, width: 25, color: '#ff870f' }} />
-          <ButtonText>{ this.props.title }</ButtonText>
+          <Icon name={ this.props.name } size={ 25 }
+            style={{ height: 25, width: 25, color: AppColors.textBold }} />
+          <ButtonText color={ AppColors.text }>{ this.props.title }</ButtonText>
         </ButtonContainer>
       </Container>
     );

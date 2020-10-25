@@ -9,6 +9,8 @@ import {
     FormContainer, Indicator, ButtonLogin
 } from './Style';
 
+import { AppColors } from '../../colors/AppColors';
+
 export default class Login extends Component {
     state = {
         stageNew: false,
@@ -89,8 +91,8 @@ export default class Login extends Component {
     render() {
         if (this.state.isLoading) {
             return (
-                <Indicator>
-                    <Loading size="large" color="#1CB5E0" />
+                <Indicator background={ AppColors.background }>
+                    <Loading size="large" color={ AppColors.indicator } />
                 </Indicator>
             )
         }
@@ -109,10 +111,10 @@ export default class Login extends Component {
         const validForm = validations.reduce((all, v) => all && v)
 
         return (
-            <Container>
-                <TitleHeader>Scan NFCe</TitleHeader>
-                <FormContainer>
-                    <SubtitleHeader>
+            <Container background={ AppColors.background }>
+                <TitleHeader color={ AppColors.text }>Scan NFC-e</TitleHeader>
+                <FormContainer background={ AppColors.background }>
+                    <SubtitleHeader color={ AppColors.text }>
                         { this.state.stageNew ?
                             'Crie a sua conta' : 'Informe seus dados' }
                     </SubtitleHeader>
@@ -138,8 +140,9 @@ export default class Login extends Component {
                                 this.setState({ confirmPassword }) } /> }
                     <ContainerLogin disabled={ !validForm }
                         onPress={ this.signInOrSignUp }>
-                        <ButtonLogin style={ [!validForm ? { backgroundColor: '#AAA' } : {}] }>
-                            <SubtitleHeader>
+                        <ButtonLogin background={ AppColors.button } 
+                            style={ [!validForm ? { backgroundColor: AppColors.inactiveButton } : {}] }>
+                            <SubtitleHeader color={ AppColors.text }>
                                 { this.state.stageNew ? 'Registrar' : 'Entrar' }
                             </SubtitleHeader>
                         </ButtonLogin>
@@ -149,7 +152,7 @@ export default class Login extends Component {
                     onPress={() => this.setState({
                         stageNew: !this.state.stageNew
                     })}>
-                    <SubtitleHeader>
+                    <SubtitleHeader color={ AppColors.text }>
                         { this.state.stageNew ? 'Já possui conta?'
                             : 'Ainda não possui conta?' }
                     </SubtitleHeader>

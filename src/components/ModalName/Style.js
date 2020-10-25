@@ -2,27 +2,27 @@ import styled from 'styled-components/native';
 
 export const ModalView = styled.View`
     display: flex;
-    margin: 20px;
-    background: #142541;
+    margin: 20px;    
     border-radius: 20px;
     padding: 30px;
     align-items: center;
-    border-style: solid; 
-    border-right-color: #FFD700;
-    border-bottom-color: #FFD700;
-    border-left-color: #7FFFD4;
-    border-top-color: #7FFFD4;
+    border-style: solid;     
     border-top-width: 1px;
     border-left-width: 1px;
     border-right-width: 3px;
     border-bottom-width: 3px;
+    background: ${props => `${props.background}`};
+    border-right-color: ${props => `${props.borderRightColor}`};
+    border-bottom-color: ${props => `${props.borderBottomColor}`};
+    border-left-color: ${props => `${props.borderLeftColor}`};
+    border-top-color: ${props => `${props.borderTopColor}`};
 `;
 
 export const CenteredView = styled.View`
     display: flex;
     flex: 1;
-    background: #0a0d1c;
-    padding: 10px
+    padding: 10px;
+    background: ${props => `${props.background}`};
 `;
 
 export const CenteredModal = styled.View`
@@ -30,30 +30,30 @@ export const CenteredModal = styled.View`
     flex: 1;
     align-items: center;
     justify-content: center;
-    background: #0a0d1c
+    background: ${props => `${props.background}`};
 `;
 
 export const OpenButton = styled.TouchableHighlight`
-    background: #2196F3;
     border-radius: 20px;
     padding: 10px;
     margin-left: 10px;
     margin-right: 10px;
     margin-bottom: 10px;
+    background: ${props => `${props.background}`};
     width: ${props => `${props.width}px`};
 `;
 
 export const TextStyle = styled.Text`
-    color: #ffffff;
     text-align: center;
+    color: ${props => `${props.color}`};
     font-size: ${props => `${props.fontSize}px`};
 `;
 
 export const ModalText = styled.Text`
     margin-bottom: 15px;
-    font-size: ${props => `${props.fontSize}px`};
     text-align: center;
-    color: #ffffff;
+    color: ${props => `${props.color}`};
+    font-size: ${props => `${props.fontSize}px`};
 `;
 
 export const ContainerButton = styled.View`

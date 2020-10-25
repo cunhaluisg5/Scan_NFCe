@@ -5,7 +5,7 @@ export const Content = styled.View`
     flex: 1;
     flex-direction: row;
     justify-content: center;
-    background-color: #0a0d1c
+    background: ${props => `${props.background}`};
 `;
 
 export const Container = styled.View`
@@ -17,40 +17,40 @@ export const Container = styled.View`
 export const ContainerTop = styled.View`
     margin-bottom: 20px;
     border-style: solid; 
-    border-bottom-color: #FFD700;
     border-bottom-width: 1px;
     width: 100%;
     padding: 20px;
-    background: #142541;
+    border-bottom-color: ${props => `${props.borderBottomColor}`};
+    background: ${props => `${props.background}`};
 `;
 
 export const ContainerBody = styled.View`
     width: 100%;
-    padding: 20px
+    padding: 20px;
 `;
 
 export const User = styled.Text`
     font-size: 20px;
-    color: #fff;
-    margin-top: 10px
+    margin-top: 10px;
+    color: ${props => `${props.color}`};
 `;
 
 export const Logo = styled.View`
-    background: #7FFFD4;
     width: 60px;
     height: 60px;
     border-radius: 30px;
+    background: ${props => `${props.background}`};
 `;
 
 export const TextLogo = styled.Text`
     font-size: 20px;
-    color: #000000;
     text-align: center;
-    margin-top: 15px
+    margin-top: 15px;
+    color: ${props => `${props.color}`};
 `;
 
 export const TextEmail = styled.Text`
     font-size: 14px;
-    color: #ffffff;
     margin-top: 15px;
+    color: ${props => `${props.color}`};
 `;

@@ -19,5 +19,5 @@ export const ButtonText = styled.Text`
     font-size: 16px;
     margin-left: 10px;
     margin-top: 2px;
-    color: #fff
+    color: ${props => `${props.color}`};
 `;

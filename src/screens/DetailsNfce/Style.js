@@ -9,18 +9,18 @@ export const Container = styled.View`
 export const ItemHeader = styled.View`
     display: flex;
     flex: 1;
-    align-items: ${props => `${props.alignItems}`};
-    max-height: ${props => `${props.maxHeight}px`};
+    align-items: center;
+    max-height: 120px;
     background: ${props => `${props.backgroundColor}`};
 `;
 
 export const ItemBody = styled.View`
     display: flex;
     flex: 1;
-    align-items: ${props => `${props.alignItems}`};
-    padding: ${props => `${props.padding}px`};
-    border-top-width: ${props => `${props.borderTopWidth}px`};
-    border-bottom-width: ${props => `${props.borderBottomWidth}px`};
+    align-items: flex-start;
+    padding: 10px;
+    border-top-width: 2px;
+    border-bottom-width: 2px;
     border-top-color: ${props => `${props.borderTopColor}`};
     border-bottom-color: ${props => `${props.borderBottomColor}`};
 `;
@@ -28,55 +28,55 @@ export const ItemBody = styled.View`
 export const ItemFooter = styled.View`
     display: flex;
     flex: 1;
-    justify-content: ${props => `${props.justifyContent}`};
-    font-weight: ${props => `${props.fontWeight}`};
-    max-height: ${props => `${props.maxHeight}px`};
-    padding: ${props => `${props.padding}px`};
+    justify-content: center;
+    font-weight: bold;
+    max-height: 70px;
+    padding: 10px;
     background: ${props => `${props.backgroundColor}`};
 `;
 
 export const ItemTitle = styled.Text`
-    font-size: ${props => `${props.fontSize}px`};
-    font-weight: ${props => `${props.fontWeight}`};
-    margin-top: ${props => `${props.marginTop}px`};
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 10px;
     color: ${props => `${props.color}`};
 `;
 
 export const ItemSubtitle = styled.Text`
-    font-size: ${props => `${props.fontSize}px`};
-    margin-top: ${props => `${props.marginTop}px`};
+    font-size: 14px;
+    margin-top: 5px;
     color: ${props => `${props.color}`};
 `;
 
 export const ItemScroll = styled.ScrollView`
-    width: ${props => `${props.width}%`};
-    padding: ${props => `${props.padding}px`};
+    width: 100%;
+    padding: 1px;
 `;
 
 export const Items = styled.View`
     display: flex;
     flex: 1;
-    margin-bottom: ${props => `${props.marginBottom}px`};
-    padding: ${props => `${props.padding}px`};
+    margin-bottom: 15px;
+    padding: 10px;    
+    border-radius: 8px;
+    border-style: solid;    
+    border-top-width: 1px;
+    border-left-width: 1px;
+    border-right-width: 3px;
+    border-bottom-width: 3px;
     background: ${props => `${props.backgroundColor}`};
-    border-radius: ${props => `${props.borderRadius}px`};
-    border-style: ${props => `${props.borderStyle}`};
     border-right-color: ${props => `${props.borderRightColor}`};
     border-bottom-color: ${props => `${props.borderBottomColor}`};
     border-left-color: ${props => `${props.borderLeftColor}`};
     border-top-color: ${props => `${props.borderTopColor}`};
-    border-top-width: ${props => `${props.borderTopWidth}px`};
-    border-left-width: ${props => `${props.borderLeftWidth}px`};
-    border-right-width: ${props => `${props.borderRightWidth}px`};
-    border-bottom-width: ${props => `${props.borderBottomWidth}px`};
 `;
 
 export const ContainerItems = styled.View`
     display: flex;
     flex: 1;
-    flex-direction: ${props => `${props.flexDirection}`};
-    align-items: ${props => `${props.alignItems}`};
-    justify-content: ${props => `${props.justifyContent}`};
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
 `;
 
 export const ItemText = styled.Text`

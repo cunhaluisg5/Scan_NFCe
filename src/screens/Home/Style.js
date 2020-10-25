@@ -3,7 +3,7 @@ import styled from 'styled-components/native';
 export const Container = styled.View`
     display: flex;
     flex: 1;
-    background: #0a0d1c
+    background: ${props => `${props.background}`};
 `;
 
 export const TextTitle = styled.Text`
@@ -12,10 +12,10 @@ export const TextTitle = styled.Text`
     font-size: 17px;
     font-weight: bold;
     text-align: center;
-    color: #fff;
     margin-top: 3px;
     margin-right: 5px;
-    margin-left: 5px
+    margin-left: 5px;
+    color: ${props => `${props.color}`};
 `;
 
 export const Subtitle = styled.Text`
@@ -25,16 +25,16 @@ export const Subtitle = styled.Text`
     font-size: 17px;
     font-weight: bold;
     text-align: center;
-    color: #ff870f;
     margin-top: 3px;
     margin-right: 5px;
-    margin-left: 5px
+    margin-left: 5px;
+    color: ${props => `${props.color}`};
 `;
 
 export const Category = styled.Text`
     margin-top: 5px;
     margin-bottom: 5px;
-    color: #fff
+    color: ${props => `${props.color}`};
 `;
 
 export const Indicator = styled.View`
@@ -42,15 +42,15 @@ export const Indicator = styled.View`
     flex: 1;
     align-items: center;
     justify-content: center;
-    background: #000000
+    background: ${props => `${props.background}`};
 `;
 
 export const Loading = styled.ActivityIndicator`
 `;
 
 export const TextInfo = styled.Text`
-    color: #ffffff;
     text-align: center;
     margin-top: 10px;
     font-size: 16px;
+    color: ${props => `${props.color}`};
 `;

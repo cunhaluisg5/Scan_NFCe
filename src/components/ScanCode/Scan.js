@@ -5,6 +5,7 @@ import { BarCodeScanner } from 'expo-barcode-scanner';
 import { TextContent, ResetButton, Indicator, AlertText, LayerTop, 
          LayerCenter, LayerLeft, Focused, LayerRight, LayerBottom } from './Style';
 import Api from '../../services/Api'
+import { AppColors } from '../../colors/AppColors';
 
 const opacity = 'rgba(0, 0, 0, .6)';
 
@@ -22,12 +23,12 @@ export default props => {
 
   if (hasPermission === null) {
     return (
-        <TextContent color={ '#ffffff' } fontSize={ 16 } fontWeight={ 'normal' } textAlign={ 'center' }
+        <TextContent color={ AppColors.text } fontSize={ 16 } fontWeight={ 'normal' } textAlign={ 'center' }
         padding={ 10 }>Solicitando permissão da câmera</TextContent>);
   }
   if (hasPermission === false) {
     return (
-      <TextContent color={ '#ffffff' } fontSize={ 16 } fontWeight={ 'normal' } textAlign={ 'center' }
+      <TextContent color={ AppColors.text } fontSize={ 16 } fontWeight={ 'normal' } textAlign={ 'center' }
               padding={ 10 }>Sem acesso à câmera</TextContent>);
   }
 
@@ -62,8 +63,8 @@ export default props => {
 
   if (isLoading) {
     return (
-      <Indicator background={ '#0a0d1c' }>
-        <ActivityIndicator size="large" color="#1CB5E0" />
+      <Indicator background={ AppColors.background }>
+        <ActivityIndicator size="large" color={ AppColors.indicator } />
       </Indicator>
     )
   }
@@ -74,8 +75,11 @@ export default props => {
       style={StyleSheet.absoluteFill, {flex: 1, backgroundColor: opacity}} >
       <LayerTop background={opacity}>
         {!scanned &&
-          <AlertText color={'#ff870f'} fontSize={16} fontWeight={'normal'} textAlign={'center'} marginTop={0}
-            background={'#142541'} padding={10}>Aponte o leitor para o QRCode</AlertText>
+          <AlertText color={ AppColors.textBold } fontSize={ 16 } fontWeight={ 'normal' } 
+            textAlign={ 'center' } marginTop={ 0 } background={ AppColors.backgroundWindow } padding={ 10 } 
+            borderTopColor={ AppColors.borderTop } borderBottomColor ={ AppColors.borderBottom }>
+              Aponte o leitor para o QRCode
+            </AlertText>
         }
       </LayerTop>
       <LayerCenter>
@@ -85,10 +89,11 @@ export default props => {
       </LayerCenter>
       <LayerBottom background={opacity}>
         {scanned &&
-          <ResetButton background={'#142541'} marginTop={125} padding={0}
+          <ResetButton background={ AppColors.backgroundWindow } marginTop={ 125 } padding={ 0 } 
+          borderTopColor={ AppColors.borderTop } borderBottomColor={ AppColors.borderBottom }
             onPress={() => setScanned(false)}>
-            <TextContent color={'#ff870f'} fontSize={16} fontWeight={'normal'} textAlign={'center'}
-              padding={10}>Ler novamente</TextContent>
+            <TextContent color={ AppColors.textBold } fontSize={ 16 } fontWeight={ 'normal' } 
+              textAlign={ 'center' } padding={ 10 }>Ler novamente</TextContent>
           </ResetButton>
         }
       </LayerBottom>

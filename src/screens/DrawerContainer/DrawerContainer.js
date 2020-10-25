@@ -3,6 +3,7 @@ import { AsyncStorage } from 'react-native';
 
 import MenuButton from '../../components/MenuButton/MenuButton';
 import { Content, Container, User, Logo, TextLogo, TextEmail, ContainerTop, ContainerBody } from './Style';
+import { AppColors } from '../../colors/AppColors';
 
 export default class DrawerContainer extends Component {
 
@@ -34,14 +35,16 @@ export default class DrawerContainer extends Component {
     const { navigation } = this.props;
     this.searchUser();
     return (
-      <Content>
+      <Content background={ AppColors.background }>
         <Container>
-          <ContainerTop>
-            <Logo><TextLogo>Logo</TextLogo></Logo>
-            <User>
+          <ContainerTop borderBottomColor={ AppColors.borderBottom2 } background={ AppColors.backgroundWindow }>
+            <Logo background={ AppColors.logo }>
+              <TextLogo color={ AppColors.textLogo }>Logo</TextLogo>
+            </Logo>
+            <User color={ AppColors.text }>
               {this.state.user !== null && this.state.user.name}
             </User>
-            <TextEmail>
+            <TextEmail color={ AppColors.text }>
               {this.state.user !== null && this.state.user.email}
             </TextEmail>
           </ContainerTop>

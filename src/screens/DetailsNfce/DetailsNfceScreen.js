@@ -4,6 +4,7 @@ import {
   Container, ItemHeader, ItemBody, ItemFooter, ItemTitle, ItemSubtitle,
   ItemScroll, Items, ContainerItems, ItemText
 } from './Style';
+import { AppColors } from '../../colors/AppColors';
 
 export default class DetailsNfceScreen extends Component {
 
@@ -17,53 +18,50 @@ export default class DetailsNfceScreen extends Component {
     const { items } = item;
 
     return (
-      <Container backgroundColor={'#0a0d1c'}>
-        <ItemHeader alignItems={'center'} maxHeight={120} backgroundColor={'#142541'}>
-          <ItemTitle fontSize={20} fontWeight={'bold'} marginTop={10} color={'#ff870f'}>
+      <Container backgroundColor={ AppColors.background }>
+        <ItemHeader backgroundColor={ AppColors.backgroundWindow }>
+          <ItemTitle color={ AppColors.textBold }>
             { item.socialName.toUpperCase() }
           </ItemTitle>
-          <ItemSubtitle fontSize={14} marginTop={5} color={'#fff'}>
+          <ItemSubtitle color={ AppColors.text }>
             CNPJ: { item.cnpj }, UF: { item.uf }
           </ItemSubtitle>
-          <ItemSubtitle fontSize={14} marginTop={5} color={'#fff'}>
+          <ItemSubtitle color={ AppColors.text }>
             Inscrição Estadual: { item.stateRegistration }
           </ItemSubtitle>
-          <ItemSubtitle fontSize={14} marginTop={5} color={'#fff'}>
+          <ItemSubtitle color={ AppColors.text }>
             Data Emissão : { item.issuanceDate }
           </ItemSubtitle>
         </ItemHeader>
 
-        <ItemBody alignItems={'flex-start'} padding={10} borderTopWidth={2} borderBottomWidth={2} 
-          borderTopColor={'#7FFFD4'} borderBottomColor={'#FFD700'}>
-          <ItemScroll width={100} padding={1}>
+        <ItemBody borderTopColor={ AppColors.borderTop } borderBottomColor={ AppColors.borderBottom2 }>
+          <ItemScroll >
             {items.map(item => (
-              <Items key={ item._id } marginBottom={15} padding={10} backgroundColor={'#142541'} 
-                borderRadius={8} borderStyle={'solid'} borderRightColor={'#FFD700'} borderBottomColor={'#FFD700'}
-                borderLeftColor={'#7FFFD4'} borderTopColor={'#7FFFD4'} borderTopWidth={1} borderLeftWidth={1}
-                borderRightWidth={3} borderBottomWidth={3}>
-                <ContainerItems flexDirection={'row'} alignItems={'center'} justifyContent={'space-between'}>
-                  <ItemText fontSize={12} color={'#fff'}>{ item.itemName }</ItemText>
-                  <ItemText fontSize={12} color={'#fff'}>(Código: { item.itemCode })</ItemText>
+              <Items key={ item._id } backgroundColor={ AppColors.backgroundWindow } 
+                borderRightColor={ AppColors.borderRight } borderBottomColor={ AppColors.borderBottom2 }
+                borderLeftColor={ AppColors.borderLeft2 } borderTopColor={ AppColors.borderTop } >
+                <ContainerItems >
+                  <ItemText fontSize={ 12 } color={ AppColors.text }>{ item.itemName }</ItemText>
+                  <ItemText fontSize={ 12 } color={ AppColors.text }>(Código: { item.itemCode })</ItemText>
                 </ContainerItems>
-                <ContainerItems flexDirection={'row'} alignItems={'center'} justifyContent={'space-between'}>
-                  <ItemText fontSize={12} color={'#fff'}>Qtde ítens: { item.qtdItem }</ItemText>
-                  <ItemText fontSize={12} color={'#fff'}>UN: { item.unItem }</ItemText>
-                  <ItemText fontSize={12} color={'#fff'}>Valor total R$ { item.itemValue }</ItemText>
+                <ContainerItems>
+                  <ItemText fontSize={ 12 } color={ AppColors.text }>Qtde ítens: { item.qtdItem }</ItemText>
+                  <ItemText fontSize={ 12 } color={ AppColors.text }>UN: { item.unItem }</ItemText>
+                  <ItemText fontSize={ 12 } color={ AppColors.text }>Valor total R$ { item.itemValue }</ItemText>
                 </ContainerItems>
               </Items>
             ))}
           </ItemScroll>
         </ItemBody>
 
-        <ItemFooter justifyContent={'center'} fontWeight={'bold'} maxHeight={70} padding={10} 
-          backgroundColor={'#142541'}>
-          <ContainerItems flexDirection={'row'} alignItems={'center'} justifyContent={'space-between'}>
-            <ItemText fontSize={14} color={'#fff'}>Base cálculo: R$ { item.icmsCalculationBasis }</ItemText>
-            <ItemText fontSize={14} color={'#fff'}>Valor ICMS: R$ { item.icmsValue }</ItemText>
+        <ItemFooter backgroundColor={ AppColors.backgroundWindow }>
+          <ContainerItems >
+            <ItemText fontSize={ 14 } color={ AppColors.text }>Base cálculo: R$ { item.icmsCalculationBasis }</ItemText>
+            <ItemText fontSize={ 14 } color={ AppColors.text }>Valor ICMS: R$ { item.icmsValue }</ItemText>
           </ContainerItems>
-          <ContainerItems flexDirection={'row'} alignItems={'center'} justifyContent={'space-between'}>
-            <ItemText fontSize={16} color={'#ff870f'}>Qtde total de ítens: { item.totalItems }</ItemText>
-            <ItemText fontSize={16} color={'#ff870f'}>Valor total: R$ { item.totalValue }</ItemText>
+          <ContainerItems >
+            <ItemText fontSize={ 16 } color={ AppColors.textBold }>Qtde total de ítens: { item.totalItems }</ItemText>
+            <ItemText fontSize={ 16 } color={ AppColors.textBold }>Valor total: R$ { item.totalValue }</ItemText>
           </ContainerItems>
         </ItemFooter>
       </Container>

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { AsyncStorage } from 'react-native';
 
 import { Indicator, Loading } from './Style';
+import { AppColors } from '../../colors/AppColors';
 
 export default class AuthOrApp extends Component {
     UNSAFE_componentWillMount = async () => {
@@ -16,8 +17,8 @@ export default class AuthOrApp extends Component {
 
     render() {
         return (
-            <Indicator>
-                <Loading size="large" color="#1CB5E0" />
+            <Indicator background={ AppColors.background } >
+                <Loading size="large" color={ AppColors.indicator } />
             </Indicator>
         )
     }

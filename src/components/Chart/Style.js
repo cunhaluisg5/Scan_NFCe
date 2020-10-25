@@ -3,7 +3,7 @@ import styled from 'styled-components/native';
 export const Container = styled.View`
     display: flex;
     flex: 1;
-    background: #0a0d1c
+    background: ${props => `${props.background}`};
 `;
 
 export const Indicator = styled.View`
@@ -11,36 +11,36 @@ export const Indicator = styled.View`
     flex: 1;
     align-items: center;
     justify-content: center;
-    background: #0a0d1c
+    background: ${props => `${props.background}`};
 `;
 
 export const TextHeader = styled.Text`
     text-align: center;
     font-size: 16px;
     padding: 10px;
-    color: #fff;
+    color: ${props => `${props.color}`};
 `;
 
 export const DetailsNfce = styled.Text`
     text-align: center;
     font-size: 16px;
     padding: 10px;
-    color: #fff;
-    background: #142541;
     width: 100%;
     border-top-width: 2px;
-    border-top-color: #7FFFD4;
     border-bottom-width: 2px;
-    border-bottom-color: #7FFFD4
+    color: ${props => `${props.color}`};
+    background: ${props => `${props.background}`};
+    border-top-color: ${props => `${props.borderTopColor}`};
+    border-bottom-color: ${props => `${props.borderBottomColor}`};
 `;
 
 export const ContainerText = styled.View`
-    background: #142541;
     width: 100%;
     border-top-width: 2px;
-    border-top-color: #7FFFD4;
     border-bottom-width: 2px;
-    border-bottom-color: #7FFFD4
+    background: ${props => `${props.background}`};
+    border-top-color: ${props => `${props.borderTopColor}`};
+    border-bottom-color: ${props => `${props.borderBottomColor}`};
 `;
 
 export const ChartLine = styled.View`
@@ -48,7 +48,7 @@ export const ChartLine = styled.View`
     flex: 1;
     align-items: center;
     justify-content: center;
-    background: #0a0d1c;
+    background: ${props => `${props.background}`};
 `;
 
 export const ContainerNfce = styled.View`
@@ -64,28 +64,28 @@ export const ItemHeader = styled.TouchableOpacity`
     align-items: center;
     width: 100%;
     min-height: 150px;
-    background-color: #142541;
     padding: 10px;
     margin-top: 10px;
     margin-left: 10px;
     margin-right: 10px;
     border-radius: 8px;
     border-style: solid; 
-    border-right-color: #FFD700;
-    border-bottom-color: #FFD700;
-    border-left-color: #7FFFD4;
-    border-top-color: #7FFFD4;
     border-top-width: 1px;
     border-left-width: 1px;
     border-right-width: 3px;
-    border-bottom-width: 3px
+    border-bottom-width: 3px;
+    border-right-color: ${props => `${props.borderRightColor}`};
+    border-bottom-color: ${props => `${props.borderBottomColor}`};
+    border-left-color: ${props => `${props.borderLeftColor}`};
+    border-top-color: ${props => `${props.borderTopColor}`};
+    background: ${props => `${props.background}`};
 `;
 
 export const ItemTitle = styled.Text`
     font-size: 16px;
     font-weight: bold;
     margin-top: 10px;
-    color: #ff870f
+    color: ${props => `${props.color}`};
 `;
 
 export const ItemSubtitle = styled.Text`

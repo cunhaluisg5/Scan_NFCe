@@ -5,5 +5,5 @@ export const Container = styled.View`
     display: flex;
     flex: 1;
     padding: ${props => `${props.padding}px`};
-    background: #0a0d1c
+    background: ${props => `${props.background}`};
 `;

@@ -7,6 +7,8 @@ import {
 import Api from '../../services/Api';
 import { Container, TextTitle, Subtitle, Category, 
          TextInfo, Loading, Indicator } from './Style';
+import { AppColors } from '../../colors/AppColors';
+
 const moment = require('moment');
 moment.locale('pt-BR');
 
@@ -54,11 +56,11 @@ export default class HomeScreen extends Component {
   renderNfce = ({ item }) => (
     <TouchableHighlight underlayColor='transparent' onPress={ () => this.onPressNfce(item) }>
       <View style={ styles.container }>
-        <TextTitle>{ this.dateFormat(item.createdAt) }</TextTitle>
-        <Subtitle>{ item.socialName.toUpperCase() }</Subtitle>
+        <TextTitle color={ AppColors.text }>{ this.dateFormat(item.createdAt) }</TextTitle>
+        <Subtitle color={ AppColors.textBold }>{ item.socialName.toUpperCase() }</Subtitle>
         <Image style={ styles.image } source={ require('../../../assets/nfce.png') } />
-        <Category>Qtde. Itens: { item.totalItems }</Category>
-        <Category>Total: R$ { item.totalValue }</Category>
+        <Category color={ AppColors.text }>Qtde. Itens: { item.totalItems }</Category>
+        <Category color={ AppColors.text }>Total: R$ { item.totalValue }</Category>
       </View>
     </TouchableHighlight>
   );
@@ -70,14 +72,14 @@ export default class HomeScreen extends Component {
   render() {
     if (this.state.isLoading) {
       return (
-        <Indicator>
-          <Loading size="large" color="#1CB5E0" />
+        <Indicator background={ AppColors.background }>
+          <Loading size="large" color={ AppColors.indicator } />
         </Indicator>
       )
     }
 
     return (
-      <Container>
+      <Container background={ AppColors.background }>
         { this.state.nfces.length > 0 ?
           <FlatList
             vertical
@@ -87,7 +89,7 @@ export default class HomeScreen extends Component {
             renderItem={this.renderNfce}
             keyExtractor={item => `${item._id}`}
           />
-          : <TextInfo></TextInfo>
+          : <TextInfo color={ AppColors.text }></TextInfo>
         }
       </Container>
     );
@@ -103,10 +105,10 @@ const styles = StyleSheet.create({
     marginTop: 20,
     width: (SCREEN_WIDTH - (recipeNumColums + 1) * RECIPE_ITEM_MARGIN) / recipeNumColums,
     height: RECIPE_ITEM_HEIGHT + 75,
-    borderColor: '#cccccc',
+    borderColor: AppColors.invoice,
     borderWidth: 0.5,
     borderRadius: 15,
-    backgroundColor: '#142541'
+    backgroundColor: AppColors.backgroundWindow
   },
   image: {
     width: ((SCREEN_WIDTH - (recipeNumColums + 1) * RECIPE_ITEM_MARGIN) / recipeNumColums) / 2,

@@ -3,6 +3,8 @@ import React from 'react';
 import Header from '../components/Header/Header';
 import Scan from '../components/ScanCode/Scan';
 
+import { AppColors } from '../colors/AppColors';
+
 const screens = {
   Scan: {
     screen: Scan,
@@ -16,8 +18,8 @@ const screens = {
 
 const ScanStack = createStackNavigator(screens, {
   defaultNavigationOptions: {
-    headerTintColor: '#444',
-    headerStyle: { backgroundColor: '#ccc', height: 60 },
+    headerTintColor: AppColors.header,
+    headerStyle: { backgroundColor: AppColors.backgroundHeader, height: 60 },
   }
 });
 

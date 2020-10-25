@@ -7,6 +7,7 @@ import DetailsNfceScreen from '../screens/DetailsNfce/DetailsNfceScreen';
 
 import MenuButton from '../components/MenuButton/MenuButton';
 import Api from '../services/Api';
+import { AppColors } from '../colors/AppColors';
 
 const gravar = async (nfce, navigation) => {
   try {
@@ -75,8 +76,8 @@ const screens = {
 
 const HomeStack = createStackNavigator(screens, {
   defaultNavigationOptions: {
-    headerTintColor: '#444',
-    headerStyle: { backgroundColor: '#ccc', height: 60 }
+    headerTintColor: AppColors.header,
+    headerStyle: { backgroundColor: AppColors.backgroundHeader, height: 60 }
   }
 });
 

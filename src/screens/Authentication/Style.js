@@ -6,24 +6,24 @@ export const Container = styled.View`
     width: 100%;
     align-items: center;
     justify-content: center;
-    background: #000000
+    background: ${props => `${props.background}`};
 `;
 
 export const TitleHeader = styled.Text`
-    color: #ffffff;
     font-size: 50px;
-    margin-bottom: 10px
+    margin-bottom: 10px;
+    color: ${props => `${props.color}`};
 `;
 
 export const SubtitleHeader = styled.Text`
-    color: #ffffff;
-    font-size: 20px
+    font-size: 20px;
+    color: ${props => `${props.color}`};
 `;
 
 export const FormContainer = styled.View`
-    background: rgba(0,0,0,0.8);
     padding: 20px;
-    width: 90%
+    width: 90%;
+    background: ${props => `${props.background}`};
 `;
 
 export const Indicator = styled.View`
@@ -31,15 +31,15 @@ export const Indicator = styled.View`
     flex: 1;
     align-items: center;
     justify-content: center;
-    background: #000000
+    background: ${props => `${props.background}`};
 `;
 
 export const ButtonLogin = styled.View`
     display: flex;
     align-items: center;
-    background: #053480;
     margin-top: 10px;
     padding: 10px;
+    background: ${props => `${props.background}`};
 `;
 
 export const ContainerLogin = styled.TouchableOpacity`

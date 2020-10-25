@@ -2,15 +2,15 @@ import styled from 'styled-components/native';
 
 export const Container = styled.View`
     display: flex;
-    flex-direction: row;
-    align-items: center;
-    background: #eee;
-    height: 45px;
-    border-radius: 20px;
-    margin-top: 10px;
+    flex-direction: ${props => `${props.flexDirection}`};
+    align-items: ${props => `${props.alignItems}`};
+    background: ${props => `${props.background}`};
+    height: ${props => `${props.height}px`};
+    border-radius: ${props => `${props.borderRadius}px`};
+    margin-top: ${props => `${props.marginTop}px`};
 `;
 
 export const Input = styled.TextInput`
-    margin-left: 20px;
-    width: 70%;
+    margin-left: ${props => `${props.marginLeft}px`};
+    width: ${props => `${props.width}%`};
 `;

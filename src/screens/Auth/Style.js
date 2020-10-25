@@ -5,7 +5,7 @@ export const Indicator = styled.View`
     flex: 1;
     align-items: center;
     justify-content: center;
-    background: #000000
+    background: ${props => `${props.background}`};
 `;
 
 export const Loading = styled.ActivityIndicator`

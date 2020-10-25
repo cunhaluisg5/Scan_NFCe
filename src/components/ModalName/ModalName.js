@@ -12,6 +12,7 @@ import {
   ModalView, CenteredView, OpenButton,
   TextStyle, ModalText, ContainerButton, CenteredModal
 } from './Style';
+import { AppColors } from '../../colors/AppColors';
 
 export default props => {
   const [modalEditVisible, setModalEditVisible] = useState(false);
@@ -63,7 +64,7 @@ export default props => {
   const validForm = name && name.trim()
 
   return (
-    <CenteredView>
+    <CenteredView background={ AppColors.background }>
       <Modal
         animationType="slide"
         transparent={true}
@@ -72,9 +73,11 @@ export default props => {
           setModalEditVisible(!modalEditVisible);
         }}
       >
-        <CenteredModal>
-          <ModalView>
-            <ModalText fontSize="18">Editar nome de usuário</ModalText>
+        <CenteredModal background={ AppColors.background }>
+          <ModalView background={ AppColors.backgroundWindow } borderRightColor={ AppColors.borderRight }
+            borderBottomColor={ AppColors.borderBottom2 } borderLeftColor={ AppColors.borderLeft2 } 
+            borderTopColor={ AppColors.borderTop }> 
+            <ModalText fontSize={ 18 } color={ AppColors.text }>Editar nome de usuário</ModalText>
 
             <AuthInput icon='user' placeholder='Nome'
               value={name}
@@ -82,19 +85,19 @@ export default props => {
                 setName(name)} />
 
             <ContainerButton>
-              <OpenButton width="80"
+              <OpenButton width={ 80 } background={ AppColors.button }
                 onPress={reset}
                 disabled={!validForm}
               >
-                <TextStyle fontSize="14">Editar</TextStyle>
+                <TextStyle fontSize={ 14 } color={ AppColors.text }>Editar</TextStyle>
               </OpenButton>
 
-              <OpenButton width="80"
+              <OpenButton width={ 80 } background={ AppColors.button }
                 onPress={() => {
                   setModalEditVisible(!modalEditVisible);
                 }}
               >
-                <TextStyle fontSize="14">Cancelar</TextStyle>
+                <TextStyle fontSize={ 14 } color={ AppColors.text }>Cancelar</TextStyle>
               </OpenButton>
 
             </ContainerButton>
@@ -110,18 +113,20 @@ export default props => {
           setModalAboutVisible(!modalAboutVisible);
         }}
       >
-        <CenteredModal>
-          <ModalView>
-            <ModalText fontSize="18">Sobre</ModalText>
+        <CenteredModal background={ AppColors.background }>
+          <ModalView background={ AppColors.backgroundWindow } borderRightColor={ AppColors.borderRight }
+            borderBottomColor={ AppColors.borderBottom2 } borderLeftColor={ AppColors.borderLeft2 } 
+            borderTopColor={ AppColors.borderTop }>
+            <ModalText fontSize={ 18 } color={ AppColors.text }>Sobre</ModalText>
 
             <ContainerButton>
 
-              <OpenButton width="80"
+              <OpenButton width={ 80 } background={ AppColors.button }
                 onPress={() => {
                   setModalAboutVisible(!modalAboutVisible);
                 }}
               >
-                <TextStyle fontSize="14">Fechar</TextStyle>
+                <TextStyle fontSize={ 14 } color={ AppColors.text }>Fechar</TextStyle>
               </OpenButton>
 
             </ContainerButton>

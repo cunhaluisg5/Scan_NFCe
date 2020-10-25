@@ -10,6 +10,7 @@ import {
     Loading, Indicator, Container, TextHeader, ChartLine, Scroll,
     ContainerText, DetailsNfce, ContainerNfce, ItemHeader, ItemTitle, ItemSubtitle
 } from './Style';
+import { AppColors } from '../../colors/AppColors';
 
 export default class LineChartExample extends Component {
     constructor(props) {
@@ -126,8 +127,9 @@ export default class LineChartExample extends Component {
 
         return (
             <>
-                <ContainerText>
-                    <TextHeader>Gastos (R$/Mês) {this.dateNow}</TextHeader>
+                <ContainerText background={ AppColors.backgroundWindow } 
+                    borderTopColor={ AppColors.borderTop } borderBottomColor={ AppColors.borderBottom }>
+                    <TextHeader color={ AppColors.text }>Gastos (R$/Mês) {this.dateNow}</TextHeader>
                 </ContainerText>
                 <LineChart
                     data={{
@@ -142,9 +144,9 @@ export default class LineChartExample extends Component {
                     width={Dimensions.get('window').width - 16}
                     height={220}
                     chartConfig={{
-                        backgroundColor: '#1cc910',
-                        backgroundGradientFrom: '#142541',
-                        backgroundGradientTo: '#142541',
+                        backgroundColor: AppColors.backgroundChart,
+                        backgroundGradientFrom: AppColors.backgroundWindow,
+                        backgroundGradientTo: AppColors.backgroundWindow,
                         decimalPlaces: 2,
                         color: (opacity = 10) => `rgba(255, 255, 255, ${opacity})`,
                         style: {
@@ -155,10 +157,10 @@ export default class LineChartExample extends Component {
                         marginVertical: 8,
                         borderRadius: 16,
                         borderStyle: "solid",
-                        borderTopColor: "#7FFFD4",
-                        borderLeftColor: "#7FFFD4",
-                        borderRightColor: "#FFD700",
-                        borderBottomColor: "#FFD700",
+                        borderTopColor: AppColors.borderTop,
+                        borderLeftColor: AppColors.borderLeft2,
+                        borderRightColor: AppColors.borderRight,
+                        borderBottomColor: AppColors.borderBottom2,
                         borderTopWidth: 1,
                         borderLeftWidth: 1,
                         borderRightWidth: 3,
@@ -172,8 +174,8 @@ export default class LineChartExample extends Component {
     render() {
         if (this.state.isLoading) {
             return (
-                <Indicator>
-                    <Loading size="large" color="#1CB5E0" />
+                <Indicator background={ AppColors.background }>
+                    <Loading size="large" color={ AppColors.indicator } />
                 </Indicator>
             )
         }
@@ -181,27 +183,38 @@ export default class LineChartExample extends Component {
         const nfces = this.calculateMaxValue().map((nfce, index) => {
             return (
                 <ContainerNfce>
-                    <DetailsNfce>Nota mais cara no período</DetailsNfce>
-                    <ItemHeader onPress={() => this.onPressNfce(nfce)} key={index}>
-                        <ItemTitle>{nfce.socialName.toUpperCase()}</ItemTitle>
-                        <ItemSubtitle fontSize='14' color='#fff'>CNPJ: {nfce.cnpj}, UF: {nfce.uf}</ItemSubtitle>
-                        <ItemSubtitle fontSize='14' color='#fff'>Data Emissão : {nfce.issuanceDate}</ItemSubtitle>
-                        <ItemSubtitle fontSize='18' color='#ff870f'>Valor Total: R$ {nfce.totalValue}</ItemSubtitle>
+                    <DetailsNfce color={ AppColors.text } background={ AppColors.backgroundWindow } 
+                    borderTopColor={ AppColors.borderTop } borderBottomColor={ AppColors.borderBottom }>
+                        Nota mais cara no período
+                    </DetailsNfce>
+                    <ItemHeader onPress={() => this.onPressNfce(nfce)} key={index} 
+                        background={ AppColors.backgroundWindow } borderRightColor={ AppColors.borderRight } 
+                        borderBottomColor={ AppColors.borderBottom2 } borderLeftColor={ AppColors.borderLeft2 } 
+                        borderTopColor={ AppColors.borderTop }>
+                        <ItemTitle color={ AppColors.textBold }>{nfce.socialName.toUpperCase()}</ItemTitle>
+                        <ItemSubtitle fontSize={ 14 } color={ AppColors.text }>
+                            CNPJ: {nfce.cnpj}, UF: {nfce.uf}
+                        </ItemSubtitle>
+                        <ItemSubtitle fontSize={ 14 } color={ AppColors.text }>
+                            Data Emissão : {nfce.issuanceDate}
+                        </ItemSubtitle>
+                        <ItemSubtitle fontSize={ 18 } color={ AppColors.textBold }>
+                            Valor Total: R$ {nfce.totalValue}
+                        </ItemSubtitle>
                     </ItemHeader>
                 </ContainerNfce>
             );
         });
 
         return (
-            <Container>
+            <Container background={ AppColors.background }>
                 <Scroll>
-                    <ChartLine>
+                    <ChartLine background={ AppColors.background }>
                         {this.LineChart()}
                     </ChartLine>
                     {nfces}
                 </Scroll>
             </Container>
-
         )
     }
 }
