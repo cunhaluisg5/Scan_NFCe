@@ -35,18 +35,19 @@ export const User = styled.Text`
     color: ${props => `${props.color}`};
 `;
 
-export const Logo = styled.View`
+export const BackgroundLogo = styled.View`
     width: 60px;
     height: 60px;
-    border-radius: 30px;
+    margin-top: 10px;
     background: ${props => `${props.background}`};
 `;
 
-export const TextLogo = styled.Text`
-    font-size: 20px;
-    text-align: center;
-    margin-top: 15px;
-    color: ${props => `${props.color}`};
+export const Logo = styled.Image`
+    width: 60px;
+    height: 60px;
+    margin-top: 10px;
+    border-width: 1px;
+    border-color: ${props => `${props.borderColor}`};
 `;
 
 export const TextEmail = styled.Text`

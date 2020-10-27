@@ -18,7 +18,7 @@ export const AppColors = {
     inactiveButton: '#AAAAAA',
     header: '#444444',
     backgroundHeader: '#CCCCCC',
-    logo: '#7FFFD4',
+    borderLogo: '#CCCCCC',
     textLogo: '#000000',
     invoice: '#CCCCCC',
     backgroundLogin: 'rgba(0,0,0,0.8)'

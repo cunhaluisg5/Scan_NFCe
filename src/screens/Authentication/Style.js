@@ -17,6 +17,7 @@ export const TitleHeader = styled.Text`
 
 export const SubtitleHeader = styled.Text`
     font-size: 20px;
+    text-align: center;
     color: ${props => `${props.color}`};
 `;
 
@@ -40,6 +41,13 @@ export const ButtonLogin = styled.View`
     margin-top: 10px;
     padding: 10px;
     background: ${props => `${props.background}`};
+`;
+
+export const Logo = styled.Image`
+    width: 150px;
+    height: 150px;
+    border-width: 2px;
+    border-color: ${props => `${props.borderColor}`};
 `;
 
 export const ContainerLogin = styled.TouchableOpacity`

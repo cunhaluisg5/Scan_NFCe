@@ -6,7 +6,7 @@ import AuthInput from '../../components/AuthInput/AuthInput';
 
 import {
     Container, TitleHeader, ContainerLogin, Loading, SubtitleHeader,
-    FormContainer, Indicator, ButtonLogin
+    FormContainer, Indicator, ButtonLogin, Logo
 } from './Style';
 
 import { AppColors } from '../../colors/AppColors';
@@ -112,7 +112,7 @@ export default class Login extends Component {
 
         return (
             <Container background={ AppColors.background }>
-                <TitleHeader color={ AppColors.text }>Scan NFC-e</TitleHeader>
+                <Logo source={ require('../../../assets/logo.png') } borderColor={ AppColors.borderLogo } />
                 <FormContainer background={ AppColors.background }>
                     <SubtitleHeader color={ AppColors.text }>
                         { this.state.stageNew ?

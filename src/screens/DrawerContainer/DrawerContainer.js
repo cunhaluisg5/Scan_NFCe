@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { AsyncStorage } from 'react-native';
 
 import MenuButton from '../../components/MenuButton/MenuButton';
-import { Content, Container, User, Logo, TextLogo, TextEmail, ContainerTop, ContainerBody } from './Style';
+import { Content, Container, User, Logo, TextEmail, ContainerTop, ContainerBody } from './Style';
 import { AppColors } from '../../colors/AppColors';
 
 export default class DrawerContainer extends Component {
@@ -37,10 +37,9 @@ export default class DrawerContainer extends Component {
     return (
       <Content background={ AppColors.background }>
         <Container>
-          <ContainerTop borderBottomColor={ AppColors.borderBottom2 } background={ AppColors.backgroundWindow }>
-            <Logo background={ AppColors.logo }>
-              <TextLogo color={ AppColors.textLogo }>Logo</TextLogo>
-            </Logo>
+          <ContainerTop borderBottomColor={ AppColors.borderBottom2 } 
+            background={ AppColors.backgroundWindow }>
+            <Logo source={ require('../../../assets/logo.png') } borderColor={ AppColors.borderLogo } />
             <User color={ AppColors.text }>
               {this.state.user !== null && this.state.user.name}
             </User>
