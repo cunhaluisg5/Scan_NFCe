@@ -9,12 +9,6 @@ export const Container = styled.View`
     background: ${props => `${props.background}`};
 `;
 
-export const TitleHeader = styled.Text`
-    font-size: 50px;
-    margin-bottom: 10px;
-    color: ${props => `${props.color}`};
-`;
-
 export const SubtitleHeader = styled.Text`
     font-size: 20px;
     text-align: center;
@@ -24,14 +18,6 @@ export const SubtitleHeader = styled.Text`
 export const FormContainer = styled.View`
     padding: 20px;
     width: 90%;
-    background: ${props => `${props.background}`};
-`;
-
-export const Indicator = styled.View`
-    display: flex;
-    flex: 1;
-    align-items: center;
-    justify-content: center;
     background: ${props => `${props.background}`};
 `;
 
@@ -49,6 +35,14 @@ export const Logo = styled.Image`
     border-width: 2px;
     border-color: ${props => `${props.borderColor}`};
     margin-top: ${props => `${props.marginTop}px`};
+`;
+
+export const Indicator = styled.View`
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    background: ${props => `${props.background}`};
 `;
 
 export const ContainerLogin = styled.TouchableOpacity`

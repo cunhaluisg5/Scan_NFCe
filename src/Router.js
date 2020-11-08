@@ -7,7 +7,8 @@ import Login from './screens/Authentication/Login';
 import HomeStack from './routes/HomeStack';
 import ScanStack from './routes/ScanStack';
 import ChartStack from './routes/ChartStack';
-import SettingsStack from './routes/SettingsStack'
+import SettingsStack from './routes/SettingsStack';
+import ResetPassword from './screens/ResetPassword/ResetPassword';
 
 const MenuRoutes = {
   Home: {
@@ -37,6 +38,9 @@ const MainRoutes = {
   },
   Auth: {
     screen: Login
+  },
+  ResetPassword: {
+    screen: ResetPassword
   },
   Main: {
     screen: RootDrawerNavigator

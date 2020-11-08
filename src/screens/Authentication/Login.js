@@ -5,7 +5,7 @@ import Api from '../../services/Api';
 import AuthInput from '../../components/AuthInput/AuthInput';
 
 import {
-    Container, TitleHeader, ContainerLogin, Loading, SubtitleHeader,
+    Container, ContainerLogin, Loading, SubtitleHeader,
     FormContainer, Indicator, ButtonLogin, Logo
 } from './Style';
 
@@ -88,11 +88,15 @@ export default class Login extends Component {
         }
     }
 
+    onPressReset = () => {
+        this.props.navigation.navigate('ResetPassword', { email: this.state.email });
+    };
+
     render() {
         if (this.state.isLoading) {
             return (
-                <Indicator background={ AppColors.background }>
-                    <Loading size="large" color={ AppColors.indicator } />
+                <Indicator background={AppColors.background}>
+                    <Loading size="large" color={AppColors.indicator} />
                 </Indicator>
             )
         }
@@ -111,39 +115,42 @@ export default class Login extends Component {
         const validForm = validations.reduce((all, v) => all && v)
 
         return (
-            <Container background={ AppColors.background }>
-                <Logo source={ require('../../../assets/logo.png') } borderColor={ AppColors.borderLogo } />
-                <FormContainer background={ AppColors.background }>
-                    <SubtitleHeader color={ AppColors.text }>
-                        { this.state.stageNew ?
-                            'Crie a sua conta' : 'Informe seus dados' }
+            <Container background={AppColors.background}>
+                { !this.state.stageNew ? <Logo source={require('../../../assets/logo.png')}
+                    borderColor={AppColors.borderLogo} marginTop={0} />
+                    : <Logo source={require('../../../assets/logo.png')}
+                        borderColor={AppColors.borderLogo} marginTop={50} />}
+                <FormContainer background={AppColors.background}>
+                    <SubtitleHeader color={AppColors.text}>
+                        {this.state.stageNew ?
+                            'Crie a sua conta' : 'Informe seus dados'}
                     </SubtitleHeader>
-                    { this.state.stageNew &&
+                    {this.state.stageNew &&
                         <AuthInput icon='user' placeholder='Nome'
-                            value={ this.state.name }
-                            onChangeText={ name =>
-                                this.setState({ name }) } /> }
+                            value={this.state.name}
+                            onChangeText={name =>
+                                this.setState({ name })} />}
                     <AuthInput icon='at' placeholder='E-mail'
-                        value={ this.state.email }
-                        onChangeText={ email =>
-                            this.setState({ email }) } />
+                        value={this.state.email}
+                        onChangeText={email =>
+                            this.setState({ email })} />
                     <AuthInput icon='lock' secureTextEntry={true}
                         placeholder='Senha'
-                        value={ this.state.password }
-                        onChangeText={ password =>
-                            this.setState({ password }) } />
-                    { this.state.stageNew &&
+                        value={this.state.password}
+                        onChangeText={password =>
+                            this.setState({ password })} />
+                    {this.state.stageNew &&
                         <AuthInput icon='asterisk'
-                            secureTextEntry={ true } placeholder='Confirmação'
-                            value={ this.state.confirmPassword }
-                            onChangeText={ confirmPassword =>
-                                this.setState({ confirmPassword }) } /> }
-                    <ContainerLogin disabled={ !validForm }
-                        onPress={ this.signInOrSignUp }>
-                        <ButtonLogin background={ AppColors.button } 
-                            style={ [!validForm ? { backgroundColor: AppColors.inactiveButton } : {}] }>
-                            <SubtitleHeader color={ AppColors.text }>
-                                { this.state.stageNew ? 'Registrar' : 'Entrar' }
+                            secureTextEntry={true} placeholder='Confirmação'
+                            value={this.state.confirmPassword}
+                            onChangeText={confirmPassword =>
+                                this.setState({ confirmPassword })} />}
+                    <ContainerLogin disabled={!validForm}
+                        onPress={this.signInOrSignUp}>
+                        <ButtonLogin background={AppColors.button}
+                            style={[!validForm ? { backgroundColor: AppColors.inactiveButton } : {}]}>
+                            <SubtitleHeader color={AppColors.text}>
+                                {this.state.stageNew ? 'Registrar' : 'Entrar'}
                             </SubtitleHeader>
                         </ButtonLogin>
                     </ContainerLogin>
@@ -152,9 +159,15 @@ export default class Login extends Component {
                     onPress={() => this.setState({
                         stageNew: !this.state.stageNew
                     })}>
-                    <SubtitleHeader color={ AppColors.text }>
-                        { this.state.stageNew ? 'Já possui conta?'
-                            : 'Ainda não possui conta?' }
+                    <SubtitleHeader color={AppColors.text}>
+                        {this.state.stageNew ? 'Já possui conta?'
+                            : 'Criar uma conta'}
+                    </SubtitleHeader>
+                </ContainerLogin>
+                <ContainerLogin style={{ padding: 10 }}
+                    onPress={ this.onPressReset }>
+                    <SubtitleHeader color={AppColors.textBold}>
+                        {!this.state.stageNew && 'Esqueceu sua senha?'}
                     </SubtitleHeader>
                 </ContainerLogin>
             </Container>
