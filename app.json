@@ -1,15 +1,21 @@
 {
-  "name": "ScanNFCe",
-  "displayName": "ScanNFCe",
+  "name": "Scan NFC-e",
+  "displayName": "Scan NFC-e",
   "expo": {
-    "name": "ScanNFCe",
-    "slug": "ScanNFCe",
+    "name": "Scan NFC-e",
+    "slug": "Scan NFC-e",
     "version": "1.0.0",
     "assetBundlePatterns": [
       "**/*"
     ],
     "android": {
       "package": "com.cunhaluisg5.Scan_NFCe"
+    },
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#0A0D1C"
     }
   },
   "android": {
