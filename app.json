@@ -3,7 +3,7 @@
   "displayName": "Scan NFC-e",
   "expo": {
     "name": "Scan NFC-e",
-    "slug": "Scan NFC-e",
+    "slug": "ScanNFCe",
     "version": "1.0.0",
     "assetBundlePatterns": [
       "**/*"
