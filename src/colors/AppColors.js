@@ -21,5 +21,7 @@ export const AppColors = {
     borderLogo: '#CCCCCC',
     textLogo: '#000000',
     invoice: '#CCCCCC',
+    buttonRadio: '#1CC910',
+    buttonRadioSelected: '#CCCCCC',
     backgroundLogin: 'rgba(0,0,0,0.8)'
 };

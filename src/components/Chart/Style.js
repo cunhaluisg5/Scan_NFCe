@@ -17,7 +17,7 @@ export const Indicator = styled.View`
 export const TextHeader = styled.Text`
     text-align: center;
     font-size: 16px;
-    padding: 10px;
+    padding: 8px;
     color: ${props => `${props.color}`};
 `;
 
@@ -92,6 +92,13 @@ export const ItemSubtitle = styled.Text`
     margin-top: 10px;
     font-size: ${props => `${props.fontSize}px`};
     color: ${props => `${props.color}`};
+`;
+
+export const ContainerRadio = styled.View`
+    display: flex;
+    flex: 1;
+    align-items: center;
+    padding: 5px;
 `;
 
 export const Scroll = styled.ScrollView`
