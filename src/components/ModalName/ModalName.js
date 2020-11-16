@@ -10,6 +10,7 @@ import {
 } from './Style';
 import { AppColors } from '../../colors/AppColors';
 import Logo from '../../../assets/logo.png';
+import OpenURL from '../OpenURL/OpenURL';
 
 export default props => {
   const [modalEditVisible, setModalEditVisible] = useState(false);
@@ -58,10 +59,19 @@ export default props => {
     }
   };
 
+  const openURL = () => {
+    Alert.alert('Atenção', 'Acessar documentação de ajuda?',
+      [
+        { text: 'Sim', onPress: () => OpenURL('https://www.google.com.br/') },
+        { text: 'Não', onPress: () => console.log('Cancelado'), },
+      ]
+    );
+  }
+
   const validForm = name && name.trim()
 
   return (
-    <CenteredView background={ AppColors.background }>
+    <CenteredView background={AppColors.background}>
       <Modal
         animationType="slide"
         transparent={true}
@@ -70,11 +80,11 @@ export default props => {
           setModalEditVisible(!modalEditVisible);
         }}
       >
-        <CenteredModal background={ AppColors.background }>
-          <ModalView background={ AppColors.backgroundWindow } borderRightColor={ AppColors.borderRight }
-            borderBottomColor={ AppColors.borderBottom2 } borderLeftColor={ AppColors.borderLeft2 } 
-            borderTopColor={ AppColors.borderTop }> 
-            <ModalText fontSize={ 18 } color={ AppColors.text }>Editar nome de usuário</ModalText>
+        <CenteredModal background={AppColors.background}>
+          <ModalView background={AppColors.backgroundWindow} borderRightColor={AppColors.borderRight}
+            borderBottomColor={AppColors.borderBottom2} borderLeftColor={AppColors.borderLeft2}
+            borderTopColor={AppColors.borderTop}>
+            <ModalText fontSize={18} color={AppColors.text}>Editar nome de usuário</ModalText>
 
             <AuthInput icon='user' placeholder='Nome'
               value={name}
@@ -82,19 +92,19 @@ export default props => {
                 setName(name)} />
 
             <ContainerButton>
-              <OpenButton width={ 80 } background={ AppColors.button }
+              <OpenButton width={80} background={AppColors.button}
                 onPress={reset}
                 disabled={!validForm}
               >
-                <TextStyle fontSize={ 14 } color={ AppColors.text }>Editar</TextStyle>
+                <TextStyle fontSize={14} color={AppColors.text}>Editar</TextStyle>
               </OpenButton>
 
-              <OpenButton width={ 80 } background={ AppColors.button }
+              <OpenButton width={80} background={AppColors.button}
                 onPress={() => {
                   setModalEditVisible(!modalEditVisible);
                 }}
               >
-                <TextStyle fontSize={ 14 } color={ AppColors.text }>Cancelar</TextStyle>
+                <TextStyle fontSize={14} color={AppColors.text}>Cancelar</TextStyle>
               </OpenButton>
 
             </ContainerButton>
@@ -110,24 +120,24 @@ export default props => {
           setModalAboutVisible(!modalAboutVisible);
         }}
       >
-        <CenteredModal background={ AppColors.background }>
-          <ModalView background={ AppColors.backgroundWindow } borderRightColor={ AppColors.borderRight }
-            borderBottomColor={ AppColors.borderBottom2 } borderLeftColor={ AppColors.borderLeft2 } 
-            borderTopColor={ AppColors.borderTop }>
-            <ModalTitle fontSize={ 20 } color={ AppColors.text }>Sobre</ModalTitle>
-            <LogoImage source={ Logo } />
-            <ModalText fontSize={ 14 } color={ AppColors.text }>Versão 1.0.0</ModalText>
-            <ModalText fontSize={ 14 } color={ AppColors.text }>2020 - Scan NFC-e</ModalText>
-            <ModalText fontSize={ 14 } color={ AppColors.text }>Luís Gustavo da Cunha Cipriani</ModalText>
+        <CenteredModal background={AppColors.background}>
+          <ModalView background={AppColors.backgroundWindow} borderRightColor={AppColors.borderRight}
+            borderBottomColor={AppColors.borderBottom2} borderLeftColor={AppColors.borderLeft2}
+            borderTopColor={AppColors.borderTop}>
+            <ModalTitle fontSize={20} color={AppColors.text}>Sobre</ModalTitle>
+            <LogoImage source={Logo} />
+            <ModalText fontSize={14} color={AppColors.text}>Versão 1.0.0</ModalText>
+            <ModalText fontSize={14} color={AppColors.text}>2020 - Scan NFC-e</ModalText>
+            <ModalText fontSize={14} color={AppColors.text}>Luís Gustavo da Cunha Cipriani</ModalText>
 
             <ContainerButton>
 
-              <OpenButton width={ 80 } background={ AppColors.button }
+              <OpenButton width={80} background={AppColors.button}
                 onPress={() => {
                   setModalAboutVisible(!modalAboutVisible);
                 }}
               >
-                <TextStyle fontSize={ 14 } color={ AppColors.text }>Fechar</TextStyle>
+                <TextStyle fontSize={14} color={AppColors.text}>Fechar</TextStyle>
               </OpenButton>
 
             </ContainerButton>
@@ -140,6 +150,14 @@ export default props => {
         name="arrow-right"
         onPress={() => {
           setModalEditVisible(true);
+        }}
+      />
+
+      <MenuButton
+        title="Ajuda"
+        name="arrow-right"
+        onPress={() => {
+          openURL();
         }}
       />
 
