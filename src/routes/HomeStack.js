@@ -22,6 +22,15 @@ const gravar = async (nfce, navigation) => {
   }
 }
 
+const isRemove = (nfce, navigation) => {
+  Alert.alert('Atenção', 'Deseja realmente excluir a nota?',
+    [
+      { text: 'Sim', onPress: () => remover(nfce, navigation) },
+      { text: 'Não', onPress: () => console.log('Cancelado'), },
+    ]
+  );
+}
+
 const remover = async (nfce, navigation) => {
   try {
     const response = await Api.delete('/nfces/' + nfce._id);
@@ -52,7 +61,7 @@ const screens = {
       var buttonTop;
 
       isRecord ?
-      buttonTop = <MenuButton
+        buttonTop = <MenuButton
           name="save"
           onPress={() => {
             gravar(da, navigation);
@@ -61,7 +70,7 @@ const screens = {
         buttonTop = <MenuButton
           name="trash-o"
           onPress={() => {
-            remover(item, navigation);
+            isRemove(item, navigation);
           }}
         />
 

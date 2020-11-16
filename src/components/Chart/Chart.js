@@ -27,7 +27,7 @@ export default class LineChartExample extends Component {
         this.state = {
             isLoading: false,
             nfces: [],
-            value: 0,
+            value: 1,
         }
     }
 
@@ -158,7 +158,7 @@ export default class LineChartExample extends Component {
             <ContainerRadio>
                 <RadioForm
                     radio_props={radio_props}
-                    initial={0}
+                    initial={1}
                     buttonColor={AppColors.buttonRadio}
                     buttonSize={14}
                     buttonOuterColor={AppColors.buttonRadio}

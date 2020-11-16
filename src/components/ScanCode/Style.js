@@ -12,7 +12,7 @@ export const TextContent = styled.Text`
 export const AlertText = styled.Text`
     border-top-width: 1px;
     border-bottom-width: 1px;
-    margin-top: ${props => `${props.marginTop}`};
+    margin-top: ${props => `${props.marginTop}px`};
     padding: ${props => `${props.padding}px`};
     color: ${props => `${props.color}`};
     background: ${props => `${props.background}`};
@@ -26,7 +26,7 @@ export const AlertText = styled.Text`
 export const ResetButton = styled.TouchableOpacity`
     border-top-width: 1px;
     border-bottom-width: 1px;
-    margin-top: ${props => `${props.marginTop}`};
+    margin-top: ${props => `${props.marginTop}px`};
     padding: ${props => `${props.padding}px`};
     background: ${props => `${props.background}`};    
     border-top-color: ${props => `${props.borderTopColor}`};    

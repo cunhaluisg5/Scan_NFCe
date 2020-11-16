@@ -55,6 +55,7 @@ export default props => {
 
         props.navigation.navigate('DetailsNfceScreen', { item: item, isRecord: true, da: response.data });
         setIsLoading(false);
+        setScanned(false);
       } catch (err) {
         console.log('Erro ', err)
       }
