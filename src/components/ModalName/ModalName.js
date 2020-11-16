@@ -1,18 +1,15 @@
 import React, { useState, useEffect } from "react";
-import {
-  Alert,
-  Modal,
-  AsyncStorage
-} from "react-native";
+import { Alert, Modal, AsyncStorage } from "react-native";
 
 import MenuButton from '../../components/MenuButton/MenuButton';
 import AuthInput from '../../components/AuthInput/AuthInput';
 import Api from '../../services/Api';
 import {
-  ModalView, CenteredView, OpenButton,
-  TextStyle, ModalText, ContainerButton, CenteredModal
+  ModalView, CenteredView, OpenButton, ModalTitle,
+  TextStyle, ModalText, ContainerButton, CenteredModal, LogoImage
 } from './Style';
 import { AppColors } from '../../colors/AppColors';
+import Logo from '../../../assets/logo.png';
 
 export default props => {
   const [modalEditVisible, setModalEditVisible] = useState(false);
@@ -117,7 +114,11 @@ export default props => {
           <ModalView background={ AppColors.backgroundWindow } borderRightColor={ AppColors.borderRight }
             borderBottomColor={ AppColors.borderBottom2 } borderLeftColor={ AppColors.borderLeft2 } 
             borderTopColor={ AppColors.borderTop }>
-            <ModalText fontSize={ 18 } color={ AppColors.text }>Sobre</ModalText>
+            <ModalTitle fontSize={ 20 } color={ AppColors.text }>Sobre</ModalTitle>
+            <LogoImage source={ Logo } />
+            <ModalText fontSize={ 14 } color={ AppColors.text }>Versão 1.0.0</ModalText>
+            <ModalText fontSize={ 14 } color={ AppColors.text }>2020 - Scan NFC-e</ModalText>
+            <ModalText fontSize={ 14 } color={ AppColors.text }>Luís Gustavo da Cunha Cipriani</ModalText>
 
             <ContainerButton>
 

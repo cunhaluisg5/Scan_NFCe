@@ -49,8 +49,14 @@ export const TextStyle = styled.Text`
     font-size: ${props => `${props.fontSize}px`};
 `;
 
-export const ModalText = styled.Text`
+export const ModalTitle = styled.Text`
     margin-bottom: 15px;
+    text-align: center;
+    color: ${props => `${props.color}`};
+    font-size: ${props => `${props.fontSize}px`};
+`;
+
+export const ModalText = styled.Text`
     text-align: center;
     color: ${props => `${props.color}`};
     font-size: ${props => `${props.fontSize}px`};
@@ -62,4 +68,10 @@ export const ContainerButton = styled.View`
     align-items: center;
     justify-content: center;
     margin-top: 20px;
+`;
+
+export const LogoImage = styled.Image`
+    width: 100px;
+    height: 100px;
+    margin-bottom: 10px;
 `;
