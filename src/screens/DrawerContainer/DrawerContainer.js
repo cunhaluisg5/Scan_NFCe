@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AsyncStorage } from 'react-native';
+import { AsyncStorage, Alert } from 'react-native';
 
 import MenuButton from '../../components/MenuButton/MenuButton';
 import { Content, Container, User, Logo, TextEmail, ContainerTop, ContainerBody } from './Style';
@@ -8,7 +8,8 @@ import { AppColors } from '../../colors/AppColors';
 export default class DrawerContainer extends Component {
 
   state = {
-    user: null
+    user: null,
+    errorMessage: null
   };
 
   logoff = async (navigation) => {
@@ -18,7 +19,8 @@ export default class DrawerContainer extends Component {
       console.log("Fez logout")
       await navigation.navigate('Auth');
     } catch (error) {
-      console.log("Não conseguiu fazer logout ", error)
+        this.setState({ errorMessage: response.data.error })
+        Alert.alert('Atenção!', this.state.errorMessage)
     }
   }
 
@@ -27,7 +29,8 @@ export default class DrawerContainer extends Component {
       const user = JSON.parse(await AsyncStorage.getItem('@APP:user'));
       this.setState({ user: user });
     } catch (error) {
-      console.log("Erro ao buscar usuário", error)
+        this.setState({ errorMessage: response.data.error })
+        Alert.alert('Atenção!', this.state.errorMessage)
     }
   }
 

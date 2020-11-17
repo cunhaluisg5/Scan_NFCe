@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Dimensions, AsyncStorage } from 'react-native';
+import { Dimensions, AsyncStorage, Alert } from 'react-native';
 import { LineChart } from 'react-native-chart-kit';
 import RadioForm from 'react-native-simple-radio-button';
 
@@ -28,6 +28,7 @@ export default class LineChartExample extends Component {
             isLoading: false,
             nfces: [],
             value: 1,
+            errorMessage: ''
         }
     }
 
@@ -125,7 +126,8 @@ export default class LineChartExample extends Component {
 
             this.setState({ nfces });
         } catch (response) {
-            //this.setState({ errorMessage: response.data.error });
+            this.setState({ errorMessage: response.data.error })
+            Alert.alert('Atenção!', this.state.errorMessage)
         }
         this.setState({ isLoading: false });
     }

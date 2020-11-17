@@ -11,14 +11,13 @@ import { AppColors } from '../colors/AppColors';
 
 const gravar = async (nfce, navigation) => {
   try {
-    const response = await Api.post('/nfces', nfce).then((data) => {
+    const response = await Api.post('/nfces', nfce).then(() => {
       console.log('Salvo com sucesso!')
     })
 
     navigation.navigate('HomeScreen');
   } catch (err) {
-    console.log('Erro ao salvar ', err.data.error)
-    Alert.alert('Atenção', err.data.error)
+      Alert.alert('Atenção!', response.data.error);
   }
 }
 
@@ -38,8 +37,8 @@ const remover = async (nfce, navigation) => {
     navigation.navigate('HomeScreen');
     console.log('Excluído com sucesso!');
   } catch (err) {
-    console.log('Erro ao excluir ', err)
-    Alert.alert('Atenção', 'Erro ao excluir');
+      setErrorMessage(response.data.error);
+      Alert.alert('Atenção!', errorMessage);
   }
 }
 
@@ -57,14 +56,14 @@ const screens = {
     navigationOptions: ({ navigation }) => {
       const item = navigation.getParam('item');
       const isRecord = navigation.getParam('isRecord');
-      const da = navigation.getParam('da');
+      const responseItems = navigation.getParam('responseItems');
       var buttonTop;
 
       isRecord ?
         buttonTop = <MenuButton
           name="save"
           onPress={() => {
-            gravar(da, navigation);
+            gravar(responseItems, navigation);
           }}
         /> :
         buttonTop = <MenuButton

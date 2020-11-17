@@ -23,5 +23,8 @@ export const AppColors = {
     invoice: '#CCCCCC',
     buttonRadio: '#1CC910',
     buttonRadioSelected: '#CCCCCC',
-    backgroundLogin: 'rgba(0,0,0,0.8)'
+    buttonCancel: '#E8872E',
+    backgroundLogin: 'rgba(0,0,0,0.8)',
+    menuButton:'rgba(128, 128, 128, 0.1)',
+    opacity: 'rgba(0, 0, 0, .6)'
 };

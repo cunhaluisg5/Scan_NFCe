@@ -22,19 +22,20 @@ export const Subtitle = styled.Text`
     display: flex;
     flex: 1;
     font-family: sans-serif;
-    font-size: 17px;
+    font-size: 15px;
     font-weight: bold;
     text-align: center;
-    margin-top: 3px;
+    margin-top: 1px;
     margin-right: 5px;
     margin-left: 5px;
     color: ${props => `${props.color}`};
 `;
 
 export const Category = styled.Text`
-    margin-top: 5px;
-    margin-bottom: 5px;
+    margin-top: 3px;
+    margin-bottom: 3px;
     color: ${props => `${props.color}`};
+    font-size: ${props => `${props.fontSize}px`};
 `;
 
 export const Indicator = styled.View`

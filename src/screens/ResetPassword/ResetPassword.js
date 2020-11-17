@@ -16,6 +16,7 @@ export default class DetailsNfceScreen extends Component {
         this.state = {
             email: '',
             isLoading: false,
+            errorMessage: null
         }
     }
 
@@ -31,7 +32,7 @@ export default class DetailsNfceScreen extends Component {
         } catch (response) {
             this.setState({ isLoading: false })
             this.setState({ errorMessage: response.data.error })
-            Alert.alert('Atenção!', response.data.error)
+            Alert.alert('Atenção!', this.state.errorMessage)
         }
     };
 

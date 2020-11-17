@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import {
   View, FlatList, TouchableHighlight, StyleSheet,
-  Dimensions, Image, AsyncStorage
+  Dimensions, Image, AsyncStorage, Alert
 } from 'react-native';
 
 import Api from '../../services/Api';
 import { Container, TextTitle, Subtitle, Category, 
          TextInfo, Loading, Indicator } from './Style';
 import { AppColors } from '../../colors/AppColors';
+import NfceImage from '../../../assets/nfce.png';
 
 const moment = require('moment');
 moment.locale('pt-BR');
@@ -24,6 +25,7 @@ export default class HomeScreen extends Component {
     this.state = {
       nfces: [],
       isLoading: false,
+      errorMessage: null
     }
   }
 
@@ -44,13 +46,15 @@ export default class HomeScreen extends Component {
 
       this.setState({ nfces });
     } catch (response) {
-      console.log('ERRO:   ', response.data.error)
-      this.setState({ errorMessage: response.data.error });
+        this.setState({ errorMessage: response.data.error })
+        Alert.alert('Atenção!', this.state.errorMessage)
     }
   }
 
   onPressNfce = item => {
+    this.setState({ isLoading: true })
     this.props.navigation.navigate('DetailsNfceScreen', { item: item, isRecord: false });
+    this.setState({ isLoading: false })
   };
 
   renderNfce = ({ item }) => (
@@ -58,9 +62,10 @@ export default class HomeScreen extends Component {
       <View style={ styles.container }>
         <TextTitle color={ AppColors.text }>{ this.dateFormat(item.createdAt) }</TextTitle>
         <Subtitle color={ AppColors.textBold }>{ item.socialName.toUpperCase() }</Subtitle>
-        <Image style={ styles.image } source={ require('../../../assets/nfce.png') } />
-        <Category color={ AppColors.text }>Qtde. Itens: { item.totalItems }</Category>
-        <Category color={ AppColors.text }>Total: R$ { item.totalValue }</Category>
+        <Image style={ styles.image } source={ NfceImage } />
+        <Category fontSize={ 12 } color={ AppColors.text }>{ item.issuanceDate }</Category>
+        <Category fontSize={ 14 } color={ AppColors.text }>Qtde. Itens: { item.totalItems }</Category>        
+        <Category fontSize={ 14 } color={ AppColors.text }>Total: R$ { item.totalValue }</Category>
       </View>
     </TouchableHighlight>
   );

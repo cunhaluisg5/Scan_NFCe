@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Vibration, ActivityIndicator } from 'react-native';
+import { StyleSheet, Vibration, ActivityIndicator, Alert } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 
 import { TextContent, ResetButton, Indicator, AlertText, LayerTop, 
@@ -7,12 +7,11 @@ import { TextContent, ResetButton, Indicator, AlertText, LayerTop,
 import Api from '../../services/Api'
 import { AppColors } from '../../colors/AppColors';
 
-const opacity = 'rgba(0, 0, 0, .6)';
-
 export default props => {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   useEffect(() => {
     (async () => {
@@ -53,11 +52,13 @@ export default props => {
           items: [...response.data.nfce.items]
         };
 
-        props.navigation.navigate('DetailsNfceScreen', { item: item, isRecord: true, da: response.data });
+        props.navigation.navigate('DetailsNfceScreen', 
+          { item: item, isRecord: true, responseItems: response.data });
         setIsLoading(false);
         setScanned(false);
       } catch (err) {
-        console.log('Erro ', err)
+        setErrorMessage(response.data.error);
+        Alert.alert('Atenção!', errorMessage);
       }
     }
   };
@@ -73,8 +74,8 @@ export default props => {
   return (
     <BarCodeScanner
       onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-      style={StyleSheet.absoluteFill, {flex: 1, backgroundColor: opacity}} >
-      <LayerTop background={opacity}>
+      style={StyleSheet.absoluteFill, {flex: 1, backgroundColor: AppColors.opacity}} >
+      <LayerTop background={AppColors.opacity}>
         {!scanned &&
           <AlertText color={ AppColors.textBold } fontSize={ 16 } fontWeight={ 'normal' } 
             textAlign={ 'center' } marginTop={ 0 } background={ AppColors.backgroundWindow } padding={ 10 } 
@@ -84,11 +85,11 @@ export default props => {
         }
       </LayerTop>
       <LayerCenter>
-        <LayerLeft background={opacity} />
+        <LayerLeft background={AppColors.opacity} />
         <Focused />
-        <LayerRight background={opacity} />
+        <LayerRight background={AppColors.opacity} />
       </LayerCenter>
-      <LayerBottom background={opacity}>
+      <LayerBottom background={AppColors.opacity}>
         {scanned &&
           <ResetButton background={ AppColors.backgroundWindow } marginTop={ 125 } padding={ 0 } 
           borderTopColor={ AppColors.borderTop } borderBottomColor={ AppColors.borderBottom }

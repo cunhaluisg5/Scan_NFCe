@@ -47,7 +47,7 @@ export default class Login extends Component {
         } catch (response) {
             this.setState({ isLoading: false })
             this.setState({ errorMessage: response.data.error })
-            Alert.alert('Atenção!', 'Dados incorretos. ' + response.data.error)
+            Alert.alert('Atenção!', this.state.errorMessage)
         }
     };
 
@@ -67,7 +67,7 @@ export default class Login extends Component {
         } catch (response) {
             this.setState({ isLoading: false })
             this.setState({ errorMessage: response.data.error })
-            Alert.alert('Atenção!', 'Erro ao cadastrar. ' + response.data.error)
+            Alert.alert('Atenção!', this.state.errorMessage)
         }
     };
 

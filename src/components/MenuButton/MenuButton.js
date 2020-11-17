@@ -9,7 +9,7 @@ export default class MenuButton extends Component {
     return (
       <Container
         onPress={ this.props.onPress }
-        underlayColor="rgba(128, 128, 128, 0.1)"
+        underlayColor={ AppColors.menuButton }
       >
         <ButtonContainer>
           <Icon name={ this.props.name } size={ 25 }

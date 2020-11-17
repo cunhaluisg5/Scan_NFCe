@@ -16,7 +16,6 @@ export default props => {
   const [modalEditVisible, setModalEditVisible] = useState(false);
   const [modalAboutVisible, setModalAboutVisible] = useState(false);
   const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
   const [loggedInUser, setLoggedInUser] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
 
@@ -31,7 +30,6 @@ export default props => {
       }
 
       setName(user.name);
-      setEmail(user.email);
 
     })();
   }, []);
@@ -54,8 +52,8 @@ export default props => {
       setModalEditVisible(!modalEditVisible);
 
     } catch (response) {
-      //setErrorMessage(response.data.error);
-      Alert.alert('Atenção!', 'Dados incorretos. ' + response.data)
+      setErrorMessage(response.data.error);
+      Alert.alert('Atenção!', errorMessage);
     }
   };
 
@@ -96,10 +94,10 @@ export default props => {
                 onPress={reset}
                 disabled={!validForm}
               >
-                <TextStyle fontSize={14} color={AppColors.text}>Editar</TextStyle>
+                <TextStyle fontSize={14} color={AppColors.text}>Salvar</TextStyle>
               </OpenButton>
 
-              <OpenButton width={80} background={AppColors.button}
+              <OpenButton width={80} background={AppColors.buttonCancel}
                 onPress={() => {
                   setModalEditVisible(!modalEditVisible);
                 }}

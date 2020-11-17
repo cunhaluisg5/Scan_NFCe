@@ -1,7 +1,7 @@
 import { createStackNavigator } from 'react-navigation-stack';
 import React from 'react';
 import Header from '../components/Header/Header';
-import Chart from '../components/Chart/Chart';
+import Chart from '../screens/Chart/Chart';
 
 import { AppColors } from '../colors/AppColors';
 
