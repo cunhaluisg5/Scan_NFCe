@@ -60,7 +60,7 @@ export default props => {
   const openURL = () => {
     Alert.alert('Atenção', 'Acessar documentação de ajuda?',
       [
-        { text: 'Sim', onPress: () => OpenURL('https://www.google.com.br/') },
+        { text: 'Sim', onPress: () => OpenURL('https://helpscannfce.herokuapp.com/') },
         { text: 'Não', onPress: () => console.log('Cancelado'), },
       ]
     );

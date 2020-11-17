@@ -62,7 +62,7 @@ export default class Login extends Component {
                 password
             });
             this.setState({ isLoading: false })
-            Alert.alert('Cadastro com sucesso!');
+            Alert.alert('Atenção!', 'Cadastro efetuado com sucesso.');
             this.setState({ stageNew: false })
         } catch (response) {
             this.setState({ isLoading: false })
