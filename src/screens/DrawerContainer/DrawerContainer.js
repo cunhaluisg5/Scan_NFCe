@@ -20,7 +20,7 @@ export default class DrawerContainer extends Component {
       await navigation.navigate('Auth');
     } catch (error) {
         this.setState({ errorMessage: response.data.error })
-        Alert.alert('Atenção!', this.state.errorMessage)
+        console.log('Atenção!', this.state.errorMessage)
     }
   }
 
@@ -72,6 +72,14 @@ export default class DrawerContainer extends Component {
               name="bar-chart"
               onPress={() => {
                 navigation.navigate('Chart', navigation);
+                navigation.closeDrawer();
+              }}
+            />
+            <MenuButton
+              title="COMPARAÇÃO DE PRODUTOS"
+              name="bar-chart"
+              onPress={() => {
+                navigation.navigate('Comparison', navigation);
                 navigation.closeDrawer();
               }}
             />

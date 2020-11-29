@@ -8,6 +8,7 @@ import HomeStack from './routes/HomeStack';
 import ScanStack from './routes/ScanStack';
 import ChartStack from './routes/ChartStack';
 import SettingsStack from './routes/SettingsStack';
+import ComparisonStack from './routes/ComparisonStack';
 import ResetPassword from './screens/ResetPassword/ResetPassword';
 
 const MenuRoutes = {
@@ -23,6 +24,9 @@ const MenuRoutes = {
   Settings: {
     screen: SettingsStack,
   },
+  Comparison: {
+    screen: ComparisonStack,
+  }
 }
 
 const MenuConfig = {
