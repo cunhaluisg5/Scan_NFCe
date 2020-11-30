@@ -10,7 +10,7 @@ const screens = {
     screen: Comparison,
     navigationOptions: ({ navigation }) => {
       return {
-        headerTitle: () => <Header title='Comparação de Produtos' navigation={ navigation } />
+        headerTitle: () => <Header title='Análise de Produtos' navigation={ navigation } />
       }
     },
   },

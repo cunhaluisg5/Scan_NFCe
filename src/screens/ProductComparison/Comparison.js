@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Text, AsyncStorage } from 'react-native';
+import { AsyncStorage } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 
 import Api from '../../services/Api';
 import {
-    Container, ItemHeader, ItemBody, ItemTitle, ItemFooter,
-    ItemScroll, Items, ContainerItems, ItemText
+    Container, ItemHeader, ItemBody, ItemTitle, ItemFooter, Views,
+    ItemScroll, Items, ContainerItems, ItemText, ContainerDetails, ItemBodyDetails, ItemsDetails
 } from './Style';
 import { AppColors } from '../../colors/AppColors';
 const moment = require('moment');
@@ -70,63 +70,92 @@ export default Comparison = () => {
         color: '#9EA0A4',
     };
 
+    const dateFormat = (date) => {
+        return moment(date).format('DD/MM/YYYY HH:MM:SS');
+    };
+
     return (
-        <View style={styles.container}>
-            <RNPickerSelect
-                placeholder={placeholderMonths}
-                onValueChange={(value) => filterByMonth(value)}
-                items={[
-                    { label: 'Janeiro', value: '1' },
-                    { label: 'Fevereiro', value: '2' },
-                    { label: 'Março', value: '3' },
-                    { label: 'Abril', value: '4' },
-                    { label: 'Maio', value: '5' },
-                    { label: 'Junho', value: '6' },
-                    { label: 'Julho', value: '7' },
-                    { label: 'Agosto', value: '8' },
-                    { label: 'Setembro', value: '9' },
-                    { label: 'Outubro', value: '10' },
-                    { label: 'Novembro', value: '11' },
-                    { label: 'Dezembro', value: '12' },
-                ]}
-            />
+        <ItemScroll backgroundColor={AppColors.background}>
+            <Views backgroundColor={AppColors.background}>
+                <RNPickerSelect
+                    placeholder={placeholderMonths}
+                    onValueChange={(value) => filterByMonth(value)}
+                    items={[
+                        { label: 'JANEIRO', value: '1' },
+                        { label: 'FEVEREIRO', value: '2' },
+                        { label: 'MARÇO', value: '3' },
+                        { label: 'ABRIL', value: '4' },
+                        { label: 'MAIO', value: '5' },
+                        { label: 'JUNHO', value: '6' },
+                        { label: 'JULHO', value: '7' },
+                        { label: 'AGOSTO', value: '8' },
+                        { label: 'SETEMBRO', value: '9' },
+                        { label: 'OUTUBRO', value: '10' },
+                        { label: 'NOVEMBRO', value: '11' },
+                        { label: 'DEZEMBRO', value: '12' },
+                    ]}
+                    style={{
+                        inputAndroid: {
+                            color: AppColors.text,
+                            backgroundColor: AppColors.backgroundWindow,
+                        }
+                    }}
+                />
 
-            { listMonth.length > 0 &&
-                <View>
-                    <Text>Total de notas: {listMonth.length}</Text>
+                {listMonth.length > 0 &&
+                    <ContainerDetails backgroundColor={AppColors.background} borderLeftColor={AppColors.borderTop} borderTopColor={AppColors.borderTop}
+                        borderRightColor={AppColors.borderTop} borderBottomColor={AppColors.borderBottom}>
+                        <ItemHeader backgroundColor={AppColors.backgroundWindow} >
+                            <ItemTitle color={AppColors.textBold}>DETALHES DO MÊS</ItemTitle>
+                        </ItemHeader>
 
-                    <Text>Valor total de itens: {listMonth.reduce(function (total, numero) {
-                        return total + parseFloat(numero.items.length, 10);
-                    }, 0)}
-                    </Text>
+                        <ItemBodyDetails backgroundColor={AppColors.backgroundWindow}>
+                            <ItemsDetails backgroundColor={AppColors.backgroundWindow}
+                                borderRightColor={AppColors.borderRight} borderBottomColor={AppColors.borderBottom2}
+                                borderLeftColor={AppColors.borderLeft2} borderTopColor={AppColors.borderTop} >
 
-                    <Text>Valor total de compra: {listMonth.reduce(function (total, numero) {
-                        return total + parseFloat(numero.totalValue, 10);
-                    }, 0)}
-                    </Text>
+                                <ItemText fontSize={12} color={AppColors.text}>Total de notas: {listMonth.length}</ItemText>
 
-                    <Text>Valor total ICMS: {listMonth.reduce(function (total, numero) {
-                        return total + parseFloat(numero.icmsValue, 10);
-                    }, 0)}
-                    </Text>
-                </View>
-            }
+                                <ItemText fontSize={12} color={AppColors.text}>Total de itens: {listMonth.reduce(function (total, numero) {
+                                    return total + parseFloat(numero.items.length, 10);
+                                }, 0)}
+                                </ItemText>
 
-            <RNPickerSelect
-                placeholder={placeholderItems}
-                onValueChange={(value) => setSelectedValue(value)}
-                items={nameItems}
-            />
+                                <ItemText fontSize={12} color={AppColors.text}>Valor total de compra: R$ {listMonth.reduce(function (total, numero) {
+                                    return total + parseFloat(numero.totalValue, 10);
+                                }, 0).toFixed(2)}
+                                </ItemText>
 
-            { listMonth.map(value => {
-                const items = value.items.filter(item => item.itemName === selectedValue);
-                if (items.length > 0) {
-                    const total = items.reduce(function (total, numero) {
-                        return total + numero.itemValue;
-                    }, 0);
+                                <ItemText fontSize={12} color={AppColors.text}>Valor total de ICMS: R$ {listMonth.reduce(function (total, numero) {
+                                    return total + parseFloat(numero.icmsValue, 10);
+                                }, 0).toFixed(2)}
+                                </ItemText>
+                            </ItemsDetails>
+                        </ItemBodyDetails>
+                    </ContainerDetails>
+                }
 
-                    return (
-                        <ItemScroll backgroundColor={AppColors.background}>
+                <RNPickerSelect
+                    placeholder={placeholderItems}
+                    onValueChange={(value) => setSelectedValue(value)}
+                    items={nameItems}
+                    style={{
+                        inputAndroid: {
+                            color: AppColors.text,
+                            backgroundColor: AppColors.backgroundWindow,
+                            marginTop: 10
+                        }
+                    }}
+                />
+
+                {listMonth.map(value => {
+                    const items = value.items.filter(item => item.itemName === selectedValue);
+                    if (items.length > 0) {
+                        const total = items.reduce(function (total, numero) {
+                            return total + numero.itemValue;
+                        }, 0);
+
+                        return (
                             <Container backgroundColor={AppColors.background} borderLeftColor={AppColors.borderTop} borderTopColor={AppColors.borderTop}
                                 borderRightColor={AppColors.borderTop} borderBottomColor={AppColors.borderTop}>
                                 <ItemHeader backgroundColor={AppColors.backgroundWindow} >
@@ -140,35 +169,30 @@ export default Comparison = () => {
                                             <Items key={item._id} backgroundColor={AppColors.backgroundWindow}
                                                 borderRightColor={AppColors.borderRight} borderBottomColor={AppColors.borderBottom2}
                                                 borderLeftColor={AppColors.borderLeft2} borderTopColor={AppColors.borderTop} >
-                                                <ContainerItems >
+                                                <ContainerItems justifyContent={'space-between'}>
                                                     <ItemText fontSize={12} color={AppColors.text}>{item.itemName}</ItemText>
                                                     <ItemText fontSize={12} color={AppColors.text}>(Código: {item.itemCode})</ItemText>
-                                                    <ItemText fontSize={12} color={AppColors.text}>Valor total R$ {item.itemValue}</ItemText>
+                                                </ContainerItems>
+                                                <ContainerItems justifyContent={'space-between'}>
+                                                    <ItemText fontSize={12} color={AppColors.text}>Valor: R$ {item.itemValue}</ItemText>
                                                 </ContainerItems>
                                             </Items>
                                         )
                                     })}
                                 </ItemBody>
                                 <ItemFooter backgroundColor={AppColors.backgroundWindow} >
-                                    <ContainerItems >
-                                        <ItemText fontSize={12} color={AppColors.text}>Total R$ {total}</ItemText>
+                                    <ContainerItems justifyContent={'flex-start'}>
                                         <ItemText fontSize={12} color={AppColors.text}>Data de compra: {value.issuanceDate}</ItemText>
-                                        <ItemText fontSize={12} color={AppColors.text}>Data de leitura: {value.createdAt}</ItemText>
+                                    </ContainerItems>
+                                    <ContainerItems justifyContent={'flex-start'}>
+                                        <ItemText fontSize={12} color={AppColors.text}>Data de leitura: {dateFormat(value.createdAt)}</ItemText>
                                     </ContainerItems>
                                 </ItemFooter>
                             </Container>
-                        </ItemScroll>
-                    )
-                }
-            })}
-        </View>
+                        )
+                    }
+                })}
+            </Views>
+        </ItemScroll>
     );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        paddingTop: 10,
-        alignItems: "center"
-    }
-});

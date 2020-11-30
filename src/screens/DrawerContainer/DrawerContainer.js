@@ -76,8 +76,8 @@ export default class DrawerContainer extends Component {
               }}
             />
             <MenuButton
-              title="COMPARAÇÃO DE PRODUTOS"
-              name="bar-chart"
+              title="ANÁLISE DE PRODUTOS"
+              name="shopping-bag"
               onPress={() => {
                 navigation.navigate('Comparison', navigation);
                 navigation.closeDrawer();
