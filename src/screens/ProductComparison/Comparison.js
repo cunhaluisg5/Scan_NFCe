@@ -116,18 +116,18 @@ export default Comparison = () => {
 
                                 <ItemText fontSize={12} color={AppColors.text}>Total de notas: {listMonth.length}</ItemText>
 
-                                <ItemText fontSize={12} color={AppColors.text}>Total de itens: {listMonth.reduce(function (total, numero) {
-                                    return total + parseFloat(numero.items.length, 10);
+                                <ItemText fontSize={12} color={AppColors.text}>Total de itens: {listMonth.reduce((total, number) => {
+                                    return total + parseFloat(number.items.length, 10);
                                 }, 0)}
                                 </ItemText>
 
-                                <ItemText fontSize={12} color={AppColors.text}>Valor total de compra: R$ {listMonth.reduce(function (total, numero) {
-                                    return total + parseFloat(numero.totalValue, 10);
+                                <ItemText fontSize={12} color={AppColors.text}>Valor total de compra: R$ {listMonth.reduce((total, number) => {
+                                    return total + parseFloat(number.totalValue, 10);
                                 }, 0).toFixed(2)}
                                 </ItemText>
 
-                                <ItemText fontSize={12} color={AppColors.text}>Valor total de ICMS: R$ {listMonth.reduce(function (total, numero) {
-                                    return total + parseFloat(numero.icmsValue, 10);
+                                <ItemText fontSize={12} color={AppColors.text}>Valor total de ICMS: R$ {listMonth.reduce((total, number) => {
+                                    return total + parseFloat(number.icmsValue, 10);
                                 }, 0).toFixed(2)}
                                 </ItemText>
                             </ItemsDetails>
@@ -148,15 +148,12 @@ export default Comparison = () => {
                     }}
                 />
 
-                {listMonth.map(value => {
+                {listMonth.map((value, index) => {
                     const items = value.items.filter(item => item.itemName === selectedValue);
                     if (items.length > 0) {
-                        const total = items.reduce(function (total, numero) {
-                            return total + numero.itemValue;
-                        }, 0);
 
                         return (
-                            <Container backgroundColor={AppColors.background} borderLeftColor={AppColors.borderTop} borderTopColor={AppColors.borderTop}
+                            <Container key={index} backgroundColor={AppColors.background} borderLeftColor={AppColors.borderTop} borderTopColor={AppColors.borderTop}
                                 borderRightColor={AppColors.borderTop} borderBottomColor={AppColors.borderTop}>
                                 <ItemHeader backgroundColor={AppColors.backgroundWindow} >
                                     <ItemTitle color={AppColors.textBold}>

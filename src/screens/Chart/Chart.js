@@ -234,7 +234,7 @@ export default class LineChartExample extends Component {
 
         const nfces = this.calculateMaxValue().map((nfce, index) => {
             return (
-                <ContainerNfce>
+                <ContainerNfce key={index}>
                     <DetailsNfce color={AppColors.text} background={AppColors.backgroundWindow}
                         borderTopColor={AppColors.borderTop} borderBottomColor={AppColors.borderBottom}>
                         Nota mais cara no período
