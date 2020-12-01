@@ -1,6 +1,6 @@
 import { createStackNavigator } from 'react-navigation-stack';
 import React from 'react';
-import { Alert } from 'react-native';
+import { Alert, AsyncStorage } from 'react-native';
 import Header from '../components/Header/Header';
 import HomeScreen from '../screens/Home/HomeScreen';
 import DetailsNfceScreen from '../screens/DetailsNfce/DetailsNfceScreen';
@@ -42,6 +42,15 @@ const remover = async (nfce, navigation) => {
   }
 }
 
+const returnOption = async () => {
+  try {
+    const optionSave = JSON.parse(await AsyncStorage.getItem('@APP:optionSave'));
+    return optionSave
+  } catch (err) {
+      Alert.alert('Atenção!', err);
+  }
+}
+
 const screens = {
   HomeScreen: {
     screen: HomeScreen,
@@ -59,7 +68,7 @@ const screens = {
       const responseItems = navigation.getParam('responseItems');
       var buttonTop;
 
-      isRecord ?
+      (returnOption().then(option => {return option}) && isRecord) ?
         buttonTop = <MenuButton
           name="save"
           onPress={() => {

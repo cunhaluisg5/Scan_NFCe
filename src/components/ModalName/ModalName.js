@@ -22,7 +22,6 @@ export default props => {
   useEffect(() => {
     (async () => {
       const token = await AsyncStorage.getItem('@APP:token');
-
       const user = JSON.parse(await AsyncStorage.getItem('@APP:user'));
 
       if (token && user) {
@@ -64,6 +63,32 @@ export default props => {
         { text: 'Não', onPress: () => console.log('Cancelado'), },
       ]
     );
+  }
+
+  const option = (active) => {
+    AsyncStorage.setItem('@APP:optionSave', JSON.stringify(active));
+    active ? Alert.alert('Ativado!', 'Função habilitada.') 
+      : Alert.alert('Desativado!', 'Função desabilitada.');
+  }
+
+  const automaticallySave = async () => {
+    const optionSave = JSON.parse(await AsyncStorage.getItem('@APP:optionSave'));
+    
+    if (optionSave) {
+      Alert.alert('Atenção', 'Desabilitar função?',
+        [
+          { text: 'Sim', onPress: () => option(false) },
+          { text: 'Não', onPress: () => console.log('Cancelado'), },
+        ]
+      );
+    } else {
+      Alert.alert('Atenção', 'Habilitar função?',
+        [
+          { text: 'Sim', onPress: () => option(true) },
+          { text: 'Não', onPress: () => console.log('Cancelado'), },
+        ]
+      );
+    }
   }
 
   const validForm = name && name.trim()
@@ -148,6 +173,14 @@ export default props => {
         name="arrow-right"
         onPress={() => {
           setModalEditVisible(true);
+        }}
+      />
+
+      <MenuButton
+        title="Salvar notas automaticamente"
+        name="arrow-right"
+        onPress={() => {
+          automaticallySave();
         }}
       />
 

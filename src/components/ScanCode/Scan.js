@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Vibration, ActivityIndicator, Alert } from 'react-native';
+import { StyleSheet, Vibration, ActivityIndicator, Alert, AsyncStorage } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 
-import { TextContent, ResetButton, Indicator, AlertText, LayerTop, 
-         LayerCenter, LayerLeft, Focused, LayerRight, LayerBottom } from './Style';
+import {
+  TextContent, ResetButton, Indicator, AlertText, LayerTop,
+  LayerCenter, LayerLeft, Focused, LayerRight, LayerBottom
+} from './Style';
 import Api from '../../services/Api'
 import { AppColors } from '../../colors/AppColors';
 
@@ -22,17 +24,29 @@ export default props => {
 
   if (hasPermission === null) {
     return (
-        <TextContent color={ AppColors.text } fontSize={ 16 } fontWeight={ 'normal' } textAlign={ 'center' }
-        padding={ 10 }>Solicitando permissão da câmera</TextContent>);
+      <TextContent color={AppColors.text} fontSize={16} fontWeight={'normal'} textAlign={'center'}
+        padding={10}>Solicitando permissão da câmera</TextContent>);
   }
   if (hasPermission === false) {
     return (
-      <TextContent color={ AppColors.text } fontSize={ 16 } fontWeight={ 'normal' } textAlign={ 'center' }
-              padding={ 10 }>Sem acesso à câmera</TextContent>);
+      <TextContent color={AppColors.text} fontSize={16} fontWeight={'normal'} textAlign={'center'}
+        padding={10}>Sem acesso à câmera</TextContent>);
   }
 
   const validateURL = (url) => {
     return (url.search(/nfce.fazenda.mg.gov.br/i) !== -1) && (url.length === 156);
+  }
+
+  const gravar = async (nfce) => {
+    try {
+      const response = await Api.post('/nfces', nfce).then(() => {
+        console.log('Salvo com sucesso!')
+      })
+
+      props.navigation.navigate('HomeScreen');
+    } catch (err) {
+      Alert.alert('Atenção!', response.data.error);
+    }
   }
 
   const handleBarCodeScanned = async ({ type, data }) => {
@@ -52,8 +66,15 @@ export default props => {
           items: [...response.data.nfce.items]
         };
 
-        props.navigation.navigate('DetailsNfceScreen', 
-          { item: item, isRecord: true, responseItems: response.data });
+
+        const optionSave = JSON.parse(await AsyncStorage.getItem('@APP:optionSave'));
+        if (optionSave) {
+          await gravar(response.data);
+        } else {
+          await props.navigation.navigate('DetailsNfceScreen',
+            { item: item, isRecord: true, responseItems: response.data });
+        }
+
         setIsLoading(false);
         setScanned(false);
       } catch (err) {
@@ -65,8 +86,8 @@ export default props => {
 
   if (isLoading) {
     return (
-      <Indicator background={ AppColors.background }>
-        <ActivityIndicator size="large" color={ AppColors.indicator } />
+      <Indicator background={AppColors.background}>
+        <ActivityIndicator size="large" color={AppColors.indicator} />
       </Indicator>
     )
   }
@@ -74,13 +95,13 @@ export default props => {
   return (
     <BarCodeScanner
       onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-      style={StyleSheet.absoluteFill, {flex: 1, backgroundColor: AppColors.opacity}} >
+      style={StyleSheet.absoluteFill, { flex: 1, backgroundColor: AppColors.opacity }} >
       <LayerTop background={AppColors.opacity}>
         {!scanned &&
-          <AlertText color={ AppColors.textBold } fontSize={ 16 } fontWeight={ 'normal' } 
-            textAlign={ 'center' } marginTop={ 0 } background={ AppColors.backgroundWindow } padding={ 10 } 
-            borderTopColor={ AppColors.borderTop } borderBottomColor ={ AppColors.borderBottom }>
-              Aponte o leitor para o QRCode
+          <AlertText color={AppColors.textBold} fontSize={16} fontWeight={'normal'}
+            textAlign={'center'} marginTop={0} background={AppColors.backgroundWindow} padding={10}
+            borderTopColor={AppColors.borderTop} borderBottomColor={AppColors.borderBottom}>
+            Aponte o leitor para o QRCode
             </AlertText>
         }
       </LayerTop>
@@ -91,11 +112,11 @@ export default props => {
       </LayerCenter>
       <LayerBottom background={AppColors.opacity}>
         {scanned &&
-          <ResetButton background={ AppColors.backgroundWindow } marginTop={ 125 } padding={ 0 } 
-          borderTopColor={ AppColors.borderTop } borderBottomColor={ AppColors.borderBottom }
+          <ResetButton background={AppColors.backgroundWindow} marginTop={125} padding={0}
+            borderTopColor={AppColors.borderTop} borderBottomColor={AppColors.borderBottom}
             onPress={() => setScanned(false)}>
-            <TextContent color={ AppColors.textBold } fontSize={ 16 } fontWeight={ 'normal' } 
-              textAlign={ 'center' } padding={ 10 }>Ler novamente</TextContent>
+            <TextContent color={AppColors.textBold} fontSize={16} fontWeight={'normal'}
+              textAlign={'center'} padding={10}>Ler novamente</TextContent>
           </ResetButton>
         }
       </LayerBottom>

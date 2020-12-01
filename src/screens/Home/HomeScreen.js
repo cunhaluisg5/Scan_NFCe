@@ -5,8 +5,10 @@ import {
 } from 'react-native';
 
 import Api from '../../services/Api';
-import { Container, TextTitle, Subtitle, Category, 
-         TextInfo, Loading, Indicator } from './Style';
+import {
+  Container, TextTitle, Subtitle, Category,
+  TextInfo, Loading, Indicator
+} from './Style';
 import { AppColors } from '../../colors/AppColors';
 import NfceImage from '../../../assets/nfce.png';
 
@@ -33,8 +35,10 @@ export default class HomeScreen extends Component {
     this.getNfces();
   }
 
-  async componentDidUpdate() {
-    this.getNfces();
+  async componentDidUpdate(prevProps, prevState) {
+    if (prevState.nfces !== this.state.nfces) {
+      this.getNfces();
+    }
   }
 
   getNfces = async () => {
@@ -46,8 +50,8 @@ export default class HomeScreen extends Component {
 
       this.setState({ nfces });
     } catch (response) {
-        this.setState({ errorMessage: response.data.error })
-        Alert.alert('Atenção!', this.state.errorMessage)
+      this.setState({ errorMessage: response.data.error })
+      Alert.alert('Atenção!', this.state.errorMessage)
     }
   }
 
@@ -58,14 +62,14 @@ export default class HomeScreen extends Component {
   };
 
   renderNfce = ({ item }) => (
-    <TouchableHighlight underlayColor='transparent' onPress={ () => this.onPressNfce(item) }>
-      <View style={ styles.container }>
-        <TextTitle color={ AppColors.text }>{ this.dateFormat(item.createdAt) }</TextTitle>
-        <Subtitle color={ AppColors.textBold }>{ item.socialName.toUpperCase() }</Subtitle>
-        <Image style={ styles.image } source={ NfceImage } />
-        <Category fontSize={ 12 } color={ AppColors.text }>{ item.issuanceDate }</Category>
-        <Category fontSize={ 14 } color={ AppColors.text }>Qtde. Itens: { item.totalItems }</Category>        
-        <Category fontSize={ 14 } color={ AppColors.text }>Total: R$ { item.totalValue }</Category>
+    <TouchableHighlight underlayColor='transparent' onPress={() => this.onPressNfce(item)}>
+      <View style={styles.container}>
+        <TextTitle color={AppColors.text}>{this.dateFormat(item.createdAt)}</TextTitle>
+        <Subtitle color={AppColors.textBold}>{item.socialName.toUpperCase()}</Subtitle>
+        <Image style={styles.image} source={NfceImage} />
+        <Category fontSize={12} color={AppColors.text}>{item.issuanceDate}</Category>
+        <Category fontSize={14} color={AppColors.text}>Qtde. Itens: {item.totalItems}</Category>
+        <Category fontSize={14} color={AppColors.text}>Total: R$ {item.totalValue}</Category>
       </View>
     </TouchableHighlight>
   );
@@ -77,14 +81,14 @@ export default class HomeScreen extends Component {
   render() {
     if (this.state.isLoading) {
       return (
-        <Indicator background={ AppColors.background }>
-          <Loading size="large" color={ AppColors.indicator } />
+        <Indicator background={AppColors.background}>
+          <Loading size="large" color={AppColors.indicator} />
         </Indicator>
       )
     }
 
     return (
-      <Container background={ AppColors.background }>
+      <Container background={AppColors.background}>
         { this.state.nfces.length > 0 ?
           <FlatList
             vertical
@@ -94,7 +98,7 @@ export default class HomeScreen extends Component {
             renderItem={this.renderNfce}
             keyExtractor={item => `${item._id}`}
           />
-          : <TextInfo color={ AppColors.text }></TextInfo>
+          : <TextInfo color={AppColors.text}></TextInfo>
         }
       </Container>
     );
