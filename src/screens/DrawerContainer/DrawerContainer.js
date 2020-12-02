@@ -19,7 +19,7 @@ export default class DrawerContainer extends Component {
       console.log("Fez logout")
       await navigation.navigate('Auth');
     } catch (error) {
-        this.setState({ errorMessage: response.data.error })
+        this.setState({ errorMessage: error })
         console.log('Atenção!', this.state.errorMessage)
     }
   }
@@ -29,7 +29,7 @@ export default class DrawerContainer extends Component {
       const user = JSON.parse(await AsyncStorage.getItem('@APP:user'));
       this.setState({ user: user });
     } catch (error) {
-        this.setState({ errorMessage: response.data.error })
+        this.setState({ errorMessage: error })
         Alert.alert('Atenção!', this.state.errorMessage)
     }
   }

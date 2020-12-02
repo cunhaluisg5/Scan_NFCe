@@ -4,7 +4,7 @@ import RNPickerSelect from 'react-native-picker-select';
 
 import Api from '../../services/Api';
 import {
-    Container, ItemHeader, ItemBody, ItemTitle, ItemFooter, Views,
+    Container, ItemHeader, ItemBody, ItemTitle, ItemFooter, Views, Loading, Indicator,
     ItemScroll, Items, ContainerItems, ItemText, ContainerDetails, ItemBodyDetails, ItemsDetails
 } from './Style';
 import { AppColors } from '../../colors/AppColors';
@@ -16,12 +16,13 @@ export default Comparison = () => {
     const [nameItems, setNameItems] = useState([]);
     const [list, setList] = useState([]);
     const [listMonth, setListMonth] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         (async () => {
             await getNfces();
         })();
-    }, []);
+    }, [list]);
 
     const getNfces = async () => {
 
@@ -38,11 +39,13 @@ export default Comparison = () => {
     }
 
     const filterByMonth = (value) => {
+        setIsLoading(true);
         const nfcesByMonth = list.filter(nfce => moment(nfce.issuanceDate, 'DD/MM/YYYY')
             .format('M') === value)
 
         setListMonth(nfcesByMonth);
         listNameItems(nfcesByMonth);
+        setIsLoading(false);
     }
 
     const listNameItems = (listMonth) => {
@@ -73,6 +76,14 @@ export default Comparison = () => {
     const dateFormat = (date) => {
         return moment(date).format('DD/MM/YYYY HH:MM:SS');
     };
+
+    if (isLoading) {
+        return (
+          <Indicator background={AppColors.background}>
+            <Loading size="large" color={AppColors.indicator} />
+          </Indicator>
+        )
+      }
 
     return (
         <ItemScroll backgroundColor={AppColors.background}>

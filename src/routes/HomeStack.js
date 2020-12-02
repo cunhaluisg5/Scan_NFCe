@@ -3,13 +3,14 @@ import React from 'react';
 import { Alert, AsyncStorage } from 'react-native';
 import Header from '../components/Header/Header';
 import HomeScreen from '../screens/Home/HomeScreen';
+import NoteScreen from '../screens/Note/NoteScreen';
 import DetailsNfceScreen from '../screens/DetailsNfce/DetailsNfceScreen';
 
 import MenuButton from '../components/MenuButton/MenuButton';
 import Api from '../services/Api';
 import { AppColors } from '../colors/AppColors';
 
-const gravar = async (nfce, navigation) => {
+const record = async (nfce, navigation) => {
   try {
     const response = await Api.post('/nfces', nfce).then(() => {
       console.log('Salvo com sucesso!')
@@ -24,13 +25,13 @@ const gravar = async (nfce, navigation) => {
 const isRemove = (nfce, navigation) => {
   Alert.alert('Atenção', 'Deseja realmente excluir a nota?',
     [
-      { text: 'Sim', onPress: () => remover(nfce, navigation) },
+      { text: 'Sim', onPress: () => remove(nfce, navigation) },
       { text: 'Não', onPress: () => console.log('Cancelado'), },
     ]
   );
 }
 
-const remover = async (nfce, navigation) => {
+const remove = async (nfce, navigation) => {
   try {
     const response = await Api.delete('/nfces/' + nfce._id);
 
@@ -60,6 +61,16 @@ const screens = {
       }
     },
   },
+  NoteScreen: {
+    screen: NoteScreen,
+    navigationOptions: ({ navigation }) => {
+      return {
+        title: 'Notas',
+        headerTitleStyle: { alignSelf: 'center' },
+        headerRight: () => <MenuButton />
+      }
+    },
+  },
   DetailsNfceScreen: {
     screen: DetailsNfceScreen,
     navigationOptions: ({ navigation }) => {
@@ -72,7 +83,7 @@ const screens = {
         buttonTop = <MenuButton
           name="save"
           onPress={() => {
-            gravar(responseItems, navigation);
+            record(responseItems, navigation);
           }}
         /> :
         buttonTop = <MenuButton
@@ -84,6 +95,7 @@ const screens = {
 
       return {
         title: 'Detalhes da Nota',
+        headerTitleStyle: { alignSelf: 'center' },
         headerRight: () =>
           buttonTop
       }

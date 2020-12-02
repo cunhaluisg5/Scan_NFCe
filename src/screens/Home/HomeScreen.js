@@ -1,19 +1,12 @@
 import React, { Component } from 'react';
 import {
-  View, FlatList, TouchableHighlight, StyleSheet,
-  Dimensions, Image, AsyncStorage, Alert
+    View, FlatList, TouchableHighlight, StyleSheet, Dimensions, AsyncStorage, Alert, Image
 } from 'react-native';
 
 import Api from '../../services/Api';
-import {
-  Container, TextTitle, Subtitle, Category,
-  TextInfo, Loading, Indicator
-} from './Style';
+import { Container, TextInfo } from '../Note/Style';
 import { AppColors } from '../../colors/AppColors';
-import NfceImage from '../../../assets/nfce.png';
-
-const moment = require('moment');
-moment.locale('pt-BR');
+import BagsImage from '../../../assets/bags.png';
 
 var { width, height } = Dimensions.get('window');
 var SCREEN_WIDTH = width < height ? width : height;
@@ -22,108 +15,129 @@ var RECIPE_ITEM_HEIGHT = 150;
 var RECIPE_ITEM_MARGIN = 20;
 
 export default class HomeScreen extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      nfces: [],
-      isLoading: false,
-      errorMessage: null
-    }
-  }
-
-  async componentDidMount() {
-    this.getNfces();
-  }
-
-  async componentDidUpdate(prevProps, prevState) {
-    if (prevState.nfces !== this.state.nfces) {
-      this.getNfces();
-    }
-  }
-
-  getNfces = async () => {
-    try {
-      const { _id } = JSON.parse(await AsyncStorage.getItem('@APP:user'));
-      const response = await Api.get('/nfces/user/' + _id);
-
-      const { nfces } = response.data;
-
-      this.setState({ nfces });
-    } catch (response) {
-      this.setState({ errorMessage: response.data.error })
-      Alert.alert('Atenção!', this.state.errorMessage)
-    }
-  }
-
-  onPressNfce = item => {
-    this.setState({ isLoading: true })
-    this.props.navigation.navigate('DetailsNfceScreen', { item: item, isRecord: false });
-    this.setState({ isLoading: false })
-  };
-
-  renderNfce = ({ item }) => (
-    <TouchableHighlight underlayColor='transparent' onPress={() => this.onPressNfce(item)}>
-      <View style={styles.container}>
-        <TextTitle color={AppColors.text}>{this.dateFormat(item.createdAt)}</TextTitle>
-        <Subtitle color={AppColors.textBold}>{item.socialName.toUpperCase()}</Subtitle>
-        <Image style={styles.image} source={NfceImage} />
-        <Category fontSize={12} color={AppColors.text}>{item.issuanceDate}</Category>
-        <Category fontSize={14} color={AppColors.text}>Qtde. Itens: {item.totalItems}</Category>
-        <Category fontSize={14} color={AppColors.text}>Total: R$ {item.totalValue}</Category>
-      </View>
-    </TouchableHighlight>
-  );
-
-  dateFormat = (date) => {
-    return moment(date).format('DD/MM/YYYY');
-  };
-
-  render() {
-    if (this.state.isLoading) {
-      return (
-        <Indicator background={AppColors.background}>
-          <Loading size="large" color={AppColors.indicator} />
-        </Indicator>
-      )
-    }
-
-    return (
-      <Container background={AppColors.background}>
-        { this.state.nfces.length > 0 ?
-          <FlatList
-            vertical
-            showsVerticalScrollIndicator={false}
-            numColumns={2}
-            data={this.state.nfces.reverse()}
-            renderItem={this.renderNfce}
-            keyExtractor={item => `${item._id}`}
-          />
-          : <TextInfo color={AppColors.text}></TextInfo>
+    constructor(props) {
+        super(props);
+        this.state = {
+            nfces: [],
+            isLoading: false,
+            errorMessage: null,
+            uniqueNames: []
         }
-      </Container>
+    }
+
+    async componentDidMount() {
+        this.getNfces();
+    }
+
+    async componentDidUpdate(prevProps, prevState) {
+        if (prevState.nfces !== this.state.nfces) {
+          this.getNfces();
+        }
+      }
+
+    getNfces = async () => {
+        try {
+            const { _id } = JSON.parse(await AsyncStorage.getItem('@APP:user'));
+            const response = await Api.get('/nfces/user/' + _id);
+
+            const { nfces } = response.data;
+            const grouped = this.groupBy(nfces, nfce => nfce.socialName);
+            const notes = [];
+
+            this.listNameItems(nfces);
+            const { uniqueNames } = this.state;
+
+            uniqueNames.map((value, key) => {
+                const group = grouped.get(value);
+                notes.push({ key: key, name: value, list: group });
+            });
+
+            this.setState({ nfces: notes });
+        } catch (response) {
+            this.setState({ errorMessage: response.data.error })
+            Alert.alert('Atenção!', this.state.errorMessage)
+        }
+    }
+
+    listNameItems = (nfces) => {
+        const names = nfces.map(nfce => nfce.socialName);
+        const uniqueNames = [...new Set(names)];
+        this.setState({ uniqueNames });
+    }
+
+    groupBy = (list, keyGetter) => {
+        const map = new Map();
+        list.forEach((item) => {
+            const key = keyGetter(item);
+            const collection = map.get(key);
+            if (!collection) {
+                map.set(key, [item]);
+            } else {
+                collection.push(item);
+            }
+        });
+        return map;
+    }
+
+    onPressNfce = list => {
+        this.setState({ isLoading: true })
+        this.props.navigation.navigate('NoteScreen', { nfces: list });
+        this.setState({ isLoading: false })
+    };
+
+    renderNfce = ({ item }) => (
+        <TouchableHighlight underlayColor='transparent' onPress={() => this.onPressNfce(item.list)}>
+            <View style={styles.container}>
+                <TextInfo color={AppColors.textBold}>{item.name.toUpperCase()}</TextInfo>
+                <TextInfo color={AppColors.text}>Qtde de notas: {item.list.length}</TextInfo>
+                <Image style={styles.image} source={BagsImage} />
+                <TextInfo color={AppColors.text}>Total: R$ {item.list.reduce((total, number) => {
+                        return total + parseFloat(number.totalValue, 10);
+                    }, 0).toFixed(2)}
+                </TextInfo>
+            </View>
+        </TouchableHighlight>
     );
-  }
+
+    render() {
+        return (
+            <Container background={AppColors.background}>
+                { this.state.nfces.length > 0 ?
+                    <FlatList
+                        vertical
+                        showsVerticalScrollIndicator={false}
+                        numColumns={2}
+                        data={this.state.nfces}
+                        renderItem={this.renderNfce}
+                        keyExtractor={item => `${item.key}`}
+                    />
+                    : <TextInfo color={AppColors.text}></TextInfo>
+                }
+            </Container>
+        );
+    }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginLeft: RECIPE_ITEM_MARGIN,
-    marginTop: 20,
-    width: (SCREEN_WIDTH - (recipeNumColums + 1) * RECIPE_ITEM_MARGIN) / recipeNumColums,
-    height: RECIPE_ITEM_HEIGHT + 75,
-    borderColor: AppColors.invoice,
-    borderWidth: 0.5,
-    borderRadius: 15,
-    backgroundColor: AppColors.backgroundWindow
-  },
-  image: {
-    width: ((SCREEN_WIDTH - (recipeNumColums + 1) * RECIPE_ITEM_MARGIN) / recipeNumColums) / 2,
-    height: RECIPE_ITEM_HEIGHT / 2,
-    borderRadius: 15,
-    borderBottomLeftRadius: 0,
-    borderBottomRightRadius: 0
-  }
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 3,
+        marginLeft: RECIPE_ITEM_MARGIN,
+        marginTop: 20,
+        width: (SCREEN_WIDTH - (recipeNumColums + 1) * RECIPE_ITEM_MARGIN) / recipeNumColums,
+        height: RECIPE_ITEM_HEIGHT + 60,
+        borderColor: AppColors.invoice,
+        borderWidth: 0.5,
+        borderRadius: 15,
+        backgroundColor: AppColors.backgroundWindow
+    },
+    image: {
+        width: ((SCREEN_WIDTH - (recipeNumColums + 1) * RECIPE_ITEM_MARGIN) / recipeNumColums) / 2,
+        height: RECIPE_ITEM_HEIGHT / 2,
+        borderRadius: 15,
+        borderBottomLeftRadius: 0,
+        borderBottomRightRadius: 0
+    }
 })
