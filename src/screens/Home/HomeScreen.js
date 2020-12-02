@@ -30,10 +30,9 @@ export default class HomeScreen extends Component {
     }
 
     async componentDidUpdate(prevProps, prevState) {
-        if (prevState.nfces !== this.state.nfces) {
-          this.getNfces();
-        }
-      }
+        if (prevState.nfces !== this.state.nfces)
+            this.getNfces();
+    }
 
     getNfces = async () => {
         try {
@@ -54,8 +53,7 @@ export default class HomeScreen extends Component {
 
             this.setState({ nfces: notes });
         } catch (response) {
-            this.setState({ errorMessage: response.data.error })
-            Alert.alert('Atenção!', this.state.errorMessage)
+            this.setState({ errorMessage: response })
         }
     }
 
@@ -92,8 +90,8 @@ export default class HomeScreen extends Component {
                 <TextInfo color={AppColors.text}>Qtde de notas: {item.list.length}</TextInfo>
                 <Image style={styles.image} source={BagsImage} />
                 <TextInfo color={AppColors.text}>Total: R$ {item.list.reduce((total, number) => {
-                        return total + parseFloat(number.totalValue, 10);
-                    }, 0).toFixed(2)}
+                    return total + parseFloat(number.totalValue, 10);
+                }, 0).toFixed(2)}
                 </TextInfo>
             </View>
         </TouchableHighlight>

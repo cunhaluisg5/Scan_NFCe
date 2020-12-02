@@ -8,8 +8,8 @@ moment.locale('pt-BR');
 
 import Api from '../../services/Api';
 import {
-    Loading, Indicator, Container, TextHeader, ChartLine, Scroll, ContainerRadio,
-    ContainerText, DetailsNfce, ContainerNfce, ItemHeader, ItemTitle, ItemSubtitle
+    Loading, Indicator, Container, TextHeader, ChartLine, Scroll, ContainerRadio, Description,
+    ContainerText, DetailsNfce, ContainerNfce, ItemHeader, ItemTitle, ItemSubtitle, ContainerDays
 } from './Style';
 import { AppColors } from '../../colors/AppColors';
 
@@ -41,11 +41,11 @@ export default class LineChartExample extends Component {
         var value = 0;
 
         nfces.forEach(nfce => {
-            if(dayNow === moment(nfce.issuanceDate, 'DD/MM/YYYY').format('DD'))
+            if (dayNow === moment(nfce.issuanceDate, 'DD/MM/YYYY').format('DD'))
                 value += parseFloat(nfce.totalValue, 10);
         });
 
-        return {name: [dayNow + ' ' + this.returnMonthName(parseInt(monthNow))], values: [value]};
+        return { name: [dayNow + ' ' + this.returnMonthName(parseInt(monthNow)).short], values: [value] };
     }
 
     filterByMonth = () => {
@@ -53,11 +53,11 @@ export default class LineChartExample extends Component {
         var value = 0;
 
         nfces.forEach(nfce => {
-            if(monthNow === moment(nfce.issuanceDate, 'DD/MM/YYYY').format('MM'))
+            if (monthNow === moment(nfce.issuanceDate, 'DD/MM/YYYY').format('MM'))
                 value += parseFloat(nfce.totalValue, 10);
         });
 
-        return {name: [this.returnMonthName(parseInt(monthNow))], values: [value]};
+        return { name: [this.returnMonthName(parseInt(monthNow)).short], values: [value] };
     }
 
     filterByYear = () => {
@@ -67,52 +67,52 @@ export default class LineChartExample extends Component {
             values: []
         }
 
-        for(var i = 0; i < 12; i++) {
-            returnList.name[i] = this.returnMonthName(i + 1);
+        for (var i = 0; i < 12; i++) {
+            returnList.name[i] = this.returnMonthName(i + 1).short;
             returnList.values[i] = 0;
         }
 
         nfces.forEach(nfce => {
-            if(yearNow === moment(nfce.issuanceDate, 'DD/MM/YYYY').format('YYYY')) {
+            if (yearNow === moment(nfce.issuanceDate, 'DD/MM/YYYY').format('YYYY')) {
                 const month = parseInt(moment(nfce.issuanceDate, 'DD/MM/YYYY').format('MM'));
-                const value = returnList.values[month -1] + parseFloat(nfce.totalValue, 10);
-                returnList.values[month -1] = value;
+                const value = returnList.values[month - 1] + parseFloat(nfce.totalValue, 10);
+                returnList.values[month - 1] = value;
             }
         });
 
-        return returnList;      
+        return returnList;
     }
 
     filter = () => {
         const { value } = this.state;
 
-        if(value === 0) {
+        if (value === 0) {
             return this.filterByDay();
         }
 
-        if(value === 1) {
+        if (value === 1) {
             return this.filterByMonth();
         }
 
-        if(value === 2) {
+        if (value === 2) {
             return this.filterByYear();
         }
     }
 
     returnMonthName = (val) => {
-        switch(val) {
-            case 1: return 'Jan';
-            case 2: return 'Fev';
-            case 3: return 'Mar';
-            case 4: return 'Abr';
-            case 5: return 'Mai';
-            case 6: return 'Jun';
-            case 7: return 'Jul';
-            case 8: return 'Ago';
-            case 9: return 'Set';
-            case 10: return 'Out';
-            case 11: return 'Nov';
-            case 12: return 'Dez';
+        switch (val) {
+            case 1: return {short: 'Jan', complete: 'Janeiro'};
+            case 2: return {short: 'Fev', complete: 'Fevereiro'};
+            case 3: return {short: 'Mar', complete: 'Março'};
+            case 4: return {short: 'Abr', complete: 'Abril'};
+            case 5: return {short: 'Mai', complete: 'Maio'};
+            case 6: return {short: 'Jun', complete: 'Junho'};
+            case 7: return {short: 'Jul', complete: 'Julho'};
+            case 8: return {short: 'Ago', complete: 'Agosto'};
+            case 9: return {short: 'Set', complete: 'Setembro'};
+            case 10: return {short: 'Out', complete: 'Outubro'};
+            case 11: return {short: 'Nov', complete: 'Novembro'};
+            case 12: return {short: 'Dez', complete: 'Dezembro'};
         }
     }
 
@@ -133,22 +133,101 @@ export default class LineChartExample extends Component {
     }
 
     calculateMaxValue = () => {
-        const { nfces } = this.state;
-        const { value } = this.state;
+        const { nfces, value } = this.state;
         var nfcesFilter = [];
 
-        if(value === 0)
+        if (value === 0)
             nfcesFilter = nfces.filter(nfce => dayNow === moment(nfce.issuanceDate, 'DD/MM/YYYY').format('DD'));
 
-        if(value === 1)
+        if (value === 1)
             nfcesFilter = nfces.filter(nfce => monthNow === moment(nfce.issuanceDate, 'DD/MM/YYYY').format('MM'));
 
-        if(value === 2)
+        if (value === 2)
             nfcesFilter = nfces.filter(nfce => yearNow === moment(nfce.issuanceDate, 'DD/MM/YYYY').format('YYYY'));
 
         const maxValue = Math.max.apply(Math, nfcesFilter.map((nfce) => { return nfce.totalValue }))
         const maxNfce = nfcesFilter.filter((nfce) => { return parseFloat(nfce.totalValue, 10) === maxValue });
         return maxNfce;
+    }
+
+    mostExpensive = () => {
+        const { value } = this.state;
+        var filtered = [];
+
+        if (value === 1) {
+            filtered = this.mostExpensiveDays();
+        }
+
+        if (value === 2) {
+            filtered = this.mostExpensiveMonths();
+        }
+
+        if (filtered.length > 0) {
+            return (
+                <ContainerNfce>
+                    <DetailsNfce color={AppColors.text} background={AppColors.backgroundWindow}
+                        borderTopColor={AppColors.borderTop} borderBottomColor={AppColors.borderBottom}>
+                        Valores do período
+                    </DetailsNfce>
+                    <ContainerDays
+                        background={AppColors.backgroundWindow} borderRightColor={AppColors.borderRight}
+                        borderBottomColor={AppColors.borderBottom2} borderLeftColor={AppColors.borderLeft2}
+                        borderTopColor={AppColors.borderTop}>
+                        {filtered.map((item, key) => {
+                            return <Description key={key}>
+                                <ItemTitle color={AppColors.textBold}>{value === 1 ? 
+                                    ('DIA ' + item.name) : 
+                                    this.returnMonthName(item.name).complete.toUpperCase()} {value.name}
+                                </ItemTitle>
+                                <ItemSubtitle fontSize={14} color={AppColors.text}>
+                                    Total de notas: {item.count}
+                                </ItemSubtitle>
+                                <ItemSubtitle fontSize={14} color={AppColors.text}>
+                                    Valor total: R$ {item.value}
+                                </ItemSubtitle>
+                            </Description>
+                        })}
+                    </ContainerDays>
+                </ContainerNfce>)
+        }
+    }
+
+    mostExpensiveDays = () => {
+        const { nfces } = this.state;
+        const filteredByDay = [];
+
+        const filteredByMonth = nfces.filter(nfce => monthNow === moment(nfce.issuanceDate, 'DD/MM/YYYY').format('MM'));
+        for (var i = 1; i <= 31; i++) {
+            const filter = filteredByMonth.filter(nfce =>
+                i === parseInt(moment(nfce.issuanceDate, 'DD/MM/YYYY').format('D')));
+            if (filter.length > 0) {
+                const values = filter.reduce((total, number) => {
+                    return total + parseFloat(number.totalValue, 10);
+                }, 0).toFixed(2)
+                filteredByDay.push({ name: i, value: values, count: filter.length })
+            }
+        }
+
+        return filteredByDay;
+    }
+
+    mostExpensiveMonths = () => {
+        const { nfces } = this.state;
+        const filteredByMonth = [];
+
+        const filteredByYear = nfces.filter(nfce => yearNow === moment(nfce.issuanceDate, 'DD/MM/YYYY').format('YYYY'));
+        for (var i = 1; i <= 12; i++) {
+            const filter = filteredByYear.filter(nfce =>
+                i === parseInt(moment(nfce.issuanceDate, 'DD/MM/YYYY').format('M')));
+            if (filter.length > 0) {
+                const values = filter.reduce((total, number) => {
+                    return total + parseFloat(number.totalValue, 10);
+                }, 0).toFixed(2)
+                filteredByMonth.push({ name: i, value: values, count: filter.length })
+            }
+        }
+
+        return filteredByMonth;
     }
 
     onPressNfce = item => {
@@ -165,7 +244,7 @@ export default class LineChartExample extends Component {
                     buttonSize={14}
                     buttonOuterColor={AppColors.buttonRadio}
                     selectedButtonColor={AppColors.buttonRadioSelected}
-                    labelStyle={{fontSize: 14, color: AppColors.textBold, marginRight: 10}}
+                    labelStyle={{ fontSize: 14, color: AppColors.textBold, marginRight: 10 }}
                     formHorizontal={true}
                     onPress={(value) => { this.setState({ value: value }) }}
                 />
@@ -266,6 +345,7 @@ export default class LineChartExample extends Component {
                         {this.LineChart()}
                     </ChartLine>
                     {nfces}
+                    {this.mostExpensive()}
                 </Scroll>
             </Container>
         )

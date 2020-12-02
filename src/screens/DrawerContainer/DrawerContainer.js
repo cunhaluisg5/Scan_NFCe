@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AsyncStorage, Alert } from 'react-native';
+import { AsyncStorage } from 'react-native';
 
 import MenuButton from '../../components/MenuButton/MenuButton';
 import { Content, Container, User, Logo, TextEmail, ContainerTop, ContainerBody } from './Style';
@@ -20,7 +20,6 @@ export default class DrawerContainer extends Component {
       await navigation.navigate('Auth');
     } catch (error) {
         this.setState({ errorMessage: error })
-        console.log('Atenção!', this.state.errorMessage)
     }
   }
 
@@ -30,7 +29,6 @@ export default class DrawerContainer extends Component {
       this.setState({ user: user });
     } catch (error) {
         this.setState({ errorMessage: error })
-        Alert.alert('Atenção!', this.state.errorMessage)
     }
   }
 

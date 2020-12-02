@@ -56,12 +56,35 @@ export const ContainerNfce = styled.View`
     flex: 1;
     align-items: center;
     justify-content: center;
+    margin-bottom: 10px;
 `;
 
 export const ItemHeader = styled.TouchableOpacity`
     display: flex;
     flex: 1;
     align-items: center;
+    width: 100%;
+    min-height: 150px;
+    padding: 10px;
+    margin-top: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+    border-radius: 8px;
+    border-style: solid; 
+    border-top-width: 1px;
+    border-left-width: 1px;
+    border-right-width: 3px;
+    border-bottom-width: 3px;
+    border-right-color: ${props => `${props.borderRightColor}`};
+    border-bottom-color: ${props => `${props.borderBottomColor}`};
+    border-left-color: ${props => `${props.borderLeftColor}`};
+    border-top-color: ${props => `${props.borderTopColor}`};
+    background: ${props => `${props.background}`};
+`;
+
+export const ContainerDays = styled.TouchableOpacity`
+    display: flex;
+    flex: 1;
     width: 100%;
     min-height: 150px;
     padding: 10px;
@@ -105,4 +128,7 @@ export const Scroll = styled.ScrollView`
 `;
 
 export const Loading = styled.ActivityIndicator`
+`;
+
+export const Description = styled.View`
 `;
