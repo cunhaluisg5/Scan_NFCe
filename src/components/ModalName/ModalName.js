@@ -5,6 +5,7 @@ import AsyncStorage from '../../storage/AsyncStorage';
 import MenuButton from '../../components/MenuButton/MenuButton';
 import AuthInput from '../../components/AuthInput/AuthInput';
 import Api from '../../services/Api';
+import { HELP_CENTER_URL } from '../../config/links';
 import {
   ModalView, CenteredView, OpenButton, ModalTitle,
   TextStyle, ModalText, ContainerButton, CenteredModal, LogoImage
@@ -60,7 +61,7 @@ export default props => {
   const openURL = () => {
     Alert.alert('AtenÃ§Ã£o', 'Acessar documentaÃ§Ã£o de ajuda?',
       [
-        { text: 'Sim', onPress: () => OpenURL('https://helpscannfce.herokuapp.com/') },
+        { text: 'Sim', onPress: () => OpenURL(HELP_CENTER_URL) },
         { text: 'NÃ£o', onPress: () => console.log('Cancelado'), },
       ]
     );

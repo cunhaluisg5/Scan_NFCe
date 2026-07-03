@@ -9,7 +9,8 @@ import {
 } from 'react-native';
 import { Image } from 'react-native';
 
-import { AppInput, GhostButton, PrimaryButton, Screen, SelectModal, SettingRow } from '../components/ui';
+import { AppInput, GhostButton, PrimaryButton, Screen, SettingRow } from '../components/ui';
+import { HELP_CENTER_URL } from '../config/links';
 import { useAuth } from '../context/AuthContext';
 import { getAutoSavePreference, setAutoSavePreference } from '../storage/preferences';
 import { colors, fonts, radius, spacing } from '../theme';
@@ -80,7 +81,7 @@ export function SettingsScreen() {
           title="Ajuda"
           description="Abrir a documentação de apoio do projeto."
           onPress={() => {
-            Linking.openURL('https://helpscannfce.herokuapp.com/');
+            Linking.openURL(HELP_CENTER_URL);
           }}
         />
 
