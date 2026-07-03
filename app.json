@@ -1,25 +1,41 @@
 {
-  "name": "Scan NFC-e",
-  "displayName": "Scan NFC-e",
   "expo": {
     "name": "Scan NFC-e",
     "slug": "ScanNFCe",
-    "version": "1.0.0",
+    "version": "2.0.0",
+    "orientation": "portrait",
     "assetBundlePatterns": [
       "**/*"
     ],
+    "scheme": "scannfce",
     "android": {
-      "package": "com.cunhaluisg5.Scan_NFCe"
+      "package": "com.cunhaluisg5.Scan_NFCe",
+      "edgeToEdgeEnabled": true
+    },
+    "ios": {
+      "bundleIdentifier": "com.cunhaluisg5.ScanNFCe"
     },
     "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#0A0D1C"
-    }
-  },
-  "android": {
-    "package": "com.cunhaluisg5.Scan_NFCe",
-    "versionCode": 1
+    },
+    "plugins": [
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Permita que o Scan NFC-e acesse a câmera para ler o QR Code da nota.",
+          "barcodeScannerEnabled": true
+        }
+      ],
+      [
+        "expo-secure-store",
+        {
+          "configureAndroidBackup": true,
+          "faceIDPermission": "Permita que o Scan NFC-e use o Face ID para proteger sua sessão."
+        }
+      ]
+    ]
   }
 }

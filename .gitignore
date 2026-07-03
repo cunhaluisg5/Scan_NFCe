@@ -35,6 +35,7 @@ local.properties
 node_modules/
 npm-debug.log
 yarn-error.log
+.tools/
 
 # BUCK
 buck-out/
@@ -60,4 +61,8 @@ buck-out/
 
 # Expo
 .expo/*
+.expo-home/
+.expo-cache/
 web-build/
+dist/
+.tmp-modern/

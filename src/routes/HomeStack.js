@@ -1,6 +1,7 @@
-import { createStackNavigator } from 'react-navigation-stack';
+﻿import { createStackNavigator } from 'react-navigation-stack';
 import React from 'react';
-import { Alert, AsyncStorage } from 'react-native';
+import { Alert } from 'react-native';
+import AsyncStorage from '../storage/AsyncStorage';
 import Header from '../components/Header/Header';
 import HomeScreen from '../screens/Home/HomeScreen';
 import NoteScreen from '../screens/Note/NoteScreen';
@@ -18,15 +19,15 @@ const record = async (nfce, navigation) => {
 
     navigation.navigate('HomeScreen');
   } catch (err) {
-      Alert.alert('Atenção!', response.data.error);
+      Alert.alert('AtenÃ§Ã£o!', response.data.error);
   }
 }
 
 const isRemove = (nfce, navigation) => {
-  Alert.alert('Atenção', 'Deseja realmente excluir a nota?',
+  Alert.alert('AtenÃ§Ã£o', 'Deseja realmente excluir a nota?',
     [
       { text: 'Sim', onPress: () => remove(nfce, navigation) },
-      { text: 'Não', onPress: () => console.log('Cancelado'), },
+      { text: 'NÃ£o', onPress: () => console.log('Cancelado'), },
     ]
   );
 }
@@ -36,10 +37,10 @@ const remove = async (nfce, navigation) => {
     const response = await Api.delete('/nfces/' + nfce._id);
 
     navigation.navigate('HomeScreen');
-    console.log('Excluído com sucesso!');
+    console.log('ExcluÃ­do com sucesso!');
   } catch (err) {
       setErrorMessage(response.data.error);
-      Alert.alert('Atenção!', errorMessage);
+      Alert.alert('AtenÃ§Ã£o!', errorMessage);
   }
 }
 
@@ -48,7 +49,7 @@ const returnOption = async () => {
     const optionSave = JSON.parse(await AsyncStorage.getItem('@APP:optionSave'));
     return optionSave
   } catch (err) {
-      Alert.alert('Atenção!', err);
+      Alert.alert('AtenÃ§Ã£o!', err);
   }
 }
 
@@ -57,7 +58,7 @@ const screens = {
     screen: HomeScreen,
     navigationOptions: ({ navigation }) => {
       return {
-        headerTitle: () => <Header title='Início' navigation={navigation} />
+        headerTitle: () => <Header title='InÃ­cio' navigation={navigation} />
       }
     },
   },
@@ -111,5 +112,6 @@ const HomeStack = createStackNavigator(screens, {
 });
 
 export default HomeStack;
+
 
 

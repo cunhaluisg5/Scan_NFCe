@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { Alert, Modal, AsyncStorage } from "react-native";
+﻿import React, { useState, useEffect } from "react";
+import { Alert, Modal } from "react-native";
+import AsyncStorage from '../../storage/AsyncStorage';
 
 import MenuButton from '../../components/MenuButton/MenuButton';
 import AuthInput from '../../components/AuthInput/AuthInput';
@@ -52,40 +53,40 @@ export default props => {
 
     } catch (response) {
       setErrorMessage(response.data.error);
-      Alert.alert('Atenção!', errorMessage);
+      Alert.alert('AtenÃ§Ã£o!', errorMessage);
     }
   };
 
   const openURL = () => {
-    Alert.alert('Atenção', 'Acessar documentação de ajuda?',
+    Alert.alert('AtenÃ§Ã£o', 'Acessar documentaÃ§Ã£o de ajuda?',
       [
         { text: 'Sim', onPress: () => OpenURL('https://helpscannfce.herokuapp.com/') },
-        { text: 'Não', onPress: () => console.log('Cancelado'), },
+        { text: 'NÃ£o', onPress: () => console.log('Cancelado'), },
       ]
     );
   }
 
   const option = (active) => {
     AsyncStorage.setItem('@APP:optionSave', JSON.stringify(active));
-    active ? Alert.alert('Ativado!', 'Função habilitada.') 
-      : Alert.alert('Desativado!', 'Função desabilitada.');
+    active ? Alert.alert('Ativado!', 'FunÃ§Ã£o habilitada.') 
+      : Alert.alert('Desativado!', 'FunÃ§Ã£o desabilitada.');
   }
 
   const automaticallySave = async () => {
     const optionSave = JSON.parse(await AsyncStorage.getItem('@APP:optionSave'));
     
     if (optionSave) {
-      Alert.alert('Atenção', 'Desabilitar função?',
+      Alert.alert('AtenÃ§Ã£o', 'Desabilitar funÃ§Ã£o?',
         [
           { text: 'Sim', onPress: () => option(false) },
-          { text: 'Não', onPress: () => console.log('Cancelado'), },
+          { text: 'NÃ£o', onPress: () => console.log('Cancelado'), },
         ]
       );
     } else {
-      Alert.alert('Atenção', 'Habilitar função?',
+      Alert.alert('AtenÃ§Ã£o', 'Habilitar funÃ§Ã£o?',
         [
           { text: 'Sim', onPress: () => option(true) },
-          { text: 'Não', onPress: () => console.log('Cancelado'), },
+          { text: 'NÃ£o', onPress: () => console.log('Cancelado'), },
         ]
       );
     }
@@ -107,7 +108,7 @@ export default props => {
           <ModalView background={AppColors.backgroundWindow} borderRightColor={AppColors.borderRight}
             borderBottomColor={AppColors.borderBottom2} borderLeftColor={AppColors.borderLeft2}
             borderTopColor={AppColors.borderTop}>
-            <ModalText fontSize={18} color={AppColors.text}>Editar nome de usuário</ModalText>
+            <ModalText fontSize={18} color={AppColors.text}>Editar nome de usuÃ¡rio</ModalText>
 
             <AuthInput icon='user' placeholder='Nome'
               value={name}
@@ -149,9 +150,9 @@ export default props => {
             borderTopColor={AppColors.borderTop}>
             <ModalTitle fontSize={20} color={AppColors.text}>Sobre</ModalTitle>
             <LogoImage source={Logo} />
-            <ModalText fontSize={14} color={AppColors.text}>Versão 1.0.0</ModalText>
+            <ModalText fontSize={14} color={AppColors.text}>VersÃ£o 1.0.0</ModalText>
             <ModalText fontSize={14} color={AppColors.text}>2020 - Scan NFC-e</ModalText>
-            <ModalText fontSize={14} color={AppColors.text}>Luís Gustavo da Cunha Cipriani</ModalText>
+            <ModalText fontSize={14} color={AppColors.text}>LuÃ­s Gustavo da Cunha Cipriani</ModalText>
 
             <ContainerButton>
 
@@ -169,7 +170,7 @@ export default props => {
       </Modal>
 
       <MenuButton
-        title="Editar nome de usuário"
+        title="Editar nome de usuÃ¡rio"
         name="arrow-right"
         onPress={() => {
           setModalEditVisible(true);

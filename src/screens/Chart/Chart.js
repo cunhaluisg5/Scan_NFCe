@@ -1,5 +1,6 @@
-import React, { Component } from 'react';
-import { Dimensions, AsyncStorage, Alert } from 'react-native';
+﻿import React, { Component } from 'react';
+import { Dimensions, Alert } from 'react-native';
+import AsyncStorage from '../../storage/AsyncStorage';
 import { LineChart } from 'react-native-chart-kit';
 import RadioForm from 'react-native-simple-radio-button';
 
@@ -21,7 +22,7 @@ export default class LineChartExample extends Component {
         yearNow = moment().format('YYYY');
         radio_props = [
             { label: 'Dia', value: 0 },
-            { label: 'Mês', value: 1 },
+            { label: 'MÃªs', value: 1 },
             { label: 'Ano', value: 2 }
         ];
         this.state = {
@@ -103,7 +104,7 @@ export default class LineChartExample extends Component {
         switch (val) {
             case 1: return {short: 'Jan', complete: 'Janeiro'};
             case 2: return {short: 'Fev', complete: 'Fevereiro'};
-            case 3: return {short: 'Mar', complete: 'Março'};
+            case 3: return {short: 'Mar', complete: 'MarÃ§o'};
             case 4: return {short: 'Abr', complete: 'Abril'};
             case 5: return {short: 'Mai', complete: 'Maio'};
             case 6: return {short: 'Jun', complete: 'Junho'};
@@ -127,7 +128,7 @@ export default class LineChartExample extends Component {
             this.setState({ nfces });
         } catch (response) {
             this.setState({ errorMessage: response.data.error })
-            Alert.alert('Atenção!', this.state.errorMessage)
+            Alert.alert('AtenÃ§Ã£o!', this.state.errorMessage)
         }
         this.setState({ isLoading: false });
     }
@@ -167,7 +168,7 @@ export default class LineChartExample extends Component {
                 <ContainerNfce>
                     <DetailsNfce color={AppColors.text} background={AppColors.backgroundWindow}
                         borderTopColor={AppColors.borderTop} borderBottomColor={AppColors.borderBottom}>
-                        Valores do período
+                        Valores do perÃ­odo
                     </DetailsNfce>
                     <ContainerDays
                         background={AppColors.backgroundWindow} borderRightColor={AppColors.borderRight}
@@ -259,7 +260,7 @@ export default class LineChartExample extends Component {
             <>
                 <ContainerText background={AppColors.backgroundWindow}
                     borderTopColor={AppColors.borderTop} borderBottomColor={AppColors.borderBottom}>
-                    <TextHeader color={AppColors.text}>Gastos (R$/Período) {this.dateNow}</TextHeader>
+                    <TextHeader color={AppColors.text}>Gastos (R$/PerÃ­odo) {this.dateNow}</TextHeader>
                 </ContainerText>
                 <LineChart
                     data={{
@@ -316,7 +317,7 @@ export default class LineChartExample extends Component {
                 <ContainerNfce key={index}>
                     <DetailsNfce color={AppColors.text} background={AppColors.backgroundWindow}
                         borderTopColor={AppColors.borderTop} borderBottomColor={AppColors.borderBottom}>
-                        Nota mais cara no período
+                        Nota mais cara no perÃ­odo
                     </DetailsNfce>
                     <ItemHeader onPress={() => this.onPressNfce(nfce)} key={index}
                         background={AppColors.backgroundWindow} borderRightColor={AppColors.borderRight}
@@ -327,7 +328,7 @@ export default class LineChartExample extends Component {
                             CNPJ: {nfce.cnpj}, UF: {nfce.uf}
                         </ItemSubtitle>
                         <ItemSubtitle fontSize={14} color={AppColors.text}>
-                            Data Emissão : {nfce.issuanceDate}
+                            Data EmissÃ£o : {nfce.issuanceDate}
                         </ItemSubtitle>
                         <ItemSubtitle fontSize={18} color={AppColors.textBold}>
                             Valor Total: R$ {nfce.totalValue}

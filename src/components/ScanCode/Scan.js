@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, Vibration, ActivityIndicator, Alert, AsyncStorage } from 'react-native';
+﻿import React, { useState, useEffect } from 'react';
+import { StyleSheet, Vibration, ActivityIndicator, Alert } from 'react-native';
+import AsyncStorage from '../../storage/AsyncStorage';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 
 import {
@@ -25,12 +26,12 @@ export default props => {
   if (hasPermission === null) {
     return (
       <TextContent color={AppColors.text} fontSize={16} fontWeight={'normal'} textAlign={'center'}
-        padding={10}>Solicitando permissão da câmera</TextContent>);
+        padding={10}>Solicitando permissÃ£o da cÃ¢mera</TextContent>);
   }
   if (hasPermission === false) {
     return (
       <TextContent color={AppColors.text} fontSize={16} fontWeight={'normal'} textAlign={'center'}
-        padding={10}>Sem acesso à câmera</TextContent>);
+        padding={10}>Sem acesso Ã  cÃ¢mera</TextContent>);
   }
 
   const validateURL = (url) => {
@@ -45,7 +46,7 @@ export default props => {
 
       props.navigation.navigate('HomeScreen');
     } catch (err) {
-      Alert.alert('Atenção!', response.data.error);
+      Alert.alert('AtenÃ§Ã£o!', response.data.error);
     }
   }
 
@@ -79,7 +80,7 @@ export default props => {
         setScanned(false);
       } catch (err) {
         setErrorMessage(response.data.error);
-        Alert.alert('Atenção!', errorMessage);
+        Alert.alert('AtenÃ§Ã£o!', errorMessage);
       }
     }
   };

@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { AsyncStorage } from 'react-native';
+﻿import React, { useState, useEffect } from 'react';
+import AsyncStorage from '../../storage/AsyncStorage';
 import RNPickerSelect from 'react-native-picker-select';
 
 import Api from '../../services/Api';
@@ -34,7 +34,7 @@ export default Comparison = () => {
 
             setList(nfces);
         } catch (response) {
-            console.log('Atenção!', response)
+            console.log('AtenÃ§Ã£o!', response)
         }
     }
 
@@ -64,7 +64,7 @@ export default Comparison = () => {
     }
 
     const placeholderMonths = {
-        label: 'Selecione um mês...',
+        label: 'Selecione um mÃªs...',
         color: '#9EA0A4',
     };
 
@@ -94,7 +94,7 @@ export default Comparison = () => {
                     items={[
                         { label: 'JANEIRO', value: '1' },
                         { label: 'FEVEREIRO', value: '2' },
-                        { label: 'MARÇO', value: '3' },
+                        { label: 'MARÃ‡O', value: '3' },
                         { label: 'ABRIL', value: '4' },
                         { label: 'MAIO', value: '5' },
                         { label: 'JUNHO', value: '6' },
@@ -117,7 +117,7 @@ export default Comparison = () => {
                     <ContainerDetails backgroundColor={AppColors.background} borderLeftColor={AppColors.borderTop} borderTopColor={AppColors.borderTop}
                         borderRightColor={AppColors.borderTop} borderBottomColor={AppColors.borderBottom}>
                         <ItemHeader backgroundColor={AppColors.backgroundWindow} >
-                            <ItemTitle color={AppColors.textBold}>DETALHES DO MÊS</ItemTitle>
+                            <ItemTitle color={AppColors.textBold}>DETALHES DO MÃŠS</ItemTitle>
                         </ItemHeader>
 
                         <ItemBodyDetails backgroundColor={AppColors.backgroundWindow}>
@@ -179,7 +179,7 @@ export default Comparison = () => {
                                                 borderLeftColor={AppColors.borderLeft2} borderTopColor={AppColors.borderTop} >
                                                 <ContainerItems justifyContent={'space-between'}>
                                                     <ItemText fontSize={12} color={AppColors.text}>{item.itemName}</ItemText>
-                                                    <ItemText fontSize={12} color={AppColors.text}>(Código: {item.itemCode})</ItemText>
+                                                    <ItemText fontSize={12} color={AppColors.text}>(CÃ³digo: {item.itemCode})</ItemText>
                                                 </ContainerItems>
                                                 <ContainerItems justifyContent={'space-between'}>
                                                     <ItemText fontSize={12} color={AppColors.text}>Valor: R$ {item.itemValue}</ItemText>

@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { AsyncStorage } from 'react-native';
+﻿import React, { Component } from 'react';
+import AsyncStorage from '../../storage/AsyncStorage';
 
 import { Indicator, Loading } from './Style';
 import { AppColors } from '../../colors/AppColors';

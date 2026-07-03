@@ -1,5 +1,6 @@
-import React, { Component } from 'react';
-import { AsyncStorage, Alert } from 'react-native';
+﻿import React, { Component } from 'react';
+import { Alert } from 'react-native';
+import AsyncStorage from '../../storage/AsyncStorage';
 
 import Api from '../../services/Api';
 import AuthInput from '../../components/AuthInput/AuthInput';
@@ -47,7 +48,7 @@ export default class Login extends Component {
         } catch (response) {
             this.setState({ isLoading: false })
             this.setState({ errorMessage: response.data.error })
-            Alert.alert('Atenção!', this.state.errorMessage)
+            Alert.alert('AtenÃ§Ã£o!', this.state.errorMessage)
         }
     };
 
@@ -62,12 +63,12 @@ export default class Login extends Component {
                 password
             });
             this.setState({ isLoading: false })
-            Alert.alert('Atenção!', 'Cadastro efetuado com sucesso.');
+            Alert.alert('AtenÃ§Ã£o!', 'Cadastro efetuado com sucesso.');
             this.setState({ stageNew: false })
         } catch (response) {
             this.setState({ isLoading: false })
             this.setState({ errorMessage: response.data.error })
-            Alert.alert('Atenção!', this.state.errorMessage)
+            Alert.alert('AtenÃ§Ã£o!', this.state.errorMessage)
         }
     };
 
@@ -141,7 +142,7 @@ export default class Login extends Component {
                             this.setState({ password })} />
                     {this.state.stageNew &&
                         <AuthInput icon='asterisk'
-                            secureTextEntry={true} placeholder='Confirmação'
+                            secureTextEntry={true} placeholder='ConfirmaÃ§Ã£o'
                             value={this.state.confirmPassword}
                             onChangeText={confirmPassword =>
                                 this.setState({ confirmPassword })} />}
@@ -160,7 +161,7 @@ export default class Login extends Component {
                         stageNew: !this.state.stageNew
                     })}>
                     <SubtitleHeader color={AppColors.text}>
-                        {this.state.stageNew ? 'Já possui conta?'
+                        {this.state.stageNew ? 'JÃ¡ possui conta?'
                             : 'Criar uma conta'}
                     </SubtitleHeader>
                 </ContainerLogin>

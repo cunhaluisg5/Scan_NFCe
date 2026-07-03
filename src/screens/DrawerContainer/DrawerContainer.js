@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { AsyncStorage } from 'react-native';
+﻿import React, { Component } from 'react';
+import AsyncStorage from '../../storage/AsyncStorage';
 
 import MenuButton from '../../components/MenuButton/MenuButton';
 import { Content, Container, User, Logo, TextEmail, ContainerTop, ContainerBody } from './Style';
@@ -50,7 +50,7 @@ export default class DrawerContainer extends Component {
           </ContainerTop>
           <ContainerBody>
             <MenuButton
-              title="INÍCIO"
+              title="INÃCIO"
               name="home"
               onPress={() => {
                 navigation.navigate('Home');
@@ -58,7 +58,7 @@ export default class DrawerContainer extends Component {
               }}
             />
             <MenuButton
-              title="LEITOR DE CÓDIGO"
+              title="LEITOR DE CÃ“DIGO"
               name="qrcode"
               onPress={() => {
                 navigation.navigate('Scan', navigation);
@@ -66,7 +66,7 @@ export default class DrawerContainer extends Component {
               }}
             />
             <MenuButton
-              title="ANÁLISE DE GASTOS"
+              title="ANÃLISE DE GASTOS"
               name="bar-chart"
               onPress={() => {
                 navigation.navigate('Chart', navigation);
@@ -74,7 +74,7 @@ export default class DrawerContainer extends Component {
               }}
             />
             <MenuButton
-              title="ANÁLISE DE PRODUTOS"
+              title="ANÃLISE DE PRODUTOS"
               name="shopping-bag"
               onPress={() => {
                 navigation.navigate('Comparison', navigation);
@@ -82,7 +82,7 @@ export default class DrawerContainer extends Component {
               }}
             />
             <MenuButton
-              title="CONFIGURAÇÕES"
+              title="CONFIGURAÃ‡Ã•ES"
               name="user"
               onPress={() => {
                 navigation.navigate('Settings');
@@ -103,3 +103,4 @@ export default class DrawerContainer extends Component {
     );
   }
 }
+

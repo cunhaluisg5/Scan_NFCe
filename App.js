@@ -1,9 +1,3 @@
-console.disableYellowBox = true
+import App from './src/App';
 
-import React from 'react'
-import Router from './src/Router'
-
-const App = prop => (
-  <Router/>
-)
-export default App
+export default App;

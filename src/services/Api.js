@@ -1,20 +1,36 @@
-import { AsyncStorage } from 'react-native';
-import { create } from 'apisauce';
+import { API_BASE_URL } from '../config/api';
+import { getSession } from '../storage/session';
 
-const api = create({
-  baseURL: 'https://scannfceserver.herokuapp.com'
-});
+async function request(path, { method = 'GET', body, auth = true } = {}) {
+  const session = auth ? await getSession() : { token: null };
+  const response = await fetch(`${API_BASE_URL}${path}`, {
+    method,
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      ...(session.token ? { Authorization: `Bearer ${session.token}` } : {}),
+    },
+    body: body ? JSON.stringify(body) : undefined,
+  });
 
-api.addAsyncRequestTransform(request => async () => {
-  const token = await AsyncStorage.getItem('@APP:token');
+  const text = await response.text();
+  const data = text ? JSON.parse(text) : null;
 
-  if (token) {
-    request.headers['Authorization'] = `Bearer ${token}`;
+  if (!response.ok) {
+    const error = new Error(data?.error || 'Não foi possível concluir a solicitação.');
+    error.status = response.status;
+    error.data = data;
+    throw error;
   }
-});
 
-api.addResponseTransform(response => {
-  if (!response.ok) throw response;
-})
+  return data;
+}
+
+export const api = {
+  get: (path, options) => request(path, { ...options, method: 'GET' }),
+  post: (path, body, options) => request(path, { ...options, method: 'POST', body }),
+  put: (path, body, options) => request(path, { ...options, method: 'PUT', body }),
+  delete: (path, options) => request(path, { ...options, method: 'DELETE' }),
+};
 
 export default api;

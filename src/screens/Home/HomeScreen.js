@@ -1,8 +1,9 @@
-import React, { Component } from 'react';
+﻿import React, { Component } from 'react';
 import {
-    View, FlatList, TouchableHighlight, StyleSheet, Dimensions, AsyncStorage, Alert, Image
+    View, FlatList, TouchableHighlight, StyleSheet, Dimensions, Alert, Image
 } from 'react-native';
 
+import AsyncStorage from '../../storage/AsyncStorage';
 import Api from '../../services/Api';
 import { Container, TextInfo } from '../Note/Style';
 import { AppColors } from '../../colors/AppColors';
@@ -139,3 +140,4 @@ const styles = StyleSheet.create({
         borderBottomRightRadius: 0
     }
 })
+
