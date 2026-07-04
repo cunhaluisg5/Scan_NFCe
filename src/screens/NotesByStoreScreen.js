@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 
 import { EmptyState, Screen } from '../components/ui';
+import { ROUTES } from '../navigation/routeNames';
 import { colors, fonts, radius, shadow, spacing } from '../theme';
 import { formatCurrency } from '../utils/format';
 import { formatDate, parseBrazilianDate } from '../utils/date';
@@ -38,7 +39,7 @@ export function NotesByStoreScreen({ navigation, route }) {
         renderItem={({ item }) => (
           <Pressable
             style={styles.card}
-            onPress={() => navigation.navigate('InvoiceDetails', { invoice: item, mode: 'saved' })}
+            onPress={() => navigation.navigate(ROUTES.APP.INVOICE_DETAILS, { invoice: item, mode: 'saved' })}
           >
             <Text style={styles.cardDate}>{formatDate(item.createdAt)}</Text>
             <Text style={styles.cardTitle} numberOfLines={2}>{item.socialName?.toUpperCase()}</Text>

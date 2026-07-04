@@ -9,6 +9,7 @@ import {
 
 import { api } from '../services/Api';
 import { AppCard, GhostButton, PrimaryButton, Screen } from '../components/ui';
+import { ROUTES } from '../navigation/routeNames';
 import { colors, fonts, radius, spacing } from '../theme';
 import { formatCurrency } from '../utils/format';
 
@@ -23,7 +24,7 @@ export function InvoiceDetailsScreen({ navigation, route }) {
       Alert.alert('Nota salva', 'A NFC-e foi registrada com sucesso.');
       navigation.reset({
         index: 0,
-        routes: [{ name: 'Main' }],
+        routes: [{ name: ROUTES.APP.ROOT }],
       });
     } catch (error) {
       Alert.alert('Atenção', error.data?.error || error.message);
@@ -50,7 +51,7 @@ export function InvoiceDetailsScreen({ navigation, route }) {
       Alert.alert('Nota removida', 'A NFC-e foi excluída com sucesso.');
       navigation.reset({
         index: 0,
-        routes: [{ name: 'Main' }],
+        routes: [{ name: ROUTES.APP.ROOT }],
       });
     } catch (error) {
       Alert.alert('Atenção', error.data?.error || error.message);

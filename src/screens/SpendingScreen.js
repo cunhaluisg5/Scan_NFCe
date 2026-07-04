@@ -11,6 +11,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { AppCard, EmptyState, LoadingBlock, PillSelector, Screen } from '../components/ui';
 import { SimpleLineChart } from '../components/SimpleLineChart';
 import { useAuth } from '../context/AuthContext';
+import { ROUTES } from '../navigation/routeNames';
 import { api } from '../services/Api';
 import { colors, fonts, spacing } from '../theme';
 import { getPeriodBreakdown, getMostExpensiveInvoices, buildTimeline } from '../utils/nfce';
@@ -67,7 +68,7 @@ export function SpendingScreen({ navigation }) {
       {expensiveInvoices.length ? expensiveInvoices.map((invoice) => (
         <Pressable
           key={invoice._id || invoice.id || invoice.accesskey}
-          onPress={() => navigation.navigate('InvoiceDetails', { invoice, mode: 'saved' })}
+          onPress={() => navigation.navigate(ROUTES.APP.INVOICE_DETAILS, { invoice, mode: 'saved' })}
         >
           <AppCard style={styles.invoiceCard}>
             <Text style={styles.invoiceTitle}>{invoice.socialName?.toUpperCase()}</Text>

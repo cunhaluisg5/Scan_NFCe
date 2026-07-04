@@ -11,6 +11,7 @@ import { CameraView, useCameraPermissions } from 'expo-camera';
 import { useFocusEffect } from '@react-navigation/native';
 
 import { LoadingBlock, PrimaryButton, Screen } from '../components/ui';
+import { ROUTES } from '../navigation/routeNames';
 import { api } from '../services/Api';
 import { getAutoSavePreference } from '../storage/preferences';
 import { colors, fonts, radius, spacing } from '../theme';
@@ -53,9 +54,9 @@ export function ScanScreen({ navigation }) {
       if (autoSave) {
         await api.post('/nfces', crawlerPayload);
         Alert.alert('Nota salva', 'A NFC-e foi registrada automaticamente.');
-        navigation.navigate('Home');
+        navigation.navigate(ROUTES.APP.HOME);
       } else {
-        navigation.navigate('InvoiceDetails', {
+        navigation.navigate(ROUTES.APP.INVOICE_DETAILS, {
           invoice,
           mode: 'draft',
           crawlerPayload,

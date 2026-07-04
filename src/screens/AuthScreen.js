@@ -12,6 +12,7 @@ import {
 import { LinearGradient } from 'expo-linear-gradient';
 
 import { useAuth } from '../context/AuthContext';
+import { ROUTES } from '../navigation/routeNames';
 import { AppCard, AppInput, PrimaryButton, Screen } from '../components/ui';
 import { colors, fonts, radius, shadow, spacing } from '../theme';
 
@@ -124,7 +125,7 @@ export function AuthScreen({ navigation }) {
             </Pressable>
 
             {mode === 'signin' ? (
-              <Pressable onPress={() => navigation.navigate('ForgotPasswordScreen', { email })}>
+              <Pressable onPress={() => navigation.navigate(ROUTES.AUTH.FORGOT_PASSWORD, { email })}>
                 <Text style={[styles.linkText, styles.linkAccent]}>Esqueceu sua senha?</Text>
               </Pressable>
             ) : null}

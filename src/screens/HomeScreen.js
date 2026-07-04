@@ -10,6 +10,7 @@ import {
 import { useFocusEffect } from '@react-navigation/native';
 
 import { EmptyState, LoadingBlock, Screen } from '../components/ui';
+import { ROUTES } from '../navigation/routeNames';
 import { api } from '../services/Api';
 import { useAuth } from '../context/AuthContext';
 import { colors, fonts, radius, shadow, spacing } from '../theme';
@@ -62,7 +63,7 @@ export function HomeScreen({ navigation }) {
         renderItem={({ item }) => (
           <Pressable
             style={styles.card}
-            onPress={() => navigation.navigate('NotesByStore', { title: item.name, invoices: item.invoices })}
+            onPress={() => navigation.navigate(ROUTES.APP.NOTES_BY_STORE, { title: item.name, invoices: item.invoices })}
           >
             <Text style={styles.cardTitle} numberOfLines={2}>{item.name.toUpperCase()}</Text>
             <Text style={styles.cardMeta}>Qtde. de notas: {item.invoices.length}</Text>
