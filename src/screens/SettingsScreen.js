@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Alert,
   Linking,
   Modal,
   StyleSheet,
@@ -9,7 +8,7 @@ import {
 } from 'react-native';
 import { Image } from 'react-native';
 
-import { AppInput, GhostButton, PrimaryButton, Screen, SettingRow } from '../components/ui';
+import { AppInput, GhostButton, PrimaryButton, Screen, SettingRow, StatusBanner } from '../components/ui';
 import { HELP_CENTER_URL } from '../config/links';
 import { useAuth } from '../context/AuthContext';
 import { getAutoSavePreference, setAutoSavePreference } from '../storage/preferences';
@@ -22,6 +21,7 @@ export function SettingsScreen() {
   const [aboutVisible, setAboutVisible] = useState(false);
   const [name, setName] = useState(user?.name || '');
   const [saving, setSaving] = useState(false);
+  const [feedback, setFeedback] = useState(null);
 
   useEffect(() => {
     (async () => {
@@ -36,7 +36,13 @@ export function SettingsScreen() {
   async function handleToggle(value) {
     await setAutoSavePreference(value);
     setAutoSave(value);
-    Alert.alert(value ? 'Ativado' : 'Desativado', value ? 'A gravação automática foi habilitada.' : 'A gravação automática foi desabilitada.');
+    setFeedback({
+      tone: 'success',
+      title: value ? 'Gravacao automatica ativada' : 'Gravacao automatica desativada',
+      message: value
+        ? 'As proximas notas poderao ser salvas logo apos a leitura.'
+        : 'A nota sera revisada antes de ser gravada.',
+    });
   }
 
   async function handleSaveName() {
@@ -46,11 +52,24 @@ export function SettingsScreen() {
 
     try {
       setSaving(true);
+      setFeedback({
+        tone: 'info',
+        title: 'Atualizando perfil',
+        message: 'Estamos salvando seu novo nome.',
+      });
       await updateName(name.trim());
       setEditVisible(false);
-      Alert.alert('Perfil atualizado', 'Seu nome foi alterado com sucesso.');
+      setFeedback({
+        tone: 'success',
+        title: 'Perfil atualizado',
+        message: 'Seu nome foi alterado com sucesso.',
+      });
     } catch (error) {
-      Alert.alert('Atenção', error.data?.error || error.message);
+      setFeedback({
+        tone: 'error',
+        title: 'Nao foi possivel atualizar',
+        message: error.data?.error || error.message,
+      });
     } finally {
       setSaving(false);
     }
@@ -59,27 +78,31 @@ export function SettingsScreen() {
   return (
     <Screen scroll contentContainerStyle={styles.content}>
       <View style={styles.header}>
-        <Text style={styles.eyebrow}>Preferências</Text>
-        <Text style={styles.title}>Ajuste sua experiência no app</Text>
+        <Text style={styles.eyebrow}>Preferencias</Text>
+        <Text style={styles.title}>Ajuste sua experiencia no app</Text>
       </View>
+
+      {feedback ? (
+        <StatusBanner title={feedback.title} message={feedback.message} tone={feedback.tone} />
+      ) : null}
 
       <View style={styles.list}>
         <SettingRow
-          title="Editar nome de usuário"
+          title="Editar nome de usuario"
           description="Atualize o nome que aparece no menu lateral."
           onPress={() => setEditVisible(true)}
         />
 
         <SettingRow
           title="Salvar notas automaticamente"
-          description="Quando ativado, a nota lida já é gravada sem abrir a tela de revisão."
+          description="Quando ativado, a nota lida ja e gravada sem abrir a tela de revisao."
           value={autoSave}
           onValueChange={handleToggle}
         />
 
         <SettingRow
           title="Ajuda"
-          description="Abrir a documentação de apoio do projeto."
+          description="Abrir a documentacao de apoio do projeto."
           onPress={() => {
             Linking.openURL(HELP_CENTER_URL);
           }}
@@ -87,7 +110,7 @@ export function SettingsScreen() {
 
         <SettingRow
           title="Sobre"
-          description="Veja informações rápidas sobre a aplicação."
+          description="Veja informacoes rapidas sobre a aplicacao."
           onPress={() => setAboutVisible(true)}
         />
       </View>
@@ -110,8 +133,8 @@ export function SettingsScreen() {
           <View style={styles.modalCard}>
             <Image source={require('../../assets/logo.png')} style={styles.logo} resizeMode="contain" />
             <Text style={styles.modalTitle}>Sobre o Scan NFC-e</Text>
-            <Text style={styles.aboutText}>Versão 2.0.0</Text>
-            <Text style={styles.aboutText}>2020-2026 • Luís Gustavo da Cunha Cipriani</Text>
+            <Text style={styles.aboutText}>Versao 2.0.0</Text>
+            <Text style={styles.aboutText}>2020-2026 • Luis Gustavo da Cunha Cipriani</Text>
             <GhostButton title="Fechar" onPress={() => setAboutVisible(false)} />
           </View>
         </View>

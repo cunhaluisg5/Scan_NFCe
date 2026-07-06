@@ -11,9 +11,9 @@ import {
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
+import { AppCard, AppInput, PrimaryButton, Screen, StatusBanner } from '../components/ui';
 import { useAuth } from '../context/AuthContext';
 import { ROUTES } from '../navigation/routeNames';
-import { AppCard, AppInput, PrimaryButton, Screen } from '../components/ui';
 import { colors, fonts, radius, shadow, spacing } from '../theme';
 
 export function AuthScreen({ navigation }) {
@@ -24,6 +24,7 @@ export function AuthScreen({ navigation }) {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [submitting, setSubmitting] = useState(false);
+  const [feedback, setFeedback] = useState(null);
 
   const validForm = useMemo(() => {
     const emailValid = email.includes('@');
@@ -56,10 +57,21 @@ export function AuthScreen({ navigation }) {
 
     try {
       setSubmitting(true);
+      setFeedback({
+        tone: 'info',
+        title: mode === 'signup' ? 'Criando conta' : 'Entrando',
+        message: mode === 'signup'
+          ? 'Estamos validando seus dados para concluir o cadastro.'
+          : 'Estamos validando suas credenciais.',
+      });
 
       if (mode === 'signup') {
         await signUp({ name: name.trim(), email: email.trim(), password });
-        Alert.alert('Conta criada', 'Cadastro efetuado com sucesso. Agora faça seu login.');
+        setFeedback({
+          tone: 'success',
+          title: 'Conta criada',
+          message: 'Cadastro concluido. Agora voce ja pode entrar com seu e-mail e senha.',
+        });
         setMode('signin');
         setPassword('');
         setConfirmPassword('');
@@ -67,7 +79,11 @@ export function AuthScreen({ navigation }) {
         await signIn(email.trim(), password);
       }
     } catch (error) {
-      Alert.alert('Atenção', error.data?.error || error.message);
+      setFeedback({
+        tone: 'error',
+        title: 'Nao foi possivel continuar',
+        message: error.data?.error || error.message,
+      });
     } finally {
       setSubmitting(false);
     }
@@ -91,6 +107,10 @@ export function AuthScreen({ navigation }) {
 
         <AppCard style={styles.formCard}>
           <Text style={styles.formTitle}>{mode === 'signup' ? 'Nova conta' : 'Entrar'}</Text>
+          {feedback ? (
+            <StatusBanner title={feedback.title} message={feedback.message} tone={feedback.tone} />
+          ) : null}
+
           <View style={styles.formFields}>
             {mode === 'signup' ? (
               <AppInput label="Nome" value={name} onChangeText={setName} placeholder="Seu nome" autoCapitalize="words" />
@@ -109,7 +129,7 @@ export function AuthScreen({ navigation }) {
               label="Senha"
               value={password}
               onChangeText={setPassword}
-              placeholder="Mínimo de 6 caracteres"
+              placeholder="Minimo de 6 caracteres"
               secureTextEntry
             />
 
@@ -131,9 +151,14 @@ export function AuthScreen({ navigation }) {
           />
 
           <View style={styles.links}>
-            <Pressable onPress={() => setMode(mode === 'signup' ? 'signin' : 'signup')}>
+            <Pressable
+              onPress={() => {
+                setFeedback(null);
+                setMode(mode === 'signup' ? 'signin' : 'signup');
+              }}
+            >
               <Text style={styles.linkText}>
-                {mode === 'signup' ? 'Já possui conta? Fazer login' : 'Criar uma conta'}
+                {mode === 'signup' ? 'Ja possui conta? Fazer login' : 'Criar uma conta'}
               </Text>
             </Pressable>
 

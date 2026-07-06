@@ -99,6 +99,24 @@ export function EmptyState({ title, description }) {
   );
 }
 
+export function StatusBanner({ title, message, tone = 'info', actionLabel, onAction }) {
+  const toneStyle = tone === 'error'
+    ? styles.statusError
+    : tone === 'success'
+      ? styles.statusSuccess
+      : styles.statusInfo;
+
+  return (
+    <AppCard style={[styles.statusCard, toneStyle]}>
+      {title ? <Text style={styles.statusTitle}>{title}</Text> : null}
+      {message ? <Text style={styles.statusMessage}>{message}</Text> : null}
+      {actionLabel && onAction ? (
+        <GhostButton title={actionLabel} onPress={onAction} style={styles.statusAction} />
+      ) : null}
+    </AppCard>
+  );
+}
+
 export function PillSelector({ options, value, onChange }) {
   return (
     <View style={styles.pillWrap}>
@@ -262,6 +280,33 @@ const styles = StyleSheet.create({
     fontSize: 15,
     textAlign: 'center',
     lineHeight: 22,
+  },
+  statusCard: {
+    gap: spacing.sm,
+  },
+  statusInfo: {
+    borderColor: 'rgba(15, 118, 110, 0.18)',
+    backgroundColor: '#F0FDFA',
+  },
+  statusSuccess: {
+    borderColor: 'rgba(22, 163, 74, 0.18)',
+    backgroundColor: '#F0FDF4',
+  },
+  statusError: {
+    borderColor: 'rgba(220, 38, 38, 0.16)',
+    backgroundColor: '#FEF2F2',
+  },
+  statusTitle: {
+    color: colors.ink900,
+    fontWeight: '800',
+    fontSize: 16,
+  },
+  statusMessage: {
+    color: colors.ink800,
+    lineHeight: 21,
+  },
+  statusAction: {
+    alignSelf: 'flex-start',
   },
   pillWrap: {
     flexDirection: 'row',

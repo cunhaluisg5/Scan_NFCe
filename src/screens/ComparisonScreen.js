@@ -1,7 +1,5 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import {
-  Alert,
-  Pressable,
   StyleSheet,
   Text,
   View,
@@ -15,6 +13,7 @@ import {
   PrimaryButton,
   Screen,
   SelectModal,
+  StatusBanner,
 } from '../components/ui';
 import { useAuth } from '../context/AuthContext';
 import { api } from '../services/Api';
@@ -30,14 +29,17 @@ export function ComparisonScreen() {
   const [selectedItem, setSelectedItem] = useState(null);
   const [monthModalVisible, setMonthModalVisible] = useState(false);
   const [itemModalVisible, setItemModalVisible] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const load = useCallback(async () => {
     try {
       setLoading(true);
+      setErrorMessage('');
       const response = await api.get(`/nfces/user/${user._id || user.id}`);
       setInvoices(response.nfces || []);
     } catch (error) {
-      Alert.alert('Atenção', error.data?.error || error.message);
+      setInvoices([]);
+      setErrorMessage(error.data?.error || error.message);
     } finally {
       setLoading(false);
     }
@@ -97,13 +99,23 @@ export function ComparisonScreen() {
   return (
     <Screen scroll contentContainerStyle={styles.content}>
       <View style={styles.header}>
-        <Text style={styles.eyebrow}>Análise por produto</Text>
-        <Text style={styles.title}>Cruze preços por mês e veja onde cada item apareceu</Text>
+        <Text style={styles.eyebrow}>Analise por produto</Text>
+        <Text style={styles.title}>Cruze precos por mes e veja onde cada item apareceu</Text>
       </View>
+
+      {errorMessage ? (
+        <StatusBanner
+          title="Nao foi possivel carregar"
+          message={errorMessage}
+          tone="error"
+          actionLabel="Tentar novamente"
+          onAction={load}
+        />
+      ) : null}
 
       <View style={styles.actions}>
         <PrimaryButton
-          title={selectedMonth ? getMonthLabel(Number(selectedMonth)).full : 'Selecionar mês'}
+          title={selectedMonth ? getMonthLabel(Number(selectedMonth)).full : 'Selecionar mes'}
           onPress={() => setMonthModalVisible(true)}
           style={styles.actionButton}
         />
@@ -119,7 +131,7 @@ export function ComparisonScreen() {
 
       {selectedMonth ? (
         <AppCard style={styles.summaryCard}>
-          <Text style={styles.summaryTitle}>Detalhes do mês</Text>
+          <Text style={styles.summaryTitle}>Detalhes do mes</Text>
           <Text style={styles.summaryText}>Total de notas: {monthSummary.invoices}</Text>
           <Text style={styles.summaryText}>Total de itens: {monthSummary.items}</Text>
           <Text style={styles.summaryText}>Valor total de compra: {formatCurrency(monthSummary.total)}</Text>
@@ -134,7 +146,7 @@ export function ComparisonScreen() {
             {items.map((item, index) => (
               <View key={`${item.itemCode}-${index}`} style={styles.itemBlock}>
                 <Text style={styles.itemName}>{item.itemName}</Text>
-                <Text style={styles.itemMeta}>Código: {item.itemCode}</Text>
+                <Text style={styles.itemMeta}>Codigo: {item.itemCode}</Text>
                 <Text style={styles.itemMeta}>Valor: {formatCurrency(item.itemValue)}</Text>
               </View>
             ))}
@@ -145,20 +157,20 @@ export function ComparisonScreen() {
           </AppCard>
         )) : (
           <EmptyState
-            title="Nenhuma ocorrência"
-            description="Esse item não apareceu nas notas do mês selecionado."
+            title="Nenhuma ocorrencia"
+            description="Esse item nao apareceu nas notas do mes selecionado."
           />
         )
       ) : (
         <EmptyState
           title="Escolha um recorte"
-          description="Selecione primeiro o mês e depois o produto para iniciar a comparação."
+          description="Selecione primeiro o mes e depois o produto para iniciar a comparacao."
         />
       )}
 
       <SelectModal
         visible={monthModalVisible}
-        title="Selecione um mês"
+        title="Selecione um mes"
         options={getMonthOptions()}
         onSelect={(value) => {
           setSelectedMonth(value);

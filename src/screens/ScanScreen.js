@@ -1,6 +1,5 @@
 import React, { useCallback, useState } from 'react';
 import {
-  Alert,
   Pressable,
   StyleSheet,
   Text,
@@ -10,7 +9,7 @@ import {
 import { CameraView, useCameraPermissions } from 'expo-camera';
 import { useFocusEffect } from '@react-navigation/native';
 
-import { LoadingBlock, PrimaryButton, Screen } from '../components/ui';
+import { PrimaryButton, Screen, StatusBanner } from '../components/ui';
 import { ROUTES } from '../navigation/routeNames';
 import { api } from '../services/Api';
 import { getAutoSavePreference } from '../storage/preferences';
@@ -22,6 +21,7 @@ export function ScanScreen({ navigation }) {
   const [scanned, setScanned] = useState(false);
   const [processing, setProcessing] = useState(false);
   const [active, setActive] = useState(true);
+  const [feedback, setFeedback] = useState(null);
 
   useFocusEffect(
     useCallback(() => {
@@ -38,13 +38,22 @@ export function ScanScreen({ navigation }) {
     const normalizedUrl = normalizeNfceUrl(data);
 
     if (!isValidNfceUrl(normalizedUrl)) {
-      Alert.alert('QR Code inválido', 'A leitura não corresponde a uma NFC-e válida de Minas Gerais.');
+      setFeedback({
+        tone: 'error',
+        title: 'QR Code invalido',
+        message: 'A leitura nao corresponde a uma NFC-e valida de Minas Gerais.',
+      });
       return;
     }
 
     try {
       setScanned(true);
       setProcessing(true);
+      setFeedback({
+        tone: 'info',
+        title: 'Consultando nota',
+        message: 'Estamos buscando os dados da NFC-e no portal fiscal.',
+      });
       Vibration.vibrate(120);
 
       const crawlerPayload = await api.post('/crawler', { url: normalizedUrl });
@@ -52,8 +61,17 @@ export function ScanScreen({ navigation }) {
       const autoSave = await getAutoSavePreference();
 
       if (autoSave) {
+        setFeedback({
+          tone: 'info',
+          title: 'Salvando nota',
+          message: 'A gravacao automatica esta ativada. Finalizando registro.',
+        });
         await api.post('/nfces', crawlerPayload);
-        Alert.alert('Nota salva', 'A NFC-e foi registrada automaticamente.');
+        setFeedback({
+          tone: 'success',
+          title: 'Nota salva',
+          message: 'A NFC-e foi registrada automaticamente.',
+        });
         navigation.navigate(ROUTES.APP.HOME);
       } else {
         navigation.navigate(ROUTES.APP.INVOICE_DETAILS, {
@@ -63,7 +81,11 @@ export function ScanScreen({ navigation }) {
         });
       }
     } catch (error) {
-      Alert.alert('Atenção', error.data?.error || error.message);
+      setFeedback({
+        tone: 'error',
+        title: 'Nao foi possivel ler a nota',
+        message: error.data?.error || error.message,
+      });
       setScanned(false);
     } finally {
       setProcessing(false);
@@ -71,17 +93,21 @@ export function ScanScreen({ navigation }) {
   }
 
   if (!permission) {
-    return <LoadingBlock message="Verificando acesso à câmera..." />;
+    return (
+      <Screen contentContainerStyle={styles.permissionWrap}>
+        <StatusBanner title="Preparando camera" message="Verificando acesso a camera do dispositivo." tone="info" />
+      </Screen>
+    );
   }
 
   if (!permission.granted) {
     return (
       <Screen contentContainerStyle={styles.permissionWrap}>
-        <Text style={styles.permissionTitle}>Precisamos da câmera para ler o QR Code</Text>
+        <Text style={styles.permissionTitle}>Precisamos da camera para ler o QR Code</Text>
         <Text style={styles.permissionText}>
-          Autorize o acesso e volte para capturar as informações da NFC-e diretamente da nota.
+          Autorize o acesso e volte para capturar as informacoes da NFC-e diretamente da nota.
         </Text>
-        <PrimaryButton title="Permitir câmera" onPress={requestPermission} />
+        <PrimaryButton title="Permitir camera" onPress={requestPermission} />
       </Screen>
     );
   }
@@ -111,11 +137,20 @@ export function ScanScreen({ navigation }) {
         </View>
 
         <View style={styles.bottomArea}>
+          {feedback ? (
+            <StatusBanner title={feedback.title} message={feedback.message} tone={feedback.tone} />
+          ) : null}
           <Text style={styles.bottomText}>
-            {processing ? 'Consultando a nota...' : 'Centralize o código dentro da moldura.'}
+            {processing ? 'Consultando a nota...' : 'Centralize o codigo dentro da moldura.'}
           </Text>
           {scanned && !processing ? (
-            <Pressable style={styles.retryButton} onPress={() => setScanned(false)}>
+            <Pressable
+              style={styles.retryButton}
+              onPress={() => {
+                setFeedback(null);
+                setScanned(false);
+              }}
+            >
               <Text style={styles.retryText}>Ler novamente</Text>
             </Pressable>
           ) : null}

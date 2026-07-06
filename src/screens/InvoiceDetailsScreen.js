@@ -7,27 +7,41 @@ import {
   View,
 } from 'react-native';
 
-import { api } from '../services/Api';
-import { AppCard, GhostButton, PrimaryButton, Screen } from '../components/ui';
+import { AppCard, GhostButton, PrimaryButton, Screen, StatusBanner } from '../components/ui';
 import { ROUTES } from '../navigation/routeNames';
-import { colors, fonts, radius, spacing } from '../theme';
+import { api } from '../services/Api';
+import { colors, fonts, spacing } from '../theme';
 import { formatCurrency } from '../utils/format';
 
 export function InvoiceDetailsScreen({ navigation, route }) {
   const { invoice, mode, crawlerPayload } = route.params;
   const [busy, setBusy] = useState(false);
+  const [feedback, setFeedback] = useState(null);
 
   async function saveInvoice() {
     try {
       setBusy(true);
+      setFeedback({
+        tone: 'info',
+        title: 'Salvando nota',
+        message: 'Estamos registrando a NFC-e em sua conta.',
+      });
       await api.post('/nfces', crawlerPayload);
-      Alert.alert('Nota salva', 'A NFC-e foi registrada com sucesso.');
+      setFeedback({
+        tone: 'success',
+        title: 'Nota salva',
+        message: 'A NFC-e foi registrada com sucesso.',
+      });
       navigation.reset({
         index: 0,
         routes: [{ name: ROUTES.APP.ROOT }],
       });
     } catch (error) {
-      Alert.alert('Atenção', error.data?.error || error.message);
+      setFeedback({
+        tone: 'error',
+        title: 'Nao foi possivel salvar',
+        message: error.data?.error || error.message,
+      });
     } finally {
       setBusy(false);
     }
@@ -47,14 +61,27 @@ export function InvoiceDetailsScreen({ navigation, route }) {
   async function deleteInvoice() {
     try {
       setBusy(true);
+      setFeedback({
+        tone: 'info',
+        title: 'Excluindo nota',
+        message: 'Estamos removendo a NFC-e da sua conta.',
+      });
       await api.delete(`/nfces/${invoice._id || invoice.id}`);
-      Alert.alert('Nota removida', 'A NFC-e foi excluída com sucesso.');
+      setFeedback({
+        tone: 'success',
+        title: 'Nota removida',
+        message: 'A NFC-e foi excluida com sucesso.',
+      });
       navigation.reset({
         index: 0,
         routes: [{ name: ROUTES.APP.ROOT }],
       });
     } catch (error) {
-      Alert.alert('Atenção', error.data?.error || error.message);
+      setFeedback({
+        tone: 'error',
+        title: 'Nao foi possivel excluir',
+        message: error.data?.error || error.message,
+      });
     } finally {
       setBusy(false);
     }
@@ -71,7 +98,7 @@ export function InvoiceDetailsScreen({ navigation, route }) {
             style={styles.headerButton}
           />
         ) : (
-          <GhostButton title="Excluir" onPress={confirmDelete} danger style={styles.headerGhostButton} />
+          <GhostButton title={busy ? 'Excluindo...' : 'Excluir'} onPress={confirmDelete} danger style={styles.headerGhostButton} />
         )
       ),
     });
@@ -80,12 +107,16 @@ export function InvoiceDetailsScreen({ navigation, route }) {
   return (
     <Screen>
       <View style={styles.content}>
+        {feedback ? (
+          <StatusBanner title={feedback.title} message={feedback.message} tone={feedback.tone} />
+        ) : null}
+
         <AppCard style={styles.summaryCard}>
           <Text style={styles.storeName}>{invoice.socialName?.toUpperCase()}</Text>
           <Text style={styles.summaryText}>CNPJ: {invoice.cnpj}</Text>
           <Text style={styles.summaryText}>UF: {invoice.uf}</Text>
-          <Text style={styles.summaryText}>Inscrição estadual: {invoice.stateRegistration}</Text>
-          <Text style={styles.summaryText}>Data de emissão: {invoice.issuanceDate}</Text>
+          <Text style={styles.summaryText}>Inscricao estadual: {invoice.stateRegistration}</Text>
+          <Text style={styles.summaryText}>Data de emissao: {invoice.issuanceDate}</Text>
         </AppCard>
 
         <Text style={styles.sectionTitle}>Itens da nota</Text>
@@ -96,7 +127,7 @@ export function InvoiceDetailsScreen({ navigation, route }) {
           renderItem={({ item }) => (
             <AppCard style={styles.itemCard}>
               <Text style={styles.itemTitle}>{item.itemName}</Text>
-              <Text style={styles.itemMeta}>Código: {item.itemCode || 'N/D'}</Text>
+              <Text style={styles.itemMeta}>Codigo: {item.itemCode || 'N/D'}</Text>
               <Text style={styles.itemMeta}>Quantidade: {item.qtdItem}</Text>
               <Text style={styles.itemMeta}>Unidade: {item.unItem}</Text>
               <Text style={styles.itemValue}>{formatCurrency(item.itemValue)}</Text>
@@ -104,7 +135,7 @@ export function InvoiceDetailsScreen({ navigation, route }) {
           )}
           ListFooterComponent={(
             <AppCard style={styles.footerCard}>
-              <Text style={styles.footerText}>Base de cálculo: {formatCurrency(invoice.icmsCalculationBasis)}</Text>
+              <Text style={styles.footerText}>Base de calculo: {formatCurrency(invoice.icmsCalculationBasis)}</Text>
               <Text style={styles.footerText}>Valor ICMS: {formatCurrency(invoice.icmsValue)}</Text>
               <Text style={styles.footerStrong}>Itens totais: {invoice.totalItems}</Text>
               <Text style={styles.footerStrong}>Valor total: {formatCurrency(invoice.totalValue)}</Text>

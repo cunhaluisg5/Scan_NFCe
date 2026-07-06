@@ -9,10 +9,10 @@ import {
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 
-import { EmptyState, LoadingBlock, Screen } from '../components/ui';
+import { EmptyState, LoadingBlock, PrimaryButton, Screen, StatusBanner } from '../components/ui';
+import { useAuth } from '../context/AuthContext';
 import { ROUTES } from '../navigation/routeNames';
 import { api } from '../services/Api';
-import { useAuth } from '../context/AuthContext';
 import { colors, fonts, radius, shadow, spacing } from '../theme';
 import { formatCurrency } from '../utils/format';
 import { groupInvoicesByStore } from '../utils/nfce';
@@ -21,12 +21,17 @@ export function HomeScreen({ navigation }) {
   const { user } = useAuth();
   const [loading, setLoading] = useState(true);
   const [stores, setStores] = useState([]);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const load = useCallback(async () => {
     try {
       setLoading(true);
+      setErrorMessage('');
       const response = await api.get(`/nfces/user/${user._id || user.id}`);
       setStores(groupInvoicesByStore(response.nfces || []));
+    } catch (error) {
+      setStores([]);
+      setErrorMessage(error.data?.error || error.message);
     } finally {
       setLoading(false);
     }
@@ -49,16 +54,33 @@ export function HomeScreen({ navigation }) {
         columnWrapperStyle={stores.length ? styles.row : undefined}
         keyExtractor={(item) => item.id}
         ListHeaderComponent={(
-          <View style={styles.header}>
-            <Text style={styles.eyebrow}>Painel de compras</Text>
-            <Text style={styles.title}>Suas notas agrupadas por estabelecimento</Text>
-          </View>
+          <>
+            <View style={styles.header}>
+              <Text style={styles.eyebrow}>Painel de compras</Text>
+              <Text style={styles.title}>Suas notas agrupadas por estabelecimento</Text>
+            </View>
+            {errorMessage ? (
+              <StatusBanner
+                title="Nao foi possivel carregar"
+                message={errorMessage}
+                tone="error"
+                actionLabel="Tentar novamente"
+                onAction={load}
+              />
+            ) : null}
+          </>
         )}
         ListEmptyComponent={(
-          <EmptyState
-            title="Nenhuma nota por aqui"
-            description="Use o leitor de QR Code para importar sua primeira NFC-e."
-          />
+          errorMessage ? (
+            <View style={styles.retryWrap}>
+              <PrimaryButton title="Tentar novamente" onPress={load} />
+            </View>
+          ) : (
+            <EmptyState
+              title="Nenhuma nota por aqui"
+              description="Use o leitor de QR Code para importar sua primeira NFC-e."
+            />
+          )
         )}
         renderItem={({ item }) => (
           <Pressable
@@ -100,6 +122,9 @@ const styles = StyleSheet.create({
   },
   row: {
     gap: spacing.md,
+  },
+  retryWrap: {
+    marginTop: spacing.md,
   },
   card: {
     flex: 1,

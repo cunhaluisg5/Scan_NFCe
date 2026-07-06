@@ -1,13 +1,14 @@
 import React, { useMemo, useState } from 'react';
-import { Alert, Image, StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Text, View } from 'react-native';
 
+import { AppCard, AppInput, GhostButton, PrimaryButton, Screen, StatusBanner } from '../components/ui';
 import { api } from '../services/Api';
-import { AppCard, AppInput, GhostButton, PrimaryButton, Screen } from '../components/ui';
 import { colors, fonts, spacing } from '../theme';
 
 export function ForgotPasswordScreen({ navigation, route }) {
   const [email, setEmail] = useState(route.params?.email || '');
   const [submitting, setSubmitting] = useState(false);
+  const [feedback, setFeedback] = useState(null);
   const valid = useMemo(() => email.includes('@'), [email]);
 
   async function handleSubmit() {
@@ -17,11 +18,23 @@ export function ForgotPasswordScreen({ navigation, route }) {
 
     try {
       setSubmitting(true);
+      setFeedback({
+        tone: 'info',
+        title: 'Enviando e-mail',
+        message: 'Estamos preparando as instrucoes de recuperacao.',
+      });
       await api.post('/auth/forgot_password', { email: email.trim() }, { auth: false });
-      Alert.alert('E-mail enviado', 'As instruções de recuperação foram enviadas para o endereço informado.');
-      navigation.goBack();
+      setFeedback({
+        tone: 'success',
+        title: 'E-mail enviado',
+        message: 'As instrucoes de recuperacao foram enviadas para o endereco informado.',
+      });
     } catch (error) {
-      Alert.alert('Atenção', error.data?.error || error.message);
+      setFeedback({
+        tone: 'error',
+        title: 'Nao foi possivel enviar',
+        message: error.data?.error || error.message,
+      });
     } finally {
       setSubmitting(false);
     }
@@ -33,8 +46,12 @@ export function ForgotPasswordScreen({ navigation, route }) {
         <Image source={require('../../assets/logo.png')} style={styles.logo} resizeMode="contain" />
         <Text style={styles.title}>Recuperar senha</Text>
         <Text style={styles.description}>
-          Informe o e-mail cadastrado para receber as instruções de redefinição.
+          Informe o e-mail cadastrado para receber as instrucoes de redefinicao.
         </Text>
+
+        {feedback ? (
+          <StatusBanner title={feedback.title} message={feedback.message} tone={feedback.tone} />
+        ) : null}
 
         <AppInput
           label="E-mail"
