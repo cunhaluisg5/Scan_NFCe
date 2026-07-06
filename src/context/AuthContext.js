@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
 
-import { api } from '../services/Api';
+import { api, setAuthFailureHandler } from '../services/Api';
 import { clearSession, getSession, saveSession, updateStoredUser } from '../storage/session';
 
 const AuthContext = createContext(null);
@@ -8,6 +8,7 @@ const AuthContext = createContext(null);
 export function AuthProvider({ children }) {
   const [status, setStatus] = useState('loading');
   const [user, setUser] = useState(null);
+  const [authMessage, setAuthMessage] = useState('');
 
   useEffect(() => {
     let active = true;
@@ -23,9 +24,11 @@ export function AuthProvider({ children }) {
           setUser(session.user);
           setStatus('authenticated');
         } else {
+          await clearSession();
           setStatus('unauthenticated');
         }
       } catch (error) {
+        await clearSession();
         setStatus('unauthenticated');
       }
     })();
@@ -35,13 +38,27 @@ export function AuthProvider({ children }) {
     };
   }, []);
 
+  useEffect(() => {
+    setAuthFailureHandler(async (error) => {
+      setUser(null);
+      setStatus('unauthenticated');
+      setAuthMessage(error?.message || 'Sua sessao expirou. Entre novamente.');
+    });
+
+    return () => {
+      setAuthFailureHandler(null);
+    };
+  }, []);
+
   const value = useMemo(() => ({
     status,
     user,
+    authMessage,
     async signIn(email, password) {
       const response = await api.post('/auth/authenticate', { email, password }, { auth: false });
       await saveSession(response);
       setUser(response.user);
+      setAuthMessage('');
       setStatus('authenticated');
       return response.user;
     },
@@ -52,6 +69,7 @@ export function AuthProvider({ children }) {
     async signOut() {
       await clearSession();
       setUser(null);
+      setAuthMessage('');
       setStatus('unauthenticated');
     },
     async updateName(name) {
@@ -65,7 +83,10 @@ export function AuthProvider({ children }) {
       setUser(session.user);
       return session.user;
     },
-  }), [status, user]);
+    clearAuthMessage() {
+      setAuthMessage('');
+    },
+  }), [authMessage, status, user]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

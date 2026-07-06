@@ -4,6 +4,7 @@ import { NativeModules, Platform } from 'react-native';
 const API_PORT = '3000';
 const API_PROTOCOL = 'http';
 const MANUAL_API_URL = process.env.EXPO_PUBLIC_API_URL || '';
+const MANUAL_TIMEOUT_MS = Number(process.env.EXPO_PUBLIC_API_TIMEOUT_MS || '15000');
 
 function resolveHost() {
   const expoHostUri =
@@ -31,3 +32,4 @@ function resolveHost() {
 }
 
 export const API_BASE_URL = MANUAL_API_URL || `${API_PROTOCOL}://${resolveHost()}:${API_PORT}`;
+export const API_TIMEOUT_MS = Number.isFinite(MANUAL_TIMEOUT_MS) ? MANUAL_TIMEOUT_MS : 15000;

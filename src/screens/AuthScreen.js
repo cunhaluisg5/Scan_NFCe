@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
   Alert,
   Image,
@@ -17,7 +17,7 @@ import { AppCard, AppInput, PrimaryButton, Screen } from '../components/ui';
 import { colors, fonts, radius, shadow, spacing } from '../theme';
 
 export function AuthScreen({ navigation }) {
-  const { signIn, signUp } = useAuth();
+  const { authMessage, clearAuthMessage, signIn, signUp } = useAuth();
   const [mode, setMode] = useState('signin');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -35,6 +35,19 @@ export function AuthScreen({ navigation }) {
 
     return Boolean(emailValid && passwordValid);
   }, [confirmPassword, email, mode, name, password]);
+
+  useEffect(() => {
+    if (!authMessage) {
+      return;
+    }
+
+    Alert.alert('Sessao encerrada', authMessage, [
+      {
+        text: 'OK',
+        onPress: clearAuthMessage,
+      },
+    ]);
+  }, [authMessage, clearAuthMessage]);
 
   async function handleSubmit() {
     if (!validForm || submitting) {
