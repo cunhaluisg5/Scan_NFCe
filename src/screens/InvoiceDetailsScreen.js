@@ -1,22 +1,28 @@
-import React, { useLayoutEffect, useState } from 'react';
+import React, { useLayoutEffect, useMemo, useState } from 'react';
 import {
   Alert,
-  FlatList,
   StyleSheet,
   Text,
   View,
 } from 'react-native';
 
-import { AppCard, GhostButton, PrimaryButton, Screen, StatusBanner } from '../components/ui';
+import { AppCard, GhostButton, MetricCard, PrimaryButton, Screen, SectionHeader, StatusBanner } from '../components/ui';
 import { ROUTES } from '../navigation/routeNames';
 import { api } from '../services/Api';
-import { colors, fonts, spacing } from '../theme';
+import { colors, spacing } from '../theme';
 import { formatCurrency } from '../utils/format';
 
 export function InvoiceDetailsScreen({ navigation, route }) {
   const { invoice, mode, crawlerPayload } = route.params;
   const [busy, setBusy] = useState(false);
   const [feedback, setFeedback] = useState(null);
+
+  const metrics = useMemo(() => ([
+    { label: 'Itens totais', value: String(invoice.totalItems || invoice.items?.length || 0) },
+    { label: 'Total da compra', value: formatCurrency(invoice.totalValue), tone: 'amber' },
+  ]), [invoice.items?.length, invoice.totalItems, invoice.totalValue]);
+
+  const items = useMemo(() => invoice.items || [], [invoice.items]);
 
   async function saveInvoice() {
     try {
@@ -98,67 +104,96 @@ export function InvoiceDetailsScreen({ navigation, route }) {
             style={styles.headerButton}
           />
         ) : (
-          <GhostButton title={busy ? 'Excluindo...' : 'Excluir'} onPress={confirmDelete} danger style={styles.headerGhostButton} />
+          <GhostButton
+            title={busy ? 'Excluindo...' : 'Excluir'}
+            onPress={confirmDelete}
+            danger
+            style={styles.headerGhostButton}
+          />
         )
       ),
     });
   }, [busy, mode, navigation]);
 
   return (
-    <Screen>
-      <View style={styles.content}>
-        {feedback ? (
-          <StatusBanner title={feedback.title} message={feedback.message} tone={feedback.tone} />
-        ) : null}
+    <Screen scroll contentContainerStyle={styles.content}>
+      <SectionHeader
+        eyebrow="Detalhes da compra"
+        title={invoice.socialName?.toUpperCase()}
+        description="Veja os dados principais da NFC-e, confira cada item lido e valide os totais fiscais."
+      />
 
-        <AppCard style={styles.summaryCard}>
-          <Text style={styles.storeName}>{invoice.socialName?.toUpperCase()}</Text>
-          <Text style={styles.summaryText}>CNPJ: {invoice.cnpj}</Text>
-          <Text style={styles.summaryText}>UF: {invoice.uf}</Text>
-          <Text style={styles.summaryText}>Inscricao estadual: {invoice.stateRegistration}</Text>
-          <Text style={styles.summaryText}>Data de emissao: {invoice.issuanceDate}</Text>
-        </AppCard>
+      {feedback ? (
+        <StatusBanner title={feedback.title} message={feedback.message} tone={feedback.tone} />
+      ) : null}
 
-        <Text style={styles.sectionTitle}>Itens da nota</Text>
-        <FlatList
-          data={invoice.items || []}
-          keyExtractor={(item, index) => item._id || item.id || `${item.itemCode}-${index}`}
-          contentContainerStyle={styles.itemsList}
-          renderItem={({ item }) => (
-            <AppCard style={styles.itemCard}>
+      <View style={styles.metrics}>
+        {metrics.map((item) => (
+          <MetricCard key={item.label} label={item.label} value={item.value} tone={item.tone} style={styles.metricCard} />
+        ))}
+      </View>
+
+      <AppCard style={styles.summaryCard}>
+        <Text style={styles.summaryLabel}>Resumo fiscal</Text>
+        <Text style={styles.summaryText}>CNPJ: {invoice.cnpj}</Text>
+        <Text style={styles.summaryText}>UF: {invoice.uf}</Text>
+        <Text style={styles.summaryText}>Inscricao estadual: {invoice.stateRegistration}</Text>
+        <Text style={styles.summaryText}>Data de emissao: {invoice.issuanceDate}</Text>
+      </AppCard>
+
+      <Text style={styles.sectionTitle}>Itens da nota</Text>
+
+      {items.length ? (
+        <View style={styles.itemsList}>
+          {items.map((item, index) => (
+            <AppCard key={item._id || item.id || `${item.itemCode}-${index}`} style={styles.itemCard}>
               <Text style={styles.itemTitle}>{item.itemName}</Text>
               <Text style={styles.itemMeta}>Codigo: {item.itemCode || 'N/D'}</Text>
               <Text style={styles.itemMeta}>Quantidade: {item.qtdItem}</Text>
               <Text style={styles.itemMeta}>Unidade: {item.unItem}</Text>
               <Text style={styles.itemValue}>{formatCurrency(item.itemValue)}</Text>
             </AppCard>
-          )}
-          ListFooterComponent={(
-            <AppCard style={styles.footerCard}>
-              <Text style={styles.footerText}>Base de calculo: {formatCurrency(invoice.icmsCalculationBasis)}</Text>
-              <Text style={styles.footerText}>Valor ICMS: {formatCurrency(invoice.icmsValue)}</Text>
-              <Text style={styles.footerStrong}>Itens totais: {invoice.totalItems}</Text>
-              <Text style={styles.footerStrong}>Valor total: {formatCurrency(invoice.totalValue)}</Text>
-            </AppCard>
-          )}
-        />
-      </View>
+          ))}
+        </View>
+      ) : (
+        <AppCard style={styles.emptyItemsCard}>
+          <Text style={styles.emptyItemsTitle}>Nenhum item encontrado</Text>
+          <Text style={styles.emptyItemsText}>
+            Esta nota foi salva sem itens detalhados ou os dados retornados vieram incompletos.
+          </Text>
+        </AppCard>
+      )}
+
+      <AppCard style={styles.footerCard}>
+        <Text style={styles.footerText}>Base de calculo: {formatCurrency(invoice.icmsCalculationBasis)}</Text>
+        <Text style={styles.footerText}>Valor ICMS: {formatCurrency(invoice.icmsValue)}</Text>
+        <Text style={styles.footerStrong}>Itens totais: {invoice.totalItems}</Text>
+        <Text style={styles.footerStrong}>Valor total: {formatCurrency(invoice.totalValue)}</Text>
+      </AppCard>
     </Screen>
   );
 }
 
 const styles = StyleSheet.create({
   content: {
-    flex: 1,
     gap: spacing.md,
   },
-  summaryCard: {
-    gap: 6,
+  metrics: {
+    flexDirection: 'row',
+    gap: spacing.md,
   },
-  storeName: {
-    color: colors.ink900,
-    fontFamily: fonts.heading,
-    fontSize: 24,
+  metricCard: {
+    flex: 1,
+  },
+  summaryCard: {
+    gap: 8,
+  },
+  summaryLabel: {
+    color: colors.slate500,
+    fontSize: 12,
+    fontWeight: '800',
+    letterSpacing: 1,
+    textTransform: 'uppercase',
   },
   summaryText: {
     color: colors.ink800,
@@ -166,12 +201,11 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     color: colors.ink900,
-    fontFamily: fonts.heading,
     fontSize: 24,
+    fontWeight: '800',
   },
   itemsList: {
     gap: spacing.md,
-    paddingBottom: spacing.xxl,
   },
   itemCard: {
     gap: 6,
@@ -185,12 +219,26 @@ const styles = StyleSheet.create({
     color: colors.slate500,
   },
   itemValue: {
-    color: colors.amber600,
+    color: colors.amber700,
     fontWeight: '800',
     marginTop: 4,
   },
+  emptyItemsCard: {
+    gap: spacing.xs,
+    backgroundColor: colors.surfaceStrong,
+  },
+  emptyItemsTitle: {
+    color: colors.ink900,
+    fontSize: 18,
+    fontWeight: '800',
+  },
+  emptyItemsText: {
+    color: colors.ink800,
+    lineHeight: 21,
+  },
   footerCard: {
     gap: 8,
+    backgroundColor: colors.surfaceStrong,
   },
   footerText: {
     color: colors.ink800,

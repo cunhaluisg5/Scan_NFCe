@@ -7,12 +7,12 @@ import {
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 
-import { AppCard, EmptyState, LoadingBlock, PillSelector, Screen, StatusBanner } from '../components/ui';
+import { AppCard, EmptyState, LoadingBlock, MetricCard, PillSelector, Screen, SectionHeader, StatusBanner } from '../components/ui';
 import { SimpleLineChart } from '../components/SimpleLineChart';
 import { useAuth } from '../context/AuthContext';
 import { ROUTES } from '../navigation/routeNames';
 import { api } from '../services/Api';
-import { colors, fonts, spacing } from '../theme';
+import { colors, spacing } from '../theme';
 import { getPeriodBreakdown, getMostExpensiveInvoices, buildTimeline } from '../utils/nfce';
 import { formatCurrency } from '../utils/format';
 
@@ -50,6 +50,7 @@ export function SpendingScreen({ navigation }) {
   const timeline = useMemo(() => buildTimeline(invoices, timeframe), [invoices, timeframe]);
   const expensiveInvoices = useMemo(() => getMostExpensiveInvoices(invoices, timeframe), [invoices, timeframe]);
   const breakdown = useMemo(() => getPeriodBreakdown(invoices, timeframe), [invoices, timeframe]);
+  const highlightedTotal = useMemo(() => timeline.values.reduce((sum, value) => sum + value, 0), [timeline.values]);
 
   if (loading) {
     return <LoadingBlock message="Montando a analise..." />;
@@ -57,10 +58,11 @@ export function SpendingScreen({ navigation }) {
 
   return (
     <Screen scroll contentContainerStyle={styles.content}>
-      <View style={styles.header}>
-        <Text style={styles.eyebrow}>Analise temporal</Text>
-        <Text style={styles.title}>Veja seus gastos por dia, mes e ano</Text>
-      </View>
+      <SectionHeader
+        eyebrow="Analise temporal"
+        title="Veja seus gastos por periodo"
+        description="Acompanhe a evolucao das compras, identifique picos de gasto e abra a nota mais cara do recorte."
+      />
 
       {errorMessage ? (
         <StatusBanner
@@ -72,11 +74,24 @@ export function SpendingScreen({ navigation }) {
         />
       ) : null}
 
+      <View style={styles.metrics}>
+        <MetricCard label="Notas no recorte" value={String(expensiveInvoices.length)} />
+        <MetricCard label="Total observado" value={formatCurrency(highlightedTotal)} tone="amber" />
+      </View>
+
       <PillSelector options={OPTIONS} value={timeframe} onChange={setTimeframe} />
 
-      <SimpleLineChart labels={timeline.labels} values={timeline.values} />
+      <AppCard style={styles.chartCard}>
+        <Text style={styles.cardTitle}>Linha de gastos</Text>
+        <SimpleLineChart labels={timeline.labels} values={timeline.values} />
+      </AppCard>
 
-      <Text style={styles.sectionTitle}>Nota mais cara no periodo</Text>
+      <SectionHeader
+        eyebrow="Destaque"
+        title="Notas com maior impacto"
+        description="As notas abaixo representam os maiores valores encontrados no periodo selecionado."
+      />
+
       {expensiveInvoices.length ? expensiveInvoices.map((invoice) => (
         <Pressable
           key={invoice._id || invoice.id || invoice.accesskey}
@@ -96,7 +111,11 @@ export function SpendingScreen({ navigation }) {
 
       {(timeframe === 'month' || timeframe === 'year') ? (
         <>
-          <Text style={styles.sectionTitle}>Resumo do periodo</Text>
+          <SectionHeader
+            eyebrow="Resumo"
+            title="Fechamento do periodo"
+            description="Cada card resume a quantidade de notas e o valor acumulado naquele grupo."
+          />
           <View style={styles.breakdownList}>
             {breakdown.map((item) => (
               <AppCard key={item.label} style={styles.breakdownCard}>
@@ -116,34 +135,26 @@ const styles = StyleSheet.create({
   content: {
     gap: spacing.lg,
   },
-  header: {
-    gap: spacing.xs,
+  metrics: {
+    flexDirection: 'row',
+    gap: spacing.md,
   },
-  eyebrow: {
-    color: colors.amber600,
-    fontSize: 12,
-    fontWeight: '700',
-    letterSpacing: 1.8,
-    textTransform: 'uppercase',
+  chartCard: {
+    gap: spacing.md,
   },
-  title: {
+  cardTitle: {
     color: colors.ink900,
-    fontFamily: fonts.heading,
-    fontSize: 30,
-    lineHeight: 38,
-  },
-  sectionTitle: {
-    color: colors.ink900,
-    fontFamily: fonts.heading,
-    fontSize: 24,
+    fontSize: 20,
+    fontWeight: '800',
   },
   invoiceCard: {
     gap: 6,
   },
   invoiceTitle: {
     color: colors.ink900,
-    fontFamily: fonts.heading,
     fontSize: 20,
+    fontWeight: '800',
+    lineHeight: 26,
   },
   invoiceText: {
     color: colors.ink800,

@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import {
   FlatList,
   Image,
@@ -9,11 +9,19 @@ import {
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 
-import { EmptyState, LoadingBlock, PrimaryButton, Screen, StatusBanner } from '../components/ui';
+import {
+  EmptyState,
+  LoadingBlock,
+  MetricCard,
+  PrimaryButton,
+  Screen,
+  SectionHeader,
+  StatusBanner,
+} from '../components/ui';
 import { useAuth } from '../context/AuthContext';
 import { ROUTES } from '../navigation/routeNames';
 import { api } from '../services/Api';
-import { colors, fonts, radius, shadow, spacing } from '../theme';
+import { colors, radius, shadow, spacing } from '../theme';
 import { formatCurrency } from '../utils/format';
 import { groupInvoicesByStore } from '../utils/nfce';
 
@@ -41,6 +49,17 @@ export function HomeScreen({ navigation }) {
     load();
   }, [load]));
 
+  const summary = useMemo(() => {
+    const invoiceCount = stores.reduce((total, store) => total + store.invoices.length, 0);
+    const total = stores.reduce((acc, store) => acc + store.total, 0);
+
+    return {
+      storeCount: stores.length,
+      invoiceCount,
+      total,
+    };
+  }, [stores]);
+
   if (loading) {
     return <LoadingBlock message="Buscando suas notas..." />;
   }
@@ -55,10 +74,28 @@ export function HomeScreen({ navigation }) {
         keyExtractor={(item) => item.id}
         ListHeaderComponent={(
           <>
-            <View style={styles.header}>
-              <Text style={styles.eyebrow}>Painel de compras</Text>
-              <Text style={styles.title}>Suas notas agrupadas por estabelecimento</Text>
+            <View style={styles.heroCard}>
+              <View style={styles.heroText}>
+                <SectionHeader
+                  eyebrow="Painel principal"
+                  title={`Bem-vindo, ${user?.name?.split(' ')[0] || 'Usuario'}`}
+                  description="Acompanhe suas compras, abra suas notas por estabelecimento e acesse rapidamente o leitor."
+                />
+                <PrimaryButton
+                  title="Ler nova nota"
+                  onPress={() => navigation.navigate(ROUTES.APP.SCAN)}
+                  style={styles.heroButton}
+                />
+              </View>
+              <Image source={require('../../assets/bags.png')} style={styles.heroImage} resizeMode="contain" />
             </View>
+
+            <View style={styles.metricsGrid}>
+              <MetricCard label="Estabelecimentos" value={String(summary.storeCount)} />
+              <MetricCard label="Notas salvas" value={String(summary.invoiceCount)} tone="amber" />
+              <MetricCard label="Total acumulado" value={formatCurrency(summary.total)} tone="coral" style={styles.metricWide} />
+            </View>
+
             {errorMessage ? (
               <StatusBanner
                 title="Nao foi possivel carregar"
@@ -68,6 +105,13 @@ export function HomeScreen({ navigation }) {
                 onAction={load}
               />
             ) : null}
+
+            <SectionHeader
+              eyebrow="Seus agrupamentos"
+              title="Notas por estabelecimento"
+              description="Toque em um card para abrir as notas daquele mercado e ver os detalhes da compra."
+              style={styles.storeHeader}
+            />
           </>
         )}
         ListEmptyComponent={(
@@ -87,6 +131,7 @@ export function HomeScreen({ navigation }) {
             style={styles.card}
             onPress={() => navigation.navigate(ROUTES.APP.NOTES_BY_STORE, { title: item.name, invoices: item.invoices })}
           >
+            <Text style={styles.cardLabel}>Estabelecimento</Text>
             <Text style={styles.cardTitle} numberOfLines={2}>{item.name.toUpperCase()}</Text>
             <Text style={styles.cardMeta}>Qtde. de notas: {item.invoices.length}</Text>
             <Image source={require('../../assets/bags.png')} style={styles.cardImage} resizeMode="contain" />
@@ -99,22 +144,40 @@ export function HomeScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  header: {
+  heroCard: {
     marginBottom: spacing.lg,
-    gap: spacing.xs,
+    borderRadius: radius.xl,
+    padding: spacing.xl,
+    backgroundColor: colors.ink950,
+    overflow: 'hidden',
+    flexDirection: 'row',
+    gap: spacing.md,
   },
-  eyebrow: {
-    color: colors.teal700,
-    fontWeight: '700',
-    letterSpacing: 1.6,
-    textTransform: 'uppercase',
-    fontSize: 12,
+  heroText: {
+    flex: 1,
+    gap: spacing.lg,
   },
-  title: {
-    color: colors.ink900,
-    fontFamily: fonts.heading,
-    fontSize: 30,
-    lineHeight: 38,
+  heroButton: {
+    alignSelf: 'flex-start',
+    minWidth: 180,
+  },
+  heroImage: {
+    width: 120,
+    height: 120,
+    alignSelf: 'center',
+  },
+  metricsGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: spacing.md,
+    marginBottom: spacing.lg,
+  },
+  metricWide: {
+    width: '100%',
+  },
+  storeHeader: {
+    marginTop: spacing.lg,
+    marginBottom: spacing.lg,
   },
   list: {
     paddingBottom: spacing.xxl,
@@ -128,19 +191,27 @@ const styles = StyleSheet.create({
   },
   card: {
     flex: 1,
-    minHeight: 220,
+    minHeight: 240,
     backgroundColor: colors.surface,
-    borderRadius: radius.md,
+    borderRadius: radius.lg,
     borderWidth: 1,
-    borderColor: 'rgba(15, 118, 110, 0.08)',
+    borderColor: colors.borderSoft,
     padding: spacing.md,
     gap: spacing.sm,
     ...shadow,
   },
+  cardLabel: {
+    color: colors.slate500,
+    fontSize: 11,
+    fontWeight: '800',
+    letterSpacing: 1,
+    textTransform: 'uppercase',
+  },
   cardTitle: {
     color: colors.ink900,
     fontSize: 18,
-    fontFamily: fonts.heading,
+    lineHeight: 24,
+    fontWeight: '800',
   },
   cardMeta: {
     color: colors.slate500,
@@ -148,11 +219,12 @@ const styles = StyleSheet.create({
   },
   cardImage: {
     width: '100%',
-    height: 80,
+    height: 84,
   },
   cardTotal: {
-    color: colors.amber600,
-    fontSize: 16,
+    color: colors.amber700,
+    fontSize: 18,
     fontWeight: '800',
+    marginTop: 'auto',
   },
 });

@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import { Image } from 'react-native';
 
-import { AppInput, GhostButton, PrimaryButton, Screen, SettingRow, StatusBanner } from '../components/ui';
+import { AppInput, GhostButton, PrimaryButton, Screen, SectionHeader, SettingRow, StatusBanner } from '../components/ui';
 import { HELP_CENTER_URL } from '../config/links';
 import { useAuth } from '../context/AuthContext';
 import { getAutoSavePreference, setAutoSavePreference } from '../storage/preferences';
@@ -77,10 +77,11 @@ export function SettingsScreen() {
 
   return (
     <Screen scroll contentContainerStyle={styles.content}>
-      <View style={styles.header}>
-        <Text style={styles.eyebrow}>Preferencias</Text>
-        <Text style={styles.title}>Ajuste sua experiencia no app</Text>
-      </View>
+      <SectionHeader
+        eyebrow="Configuracoes"
+        title="Personalize sua experiencia"
+        description="Ajuste o comportamento do app, atualize seu perfil e acesse a central de ajuda."
+      />
 
       {feedback ? (
         <StatusBanner title={feedback.title} message={feedback.message} tone={feedback.tone} />
@@ -134,7 +135,7 @@ export function SettingsScreen() {
             <Image source={require('../../assets/logo.png')} style={styles.logo} resizeMode="contain" />
             <Text style={styles.modalTitle}>Sobre o Scan NFC-e</Text>
             <Text style={styles.aboutText}>Versao 2.0.0</Text>
-            <Text style={styles.aboutText}>2020-2026 • Luis Gustavo da Cunha Cipriani</Text>
+            <Text style={styles.aboutText}>2020-2026 | Luis Gustavo da Cunha Cipriani</Text>
             <GhostButton title="Fechar" onPress={() => setAboutVisible(false)} />
           </View>
         </View>
@@ -147,22 +148,6 @@ const styles = StyleSheet.create({
   content: {
     gap: spacing.lg,
   },
-  header: {
-    gap: spacing.xs,
-  },
-  eyebrow: {
-    color: colors.amber600,
-    fontSize: 12,
-    fontWeight: '700',
-    letterSpacing: 1.8,
-    textTransform: 'uppercase',
-  },
-  title: {
-    color: colors.ink900,
-    fontFamily: fonts.heading,
-    fontSize: 30,
-    lineHeight: 38,
-  },
   list: {
     gap: spacing.md,
   },
@@ -174,7 +159,7 @@ const styles = StyleSheet.create({
   },
   modalCard: {
     backgroundColor: colors.surface,
-    borderRadius: radius.lg,
+    borderRadius: radius.xl,
     padding: spacing.lg,
     gap: spacing.lg,
   },

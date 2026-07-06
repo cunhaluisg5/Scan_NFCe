@@ -5,11 +5,12 @@ import {
   Pressable,
   StyleSheet,
   Text,
+  View,
 } from 'react-native';
 
-import { EmptyState, Screen } from '../components/ui';
+import { EmptyState, MetricCard, Screen, SectionHeader } from '../components/ui';
 import { ROUTES } from '../navigation/routeNames';
-import { colors, fonts, radius, shadow, spacing } from '../theme';
+import { colors, radius, shadow, spacing } from '../theme';
 import { formatCurrency } from '../utils/format';
 import { formatDate, parseBrazilianDate } from '../utils/date';
 
@@ -22,6 +23,8 @@ export function NotesByStoreScreen({ navigation, route }) {
     return timeB - timeA;
   }), [route.params?.invoices]);
 
+  const totalAmount = invoices.reduce((sum, item) => sum + Number(item.totalValue || 0), 0);
+
   return (
     <Screen>
       <FlatList
@@ -31,7 +34,17 @@ export function NotesByStoreScreen({ navigation, route }) {
         columnWrapperStyle={invoices.length ? styles.row : undefined}
         keyExtractor={(item) => item._id || item.id || item.accesskey}
         ListHeaderComponent={(
-          <Text style={styles.header}>{route.params?.title || 'Notas'}</Text>
+          <>
+            <SectionHeader
+              eyebrow="Detalhamento"
+              title={route.params?.title || 'Notas'}
+              description="Confira as notas lidas neste estabelecimento e toque em uma delas para ver os itens."
+            />
+            <View style={styles.metrics}>
+              <MetricCard label="Notas listadas" value={String(invoices.length)} />
+              <MetricCard label="Valor somado" value={formatCurrency(totalAmount)} tone="amber" />
+            </View>
+          </>
         )}
         ListEmptyComponent={(
           <EmptyState title="Sem notas" description="Nenhuma nota encontrada para este estabelecimento." />
@@ -44,8 +57,10 @@ export function NotesByStoreScreen({ navigation, route }) {
             <Text style={styles.cardDate}>{formatDate(item.createdAt)}</Text>
             <Text style={styles.cardTitle} numberOfLines={2}>{item.socialName?.toUpperCase()}</Text>
             <Image source={require('../../assets/nfce.png')} style={styles.cardImage} resizeMode="contain" />
-            <Text style={styles.cardMeta}>Emissão: {item.issuanceDate}</Text>
-            <Text style={styles.cardMeta}>Itens: {item.totalItems}</Text>
+            <View style={styles.cardFooter}>
+              <Text style={styles.cardMeta}>Emissao: {item.issuanceDate}</Text>
+              <Text style={styles.cardMeta}>Itens: {item.totalItems}</Text>
+            </View>
             <Text style={styles.cardTotal}>{formatCurrency(item.totalValue)}</Text>
           </Pressable>
         )}
@@ -55,11 +70,11 @@ export function NotesByStoreScreen({ navigation, route }) {
 }
 
 const styles = StyleSheet.create({
-  header: {
-    color: colors.ink900,
-    fontFamily: fonts.heading,
-    fontSize: 28,
-    marginBottom: spacing.lg,
+  metrics: {
+    flexDirection: 'row',
+    gap: spacing.md,
+    marginTop: spacing.lg,
+    marginBottom: spacing.xl,
   },
   list: {
     paddingBottom: spacing.xxl,
@@ -70,28 +85,33 @@ const styles = StyleSheet.create({
   },
   card: {
     flex: 1,
-    minHeight: 250,
+    minHeight: 258,
     backgroundColor: colors.surface,
-    borderRadius: radius.md,
+    borderRadius: radius.lg,
     padding: spacing.md,
     borderWidth: 1,
-    borderColor: 'rgba(15, 118, 110, 0.08)',
+    borderColor: colors.borderSoft,
     gap: spacing.xs,
     ...shadow,
   },
   cardDate: {
     color: colors.slate500,
     fontSize: 12,
+    fontWeight: '700',
   },
   cardTitle: {
     color: colors.ink900,
-    fontFamily: fonts.heading,
     fontSize: 18,
+    lineHeight: 24,
+    fontWeight: '800',
   },
   cardImage: {
     width: '100%',
-    height: 72,
+    height: 76,
     marginVertical: spacing.xs,
+  },
+  cardFooter: {
+    gap: 4,
   },
   cardMeta: {
     color: colors.ink800,
@@ -100,6 +120,7 @@ const styles = StyleSheet.create({
   cardTotal: {
     color: colors.teal700,
     fontWeight: '800',
+    fontSize: 18,
     marginTop: 'auto',
   },
 });

@@ -10,14 +10,16 @@ import {
   AppCard,
   EmptyState,
   LoadingBlock,
+  MetricCard,
   PrimaryButton,
   Screen,
+  SectionHeader,
   SelectModal,
   StatusBanner,
 } from '../components/ui';
 import { useAuth } from '../context/AuthContext';
 import { api } from '../services/Api';
-import { colors, fonts, radius, spacing } from '../theme';
+import { colors, radius, spacing } from '../theme';
 import { getMonthLabel, getMonthOptions, formatDateTime, parseBrazilianDate } from '../utils/date';
 import { formatCurrency, toNumber } from '../utils/format';
 
@@ -98,10 +100,11 @@ export function ComparisonScreen() {
 
   return (
     <Screen scroll contentContainerStyle={styles.content}>
-      <View style={styles.header}>
-        <Text style={styles.eyebrow}>Analise por produto</Text>
-        <Text style={styles.title}>Cruze precos por mes e veja onde cada item apareceu</Text>
-      </View>
+      <SectionHeader
+        eyebrow="Comparacao de produtos"
+        title="Encontre variacao de preco"
+        description="Selecione um mes, escolha um item e veja em quais notas ele apareceu para comparar valores."
+      />
 
       {errorMessage ? (
         <StatusBanner
@@ -112,6 +115,18 @@ export function ComparisonScreen() {
           onAction={load}
         />
       ) : null}
+
+      <View style={styles.metrics}>
+        <MetricCard
+          label="Mes selecionado"
+          value={selectedMonth ? getMonthLabel(Number(selectedMonth)).short : 'Nenhum'}
+        />
+        <MetricCard
+          label="Item selecionado"
+          value={selectedItem || 'Nenhum'}
+          tone="amber"
+        />
+      </View>
 
       <View style={styles.actions}>
         <PrimaryButton
@@ -131,7 +146,7 @@ export function ComparisonScreen() {
 
       {selectedMonth ? (
         <AppCard style={styles.summaryCard}>
-          <Text style={styles.summaryTitle}>Detalhes do mes</Text>
+          <Text style={styles.summaryTitle}>Resumo do recorte</Text>
           <Text style={styles.summaryText}>Total de notas: {monthSummary.invoices}</Text>
           <Text style={styles.summaryText}>Total de itens: {monthSummary.items}</Text>
           <Text style={styles.summaryText}>Valor total de compra: {formatCurrency(monthSummary.total)}</Text>
@@ -198,21 +213,9 @@ const styles = StyleSheet.create({
   content: {
     gap: spacing.lg,
   },
-  header: {
-    gap: spacing.xs,
-  },
-  eyebrow: {
-    color: colors.teal700,
-    fontSize: 12,
-    fontWeight: '700',
-    letterSpacing: 1.7,
-    textTransform: 'uppercase',
-  },
-  title: {
-    color: colors.ink900,
-    fontFamily: fonts.heading,
-    fontSize: 30,
-    lineHeight: 38,
+  metrics: {
+    flexDirection: 'row',
+    gap: spacing.md,
   },
   actions: {
     gap: spacing.sm,
@@ -225,8 +228,8 @@ const styles = StyleSheet.create({
   },
   summaryTitle: {
     color: colors.ink900,
-    fontFamily: fonts.heading,
     fontSize: 22,
+    fontWeight: '800',
   },
   summaryText: {
     color: colors.ink800,
@@ -236,12 +239,12 @@ const styles = StyleSheet.create({
   },
   invoiceTitle: {
     color: colors.ink900,
-    fontFamily: fonts.heading,
     fontSize: 21,
+    fontWeight: '800',
   },
   itemBlock: {
-    backgroundColor: colors.paper,
-    borderRadius: radius.sm,
+    backgroundColor: colors.surfaceStrong,
+    borderRadius: radius.md,
     padding: spacing.md,
     gap: 4,
   },
