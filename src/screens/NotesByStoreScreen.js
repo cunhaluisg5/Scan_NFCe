@@ -13,9 +13,10 @@ import { ROUTES } from '../navigation/routeNames';
 import { colors, radius, shadow, spacing } from '../theme';
 import { formatCurrency } from '../utils/format';
 import { formatDate, parseBrazilianDate } from '../utils/date';
+import { normalizeInvoicesCollection } from '../utils/nfce';
 
 export function NotesByStoreScreen({ navigation, route }) {
-  const invoices = useMemo(() => [...(route.params?.invoices || [])].sort((a, b) => {
+  const invoices = useMemo(() => [...normalizeInvoicesCollection(route.params?.invoices || [])].sort((a, b) => {
     const dateA = parseBrazilianDate(a.createdAt);
     const dateB = parseBrazilianDate(b.createdAt);
     const timeA = dateA ? dateA.getTime() : 0;

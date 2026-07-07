@@ -11,9 +11,15 @@ import { ROUTES } from '../navigation/routeNames';
 import { api } from '../services/Api';
 import { colors, spacing } from '../theme';
 import { formatCurrency } from '../utils/format';
+import { buildNfceSavePayload, normalizeInvoice } from '../utils/nfce';
+
+const SAVE_TIMEOUT_MS = 60000;
 
 export function InvoiceDetailsScreen({ navigation, route }) {
-  const { invoice, mode, crawlerPayload } = route.params;
+  const { mode } = route.params;
+  const allowSaveAction = mode === 'draft' && route.params?.allowSaveAction !== false;
+  const invoice = useMemo(() => normalizeInvoice(route.params?.invoice || {}), [route.params?.invoice]);
+  const savePayload = useMemo(() => buildNfceSavePayload(invoice), [invoice]);
   const [busy, setBusy] = useState(false);
   const [feedback, setFeedback] = useState(null);
 
@@ -32,7 +38,7 @@ export function InvoiceDetailsScreen({ navigation, route }) {
         title: 'Salvando nota',
         message: 'Estamos registrando a NFC-e em sua conta.',
       });
-      await api.post('/nfces', crawlerPayload);
+      await api.post('/nfces', savePayload, { timeoutMs: SAVE_TIMEOUT_MS });
       setFeedback({
         tone: 'success',
         title: 'Nota salva',
@@ -95,25 +101,33 @@ export function InvoiceDetailsScreen({ navigation, route }) {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerRight: () => (
-        mode === 'draft' ? (
-          <PrimaryButton
-            title={busy ? 'Salvando...' : 'Salvar'}
-            onPress={saveInvoice}
-            disabled={busy}
-            style={styles.headerButton}
-          />
-        ) : (
-          <GhostButton
-            title={busy ? 'Excluindo...' : 'Excluir'}
-            onPress={confirmDelete}
-            danger
-            style={styles.headerGhostButton}
-          />
-        )
-      ),
+      headerRight: () => {
+        if (allowSaveAction) {
+          return (
+            <PrimaryButton
+              title={busy ? 'Salvando...' : 'Salvar'}
+              onPress={saveInvoice}
+              disabled={busy}
+              style={styles.headerButton}
+            />
+          );
+        }
+
+        if (mode === 'saved') {
+          return (
+            <GhostButton
+              title={busy ? 'Excluindo...' : 'Excluir'}
+              onPress={confirmDelete}
+              danger
+              style={styles.headerGhostButton}
+            />
+          );
+        }
+
+        return null;
+      },
     });
-  }, [busy, mode, navigation]);
+  }, [allowSaveAction, busy, mode, navigation]);
 
   return (
     <Screen scroll contentContainerStyle={styles.content}>

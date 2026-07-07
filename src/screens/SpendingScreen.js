@@ -13,7 +13,7 @@ import { useAuth } from '../context/AuthContext';
 import { ROUTES } from '../navigation/routeNames';
 import { api } from '../services/Api';
 import { colors, spacing } from '../theme';
-import { getPeriodBreakdown, getMostExpensiveInvoices, buildTimeline } from '../utils/nfce';
+import { getPeriodBreakdown, getMostExpensiveInvoices, buildTimeline, normalizeInvoicesCollection } from '../utils/nfce';
 import { formatCurrency } from '../utils/format';
 
 const OPTIONS = [
@@ -34,7 +34,7 @@ export function SpendingScreen({ navigation }) {
       setLoading(true);
       setErrorMessage('');
       const response = await api.get(`/nfces/user/${user._id || user.id}`);
-      setInvoices(response.nfces || []);
+      setInvoices(normalizeInvoicesCollection(response.nfces || []));
     } catch (error) {
       setInvoices([]);
       setErrorMessage(error.data?.error || error.message);

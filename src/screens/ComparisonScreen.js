@@ -22,6 +22,7 @@ import { api } from '../services/Api';
 import { colors, radius, spacing } from '../theme';
 import { getMonthLabel, getMonthOptions, formatDateTime, parseBrazilianDate } from '../utils/date';
 import { formatCurrency, toNumber } from '../utils/format';
+import { normalizeInvoicesCollection } from '../utils/nfce';
 
 export function ComparisonScreen() {
   const { user } = useAuth();
@@ -38,7 +39,7 @@ export function ComparisonScreen() {
       setLoading(true);
       setErrorMessage('');
       const response = await api.get(`/nfces/user/${user._id || user.id}`);
-      setInvoices(response.nfces || []);
+      setInvoices(normalizeInvoicesCollection(response.nfces || []));
     } catch (error) {
       setInvoices([]);
       setErrorMessage(error.data?.error || error.message);

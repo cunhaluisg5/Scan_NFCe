@@ -1,7 +1,7 @@
 const MONTHS = [
   { short: 'Jan', full: 'Janeiro' },
   { short: 'Fev', full: 'Fevereiro' },
-  { short: 'Mar', full: 'Março' },
+  { short: 'Mar', full: 'Marco' },
   { short: 'Abr', full: 'Abril' },
   { short: 'Mai', full: 'Maio' },
   { short: 'Jun', full: 'Junho' },
@@ -24,7 +24,11 @@ export function parseBrazilianDate(value) {
 
   const raw = String(value).trim();
 
-  if (raw.includes('T') || raw.includes('-')) {
+  if (!raw) {
+    return null;
+  }
+
+  if (raw.includes('T') || /^\d{4}-\d{2}-\d{2}/.test(raw)) {
     const isoDate = new Date(raw);
     return Number.isNaN(isoDate.getTime()) ? null : isoDate;
   }

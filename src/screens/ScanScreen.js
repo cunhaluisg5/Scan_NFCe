@@ -14,7 +14,9 @@ import { ROUTES } from '../navigation/routeNames';
 import { api } from '../services/Api';
 import { getAutoSavePreference } from '../storage/preferences';
 import { colors, fonts, radius, spacing } from '../theme';
-import { isValidNfceUrl, mapCrawlerPayloadToInvoice, normalizeNfceUrl } from '../utils/nfce';
+import { buildNfceSavePayload, isValidNfceUrl, mapCrawlerPayloadToInvoice, normalizeNfceUrl } from '../utils/nfce';
+
+const SAVE_TIMEOUT_MS = 60000;
 
 export function ScanScreen({ navigation }) {
   const [permission, requestPermission] = useCameraPermissions();
@@ -22,12 +24,23 @@ export function ScanScreen({ navigation }) {
   const [processing, setProcessing] = useState(false);
   const [active, setActive] = useState(true);
   const [feedback, setFeedback] = useState(null);
+  const [processingStep, setProcessingStep] = useState('idle');
+
+  const resetScannerState = useCallback(() => {
+    setScanned(false);
+    setProcessing(false);
+    setFeedback(null);
+    setProcessingStep('idle');
+  }, []);
 
   useFocusEffect(
     useCallback(() => {
       setActive(true);
-      return () => setActive(false);
-    }, [])
+      resetScannerState();
+      return () => {
+        setActive(false);
+      };
+    }, [resetScannerState])
   );
 
   async function handleBarcodeScanned({ data }) {
@@ -49,6 +62,7 @@ export function ScanScreen({ navigation }) {
     try {
       setScanned(true);
       setProcessing(true);
+      setProcessingStep('fetching');
       setFeedback({
         tone: 'info',
         title: 'Consultando nota',
@@ -58,37 +72,53 @@ export function ScanScreen({ navigation }) {
 
       const crawlerPayload = await api.post('/crawler', { url: normalizedUrl });
       const invoice = mapCrawlerPayloadToInvoice(crawlerPayload);
+      const savePayload = buildNfceSavePayload(invoice, crawlerPayload);
       const autoSave = await getAutoSavePreference();
 
       if (autoSave) {
+        setProcessingStep('saving');
         setFeedback({
           tone: 'info',
           title: 'Salvando nota',
           message: 'A gravacao automatica esta ativada. Finalizando registro.',
         });
-        await api.post('/nfces', crawlerPayload);
-        setFeedback({
-          tone: 'success',
-          title: 'Nota salva',
-          message: 'A NFC-e foi registrada automaticamente.',
-        });
-        navigation.navigate(ROUTES.APP.HOME);
+        try {
+          await api.post('/nfces', savePayload, { timeoutMs: SAVE_TIMEOUT_MS });
+          setFeedback({
+            tone: 'success',
+            title: 'Nota salva',
+            message: 'A NFC-e foi registrada automaticamente.',
+          });
+          navigation.navigate(ROUTES.APP.HOME);
+        } catch (error) {
+          setFeedback({
+            tone: 'error',
+            title: 'Falha na gravacao automatica',
+            message: `${error.data?.error || error.message} Voce pode revisar a nota e tentar salvar novamente.`,
+          });
+          navigation.navigate(ROUTES.APP.INVOICE_DETAILS, {
+            invoice,
+            mode: 'draft',
+            allowSaveAction: false,
+          });
+        }
       } else {
         navigation.navigate(ROUTES.APP.INVOICE_DETAILS, {
           invoice,
           mode: 'draft',
-          crawlerPayload,
+          allowSaveAction: true,
         });
       }
     } catch (error) {
       setFeedback({
         tone: 'error',
-        title: 'Nao foi possivel ler a nota',
+        title: processingStep === 'saving' ? 'Nao foi possivel salvar a nota' : 'Nao foi possivel ler a nota',
         message: error.data?.error || error.message,
       });
       setScanned(false);
     } finally {
       setProcessing(false);
+      setProcessingStep('idle');
     }
   }
 
@@ -141,14 +171,17 @@ export function ScanScreen({ navigation }) {
             <StatusBanner title={feedback.title} message={feedback.message} tone={feedback.tone} />
           ) : null}
           <Text style={styles.bottomText}>
-            {processing ? 'Consultando a nota...' : 'Centralize o codigo dentro da moldura.'}
+            {processing
+              ? processingStep === 'saving'
+                ? 'Salvando a nota...'
+                : 'Consultando a nota...'
+              : 'Centralize o codigo dentro da moldura.'}
           </Text>
           {scanned && !processing ? (
             <Pressable
               style={styles.retryButton}
               onPress={() => {
-                setFeedback(null);
-                setScanned(false);
+                resetScannerState();
               }}
             >
               <Text style={styles.retryText}>Ler novamente</Text>
