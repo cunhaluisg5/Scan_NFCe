@@ -1,4 +1,4 @@
-﻿let AsyncStorage;
+let AsyncStorage;
 
 try {
   AsyncStorage = require('@react-native-async-storage/async-storage').default;
