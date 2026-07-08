@@ -53,20 +53,20 @@ export function SpendingScreen({ navigation }) {
   const highlightedTotal = useMemo(() => timeline.values.reduce((sum, value) => sum + value, 0), [timeline.values]);
 
   if (loading) {
-    return <LoadingBlock message="Montando a analise..." />;
+    return <LoadingBlock message="Montando a análise..." />;
   }
 
   return (
     <Screen scroll contentContainerStyle={styles.content}>
       <SectionHeader
-        eyebrow="Analise temporal"
-        title="Veja seus gastos por periodo"
-        description="Acompanhe a evolucao das compras, identifique picos de gasto e abra a nota mais cara do recorte."
+        eyebrow="Análise temporal"
+        title="Veja seus gastos por período"
+        description="Acompanhe a evolução das compras, identifique picos de gasto e abra a nota mais cara do recorte."
       />
 
       {errorMessage ? (
         <StatusBanner
-          title="Nao foi possivel carregar"
+          title="Não foi possível carregar"
           message={errorMessage}
           tone="error"
           actionLabel="Tentar novamente"
@@ -89,7 +89,7 @@ export function SpendingScreen({ navigation }) {
       <SectionHeader
         eyebrow="Destaque"
         title="Notas com maior impacto"
-        description="As notas abaixo representam os maiores valores encontrados no periodo selecionado."
+        description="As notas abaixo representam os maiores valores encontrados no período selecionado."
       />
 
       {expensiveInvoices.length ? expensiveInvoices.map((invoice) => (
@@ -101,19 +101,19 @@ export function SpendingScreen({ navigation }) {
             <Text style={styles.invoiceTitle}>{invoice.socialName?.toUpperCase()}</Text>
             <Text style={styles.invoiceText}>CNPJ: {invoice.cnpj}</Text>
             <Text style={styles.invoiceText}>UF: {invoice.uf}</Text>
-            <Text style={styles.invoiceText}>Data de emissao: {invoice.issuanceDate}</Text>
+            <Text style={styles.invoiceText}>Data de emissão: {invoice.issuanceDate}</Text>
             <Text style={styles.invoiceValue}>{formatCurrency(invoice.totalValue)}</Text>
           </AppCard>
         </Pressable>
       )) : (
-        <EmptyState title="Sem dados no periodo" description="Ainda nao ha compras suficientes para esta analise." />
+        <EmptyState title="Sem dados no período" description="Ainda não há compras suficientes para esta análise." />
       )}
 
       {(timeframe === 'month' || timeframe === 'year') ? (
         <>
           <SectionHeader
             eyebrow="Resumo"
-            title="Fechamento do periodo"
+            title="Fechamento do período"
             description="Cada card resume a quantidade de notas e o valor acumulado naquele grupo."
           />
           <View style={styles.breakdownList}>

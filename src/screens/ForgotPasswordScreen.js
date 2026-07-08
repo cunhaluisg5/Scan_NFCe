@@ -21,18 +21,18 @@ export function ForgotPasswordScreen({ navigation, route }) {
       setFeedback({
         tone: 'info',
         title: 'Enviando e-mail',
-        message: 'Estamos preparando as instrucoes de recuperacao.',
+        message: 'Estamos preparando as instruções de recuperação.',
       });
       await api.post('/auth/forgot_password', { email: email.trim() }, { auth: false });
       setFeedback({
         tone: 'success',
         title: 'E-mail enviado',
-        message: 'As instrucoes de recuperacao foram enviadas para o endereco informado.',
+        message: 'As instruções de recuperação foram enviadas para o endereço informado.',
       });
     } catch (error) {
       setFeedback({
         tone: 'error',
-        title: 'Nao foi possivel enviar',
+        title: 'Não foi possível enviar',
         message: error.data?.error || error.message,
       });
     } finally {
@@ -46,7 +46,7 @@ export function ForgotPasswordScreen({ navigation, route }) {
         <Image source={require('../../assets/logo.png')} style={styles.logo} resizeMode="contain" />
         <Text style={styles.title}>Recuperar senha</Text>
         <Text style={styles.description}>
-          Informe o e-mail cadastrado para receber as instrucoes de redefinicao.
+          Informe o e-mail cadastrado para receber as instruções de redefinição.
         </Text>
 
         {feedback ? (

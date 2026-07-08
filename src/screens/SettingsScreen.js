@@ -9,7 +9,7 @@ import {
 import { Image } from 'react-native';
 
 import { AppInput, GhostButton, PrimaryButton, Screen, SectionHeader, SettingRow, StatusBanner } from '../components/ui';
-import { HELP_CENTER_URL } from '../config/links';
+import { HAS_HELP_CENTER_URL, HELP_CENTER_URL } from '../config/links';
 import { useAuth } from '../context/AuthContext';
 import { getAutoSavePreference, setAutoSavePreference } from '../storage/preferences';
 import { colors, fonts, radius, spacing } from '../theme';
@@ -38,10 +38,10 @@ export function SettingsScreen() {
     setAutoSave(value);
     setFeedback({
       tone: 'success',
-      title: value ? 'Gravacao automatica ativada' : 'Gravacao automatica desativada',
+      title: value ? 'Gravação automática ativada' : 'Gravação automática desativada',
       message: value
-        ? 'As proximas notas poderao ser salvas logo apos a leitura.'
-        : 'A nota sera revisada antes de ser gravada.',
+        ? 'As próximas notas poderão ser salvas logo após a leitura.'
+        : 'A nota será revisada antes de ser gravada.',
     });
   }
 
@@ -67,7 +67,7 @@ export function SettingsScreen() {
     } catch (error) {
       setFeedback({
         tone: 'error',
-        title: 'Nao foi possivel atualizar',
+        title: 'Não foi possível atualizar',
         message: error.data?.error || error.message,
       });
     } finally {
@@ -75,11 +75,35 @@ export function SettingsScreen() {
     }
   }
 
+  async function handleOpenHelp() {
+    if (!HAS_HELP_CENTER_URL) {
+      setFeedback({
+        tone: 'info',
+        title: 'Ajuda indisponível',
+        message: 'A URL da central de ajuda ainda não foi configurada para este ambiente.',
+      });
+      return;
+    }
+
+    const supported = await Linking.canOpenURL(HELP_CENTER_URL);
+
+    if (!supported) {
+      setFeedback({
+        tone: 'error',
+        title: 'Não foi possível abrir a ajuda',
+        message: 'Verifique a URL configurada para a central de ajuda e tente novamente.',
+      });
+      return;
+    }
+
+    await Linking.openURL(HELP_CENTER_URL);
+  }
+
   return (
     <Screen scroll contentContainerStyle={styles.content}>
       <SectionHeader
-        eyebrow="Configuracoes"
-        title="Personalize sua experiencia"
+        eyebrow="Configurações"
+        title="Personalize sua experiência"
         description="Ajuste o comportamento do app, atualize seu perfil e acesse a central de ajuda."
       />
 
@@ -89,29 +113,27 @@ export function SettingsScreen() {
 
       <View style={styles.list}>
         <SettingRow
-          title="Editar nome de usuario"
+          title="Editar nome de usuário"
           description="Atualize o nome que aparece no menu lateral."
           onPress={() => setEditVisible(true)}
         />
 
         <SettingRow
           title="Salvar notas automaticamente"
-          description="Quando ativado, a nota lida ja e gravada sem abrir a tela de revisao."
+          description="Quando ativado, a nota lida já é gravada sem abrir a tela de revisão."
           value={autoSave}
           onValueChange={handleToggle}
         />
 
         <SettingRow
           title="Ajuda"
-          description="Abrir a documentacao de apoio do projeto."
-          onPress={() => {
-            Linking.openURL(HELP_CENTER_URL);
-          }}
+          description="Abrir a central de ajuda do aplicativo."
+          onPress={handleOpenHelp}
         />
 
         <SettingRow
           title="Sobre"
-          description="Veja informacoes rapidas sobre a aplicacao."
+          description="Veja informações rápidas sobre o aplicativo."
           onPress={() => setAboutVisible(true)}
         />
       </View>
@@ -134,7 +156,7 @@ export function SettingsScreen() {
           <View style={styles.modalCard}>
             <Image source={require('../../assets/logo.png')} style={styles.logo} resizeMode="contain" />
             <Text style={styles.modalTitle}>Sobre o Scan NFC-e</Text>
-            <Text style={styles.aboutText}>Versao 2.0.0</Text>
+            <Text style={styles.aboutText}>Versão 2.0.0</Text>
             <Text style={styles.aboutText}>2020-2026 | Luis Gustavo da Cunha Cipriani</Text>
             <GhostButton title="Fechar" onPress={() => setAboutVisible(false)} />
           </View>

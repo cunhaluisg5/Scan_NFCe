@@ -46,12 +46,20 @@ export function AppCard({ children, style }) {
   return <View style={[styles.card, style]}>{children}</View>;
 }
 
-export function SectionHeader({ eyebrow, title, description, style }) {
+export function SectionHeader({
+  eyebrow,
+  title,
+  description,
+  style,
+  eyebrowStyle,
+  titleStyle,
+  descriptionStyle,
+}) {
   return (
     <View style={[styles.sectionHeader, style]}>
-      {eyebrow ? <Text style={styles.sectionEyebrow}>{eyebrow}</Text> : null}
-      {title ? <Text style={styles.sectionTitle}>{title}</Text> : null}
-      {description ? <Text style={styles.sectionDescription}>{description}</Text> : null}
+      {eyebrow ? <Text style={[styles.sectionEyebrow, eyebrowStyle]}>{eyebrow}</Text> : null}
+      {title ? <Text style={[styles.sectionTitle, titleStyle]}>{title}</Text> : null}
+      {description ? <Text style={[styles.sectionDescription, descriptionStyle]}>{description}</Text> : null}
     </View>
   );
 }

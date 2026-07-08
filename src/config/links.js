@@ -1,3 +1,6 @@
-const DEFAULT_HELP_URL = 'https://helpscannfce.herokuapp.com/';
+function normalizeUrl(value) {
+  return String(value || '').trim().replace(/\/+$/, '');
+}
 
-export const HELP_CENTER_URL = process.env.EXPO_PUBLIC_HELP_URL || DEFAULT_HELP_URL;
+export const HELP_CENTER_URL = normalizeUrl(process.env.EXPO_PUBLIC_HELP_URL);
+export const HAS_HELP_CENTER_URL = Boolean(HELP_CENTER_URL);

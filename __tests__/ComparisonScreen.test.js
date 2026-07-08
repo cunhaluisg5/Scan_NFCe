@@ -53,7 +53,7 @@ describe('ComparisonScreen', () => {
     jest.useRealTimers();
   });
 
-  it('permite selecionar mes e item para comparar produtos', async () => {
+  it('permite selecionar mês e item para comparar produtos', async () => {
     api.get.mockResolvedValue({
       nfces: [
         {
@@ -65,7 +65,7 @@ describe('ComparisonScreen', () => {
           createdAt: '2026-07-01T15:20:00.000Z',
           items: [
             { itemName: 'Leite', itemCode: '1', itemValue: '10.50' },
-            { itemName: 'Cafe', itemCode: '2', itemValue: '15.00' },
+            { itemName: 'Café', itemCode: '2', itemValue: '15.00' },
           ],
         },
       ],
@@ -74,10 +74,10 @@ describe('ComparisonScreen', () => {
     const { getByText } = render(<ComparisonScreen />);
 
     await waitFor(() => {
-      expect(getByText('Selecionar mes')).toBeTruthy();
+      expect(getByText('Selecionar mês')).toBeTruthy();
     });
 
-    fireEvent.press(getByText('Selecionar mes'));
+    fireEvent.press(getByText('Selecionar mês'));
     fireEvent.press(getByText('Julho'));
 
     await waitFor(() => {

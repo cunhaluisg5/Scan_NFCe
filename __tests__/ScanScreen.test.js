@@ -23,14 +23,14 @@ describe('ScanScreen', () => {
     useCameraPermissions.mockReturnValue([{ granted: true }, jest.fn()]);
   });
 
-  it('mostra erro quando o QR code nao corresponde a uma NFC-e MG valida', async () => {
+  it('mostra erro quando o QR code não corresponde a uma NFC-e MG válida', async () => {
     const navigation = { navigate: jest.fn() };
     const { getByTestId, getByText } = render(<ScanScreen navigation={navigation} />);
 
     fireEvent(getByTestId('camera-view'), 'onBarcodeScanned', { data: 'https://google.com/qrcode' });
 
     await waitFor(() => {
-      expect(getByText('QR Code invalido')).toBeTruthy();
+      expect(getByText('QR Code inválido')).toBeTruthy();
     });
   });
 
@@ -41,7 +41,7 @@ describe('ScanScreen', () => {
           totalItems: '1',
           totalValue: '10.50',
           paidValue: '10.50',
-          typePayment: 'Cartao',
+          typePayment: 'Cartão',
         },
         detailsNfce: {
           accesskey: '123',

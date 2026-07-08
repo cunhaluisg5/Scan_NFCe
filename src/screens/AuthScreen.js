@@ -70,7 +70,7 @@ export function AuthScreen({ navigation }) {
         setFeedback({
           tone: 'success',
           title: 'Conta criada',
-          message: 'Cadastro concluido. Agora voce ja pode entrar com seu e-mail e senha.',
+          message: 'Cadastro concluído. Agora você já pode entrar com seu e-mail e senha.',
         });
         setMode('signin');
         setPassword('');
@@ -81,7 +81,7 @@ export function AuthScreen({ navigation }) {
     } catch (error) {
       setFeedback({
         tone: 'error',
-        title: 'Nao foi possivel continuar',
+        title: 'Não foi possível continuar',
         message: error.data?.error || error.message,
       });
     } finally {
@@ -101,7 +101,7 @@ export function AuthScreen({ navigation }) {
           <Image source={require('../../assets/logo.png')} style={styles.logo} resizeMode="contain" />
           <Text style={styles.heroEyebrow}>Scan NFC-e</Text>
           <Text style={styles.heroTitle}>
-            {mode === 'signup' ? 'Crie sua conta e organize suas notas.' : 'Leia, salve e analise suas compras.'}
+            {mode === 'signup' ? 'Crie sua conta e organize suas notas.' : 'Leia, salve e acompanhe suas compras.'}
           </Text>
         </LinearGradient>
 
@@ -158,7 +158,7 @@ export function AuthScreen({ navigation }) {
               }}
             >
               <Text style={styles.linkText}>
-                {mode === 'signup' ? 'Ja possui conta? Fazer login' : 'Criar uma conta'}
+                {mode === 'signup' ? 'Já tem uma conta? Entrar' : 'Criar uma conta'}
               </Text>
             </Pressable>
 

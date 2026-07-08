@@ -78,8 +78,11 @@ export function HomeScreen({ navigation }) {
               <View style={styles.heroText}>
                 <SectionHeader
                   eyebrow="Painel principal"
-                  title={`Bem-vindo, ${user?.name?.split(' ')[0] || 'Usuario'}`}
+                  title={`Bem-vindo, ${user?.name?.split(' ')[0] || 'Usuário'}`}
                   description="Acompanhe suas compras, abra suas notas por estabelecimento e acesse rapidamente o leitor."
+                  eyebrowStyle={styles.heroEyebrow}
+                  titleStyle={styles.heroTitle}
+                  descriptionStyle={styles.heroDescription}
                 />
                 <PrimaryButton
                   title="Ler nova nota"
@@ -98,7 +101,7 @@ export function HomeScreen({ navigation }) {
 
             {errorMessage ? (
               <StatusBanner
-                title="Nao foi possivel carregar"
+                title="Não foi possível carregar"
                 message={errorMessage}
                 tone="error"
                 actionLabel="Tentar novamente"
@@ -160,6 +163,15 @@ const styles = StyleSheet.create({
   heroButton: {
     alignSelf: 'flex-start',
     minWidth: 180,
+  },
+  heroEyebrow: {
+    color: 'rgba(255, 255, 255, 0.72)',
+  },
+  heroTitle: {
+    color: colors.white,
+  },
+  heroDescription: {
+    color: 'rgba(255, 255, 255, 0.82)',
   },
   heroImage: {
     width: 120,

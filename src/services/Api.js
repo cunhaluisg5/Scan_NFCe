@@ -26,7 +26,7 @@ function parseResponseBody(text, response) {
   try {
     return JSON.parse(text);
   } catch (error) {
-    throw buildError('A resposta da API veio em um formato invalido.', {
+    throw buildError('A resposta da API veio em um formato inválido.', {
       code: 'INVALID_JSON',
       cause: error,
     });
@@ -93,7 +93,7 @@ async function request(path, { method = 'GET', body, auth = true, timeoutMs = AP
   const session = auth ? await getSession() : { token: null };
 
   if (auth && !session.token) {
-    const error = buildError('Sua sessao expirou. Entre novamente para continuar.', {
+    const error = buildError('Sua sessão expirou. Entre novamente para continuar.', {
       status: 401,
       code: 'AUTH_REQUIRED',
     });
@@ -111,7 +111,7 @@ async function request(path, { method = 'GET', body, auth = true, timeoutMs = AP
 
       if (!response.ok) {
         const error = buildError(
-          (data && typeof data === 'object' && data.error) || 'Nao foi possivel concluir a requisicao.',
+        (data && typeof data === 'object' && data.error) || 'Não foi possível concluir a requisição.',
           {
             status: response.status,
             data,
@@ -130,7 +130,7 @@ async function request(path, { method = 'GET', body, auth = true, timeoutMs = AP
       return data;
     } catch (error) {
       if (error.name === 'AbortError') {
-        throw buildError('A requisicao demorou mais que o esperado. Tente novamente.', {
+      throw buildError('A requisição demorou mais que o esperado. Tente novamente.', {
           status: 408,
           code: 'TIMEOUT',
           baseUrl,
@@ -146,7 +146,7 @@ async function request(path, { method = 'GET', body, auth = true, timeoutMs = AP
     }
   }
 
-  throw buildError('Nao foi possivel se conectar ao servidor.', {
+  throw buildError('Não foi possível se conectar ao servidor.', {
     status: 0,
     code: 'NETWORK_ERROR',
     baseUrlsTried: errors.map((entry) => entry.baseUrl),

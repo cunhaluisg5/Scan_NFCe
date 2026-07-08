@@ -102,14 +102,14 @@ export function ComparisonScreen() {
   return (
     <Screen scroll contentContainerStyle={styles.content}>
       <SectionHeader
-        eyebrow="Comparacao de produtos"
-        title="Encontre variacao de preco"
-        description="Selecione um mes, escolha um item e veja em quais notas ele apareceu para comparar valores."
+        eyebrow="Comparação de produtos"
+        title="Encontre variação de preço"
+        description="Selecione um mês, escolha um item e veja em quais notas ele apareceu para comparar valores."
       />
 
       {errorMessage ? (
         <StatusBanner
-          title="Nao foi possivel carregar"
+          title="Não foi possível carregar"
           message={errorMessage}
           tone="error"
           actionLabel="Tentar novamente"
@@ -119,7 +119,7 @@ export function ComparisonScreen() {
 
       <View style={styles.metrics}>
         <MetricCard
-          label="Mes selecionado"
+          label="Mês selecionado"
           value={selectedMonth ? getMonthLabel(Number(selectedMonth)).short : 'Nenhum'}
         />
         <MetricCard
@@ -131,7 +131,7 @@ export function ComparisonScreen() {
 
       <View style={styles.actions}>
         <PrimaryButton
-          title={selectedMonth ? getMonthLabel(Number(selectedMonth)).full : 'Selecionar mes'}
+          title={selectedMonth ? getMonthLabel(Number(selectedMonth)).full : 'Selecionar mês'}
           onPress={() => setMonthModalVisible(true)}
           style={styles.actionButton}
         />
@@ -162,7 +162,7 @@ export function ComparisonScreen() {
             {items.map((item, index) => (
               <View key={`${item.itemCode}-${index}`} style={styles.itemBlock}>
                 <Text style={styles.itemName}>{item.itemName}</Text>
-                <Text style={styles.itemMeta}>Codigo: {item.itemCode}</Text>
+                <Text style={styles.itemMeta}>Código: {item.itemCode}</Text>
                 <Text style={styles.itemMeta}>Valor: {formatCurrency(item.itemValue)}</Text>
               </View>
             ))}
@@ -173,20 +173,20 @@ export function ComparisonScreen() {
           </AppCard>
         )) : (
           <EmptyState
-            title="Nenhuma ocorrencia"
-            description="Esse item nao apareceu nas notas do mes selecionado."
+            title="Nenhuma ocorrência"
+            description="Esse item não apareceu nas notas do mês selecionado."
           />
         )
       ) : (
         <EmptyState
           title="Escolha um recorte"
-          description="Selecione primeiro o mes e depois o produto para iniciar a comparacao."
+          description="Selecione primeiro o mês e depois o produto para iniciar a comparação."
         />
       )}
 
       <SelectModal
         visible={monthModalVisible}
-        title="Selecione um mes"
+        title="Selecione um mês"
         options={getMonthOptions()}
         onSelect={(value) => {
           setSelectedMonth(value);

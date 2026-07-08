@@ -53,8 +53,8 @@ export function ScanScreen({ navigation }) {
     if (!isValidNfceUrl(normalizedUrl)) {
       setFeedback({
         tone: 'error',
-        title: 'QR Code invalido',
-        message: 'A leitura nao corresponde a uma NFC-e valida de Minas Gerais.',
+        title: 'QR Code inválido',
+        message: 'A leitura não corresponde a uma NFC-e válida de Minas Gerais.',
       });
       return;
     }
@@ -80,7 +80,7 @@ export function ScanScreen({ navigation }) {
         setFeedback({
           tone: 'info',
           title: 'Salvando nota',
-          message: 'A gravacao automatica esta ativada. Finalizando registro.',
+          message: 'A gravação automática está ativada. Finalizando o registro.',
         });
         try {
           await api.post('/nfces', savePayload, { timeoutMs: SAVE_TIMEOUT_MS });
@@ -93,8 +93,8 @@ export function ScanScreen({ navigation }) {
         } catch (error) {
           setFeedback({
             tone: 'error',
-            title: 'Falha na gravacao automatica',
-            message: `${error.data?.error || error.message} Voce pode revisar a nota e tentar salvar novamente.`,
+            title: 'Falha na gravação automática',
+            message: `${error.data?.error || error.message} Você pode revisar a nota e tentar salvar novamente.`,
           });
           navigation.navigate(ROUTES.APP.INVOICE_DETAILS, {
             invoice,
@@ -112,7 +112,7 @@ export function ScanScreen({ navigation }) {
     } catch (error) {
       setFeedback({
         tone: 'error',
-        title: processingStep === 'saving' ? 'Nao foi possivel salvar a nota' : 'Nao foi possivel ler a nota',
+        title: processingStep === 'saving' ? 'Não foi possível salvar a nota' : 'Não foi possível ler a nota',
         message: error.data?.error || error.message,
       });
       setScanned(false);
@@ -125,7 +125,7 @@ export function ScanScreen({ navigation }) {
   if (!permission) {
     return (
       <Screen contentContainerStyle={styles.permissionWrap}>
-        <StatusBanner title="Preparando camera" message="Verificando acesso a camera do dispositivo." tone="info" />
+        <StatusBanner title="Preparando câmera" message="Verificando acesso à câmera do dispositivo." tone="info" />
       </Screen>
     );
   }
@@ -133,11 +133,11 @@ export function ScanScreen({ navigation }) {
   if (!permission.granted) {
     return (
       <Screen contentContainerStyle={styles.permissionWrap}>
-        <Text style={styles.permissionTitle}>Precisamos da camera para ler o QR Code</Text>
+        <Text style={styles.permissionTitle}>Precisamos da câmera para ler o QR Code</Text>
         <Text style={styles.permissionText}>
-          Autorize o acesso e volte para capturar as informacoes da NFC-e diretamente da nota.
+          Autorize o acesso e volte para capturar as informações da NFC-e diretamente da nota.
         </Text>
-        <PrimaryButton title="Permitir camera" onPress={requestPermission} />
+        <PrimaryButton title="Permitir câmera" onPress={requestPermission} />
       </Screen>
     );
   }
@@ -175,7 +175,7 @@ export function ScanScreen({ navigation }) {
               ? processingStep === 'saving'
                 ? 'Salvando a nota...'
                 : 'Consultando a nota...'
-              : 'Centralize o codigo dentro da moldura.'}
+              : 'Centralize o código dentro da moldura.'}
           </Text>
           {scanned && !processing ? (
             <Pressable

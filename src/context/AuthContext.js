@@ -42,7 +42,7 @@ export function AuthProvider({ children }) {
     setAuthFailureHandler(async (error) => {
       setUser(null);
       setStatus('unauthenticated');
-      setAuthMessage(error?.message || 'Sua sessao expirou. Entre novamente.');
+      setAuthMessage(error?.message || 'Sua sessão expirou. Entre novamente.');
     });
 
     return () => {

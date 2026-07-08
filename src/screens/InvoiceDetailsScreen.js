@@ -51,7 +51,7 @@ export function InvoiceDetailsScreen({ navigation, route }) {
     } catch (error) {
       setFeedback({
         tone: 'error',
-        title: 'Nao foi possivel salvar',
+        title: 'Não foi possível salvar',
         message: error.data?.error || error.message,
       });
     } finally {
@@ -82,7 +82,7 @@ export function InvoiceDetailsScreen({ navigation, route }) {
       setFeedback({
         tone: 'success',
         title: 'Nota removida',
-        message: 'A NFC-e foi excluida com sucesso.',
+        message: 'A NFC-e foi excluída com sucesso.',
       });
       navigation.reset({
         index: 0,
@@ -91,7 +91,7 @@ export function InvoiceDetailsScreen({ navigation, route }) {
     } catch (error) {
       setFeedback({
         tone: 'error',
-        title: 'Nao foi possivel excluir',
+        title: 'Não foi possível excluir',
         message: error.data?.error || error.message,
       });
     } finally {
@@ -151,8 +151,8 @@ export function InvoiceDetailsScreen({ navigation, route }) {
         <Text style={styles.summaryLabel}>Resumo fiscal</Text>
         <Text style={styles.summaryText}>CNPJ: {invoice.cnpj}</Text>
         <Text style={styles.summaryText}>UF: {invoice.uf}</Text>
-        <Text style={styles.summaryText}>Inscricao estadual: {invoice.stateRegistration}</Text>
-        <Text style={styles.summaryText}>Data de emissao: {invoice.issuanceDate}</Text>
+        <Text style={styles.summaryText}>Inscrição estadual: {invoice.stateRegistration}</Text>
+        <Text style={styles.summaryText}>Data de emissão: {invoice.issuanceDate}</Text>
       </AppCard>
 
       <Text style={styles.sectionTitle}>Itens da nota</Text>
@@ -179,7 +179,7 @@ export function InvoiceDetailsScreen({ navigation, route }) {
       )}
 
       <AppCard style={styles.footerCard}>
-        <Text style={styles.footerText}>Base de calculo: {formatCurrency(invoice.icmsCalculationBasis)}</Text>
+        <Text style={styles.footerText}>Base de cálculo: {formatCurrency(invoice.icmsCalculationBasis)}</Text>
         <Text style={styles.footerText}>Valor ICMS: {formatCurrency(invoice.icmsValue)}</Text>
         <Text style={styles.footerStrong}>Itens totais: {invoice.totalItems}</Text>
         <Text style={styles.footerStrong}>Valor total: {formatCurrency(invoice.totalValue)}</Text>
