@@ -99,6 +99,10 @@ def enableSeparateBuildPerCPUArchitecture = false
  * Run Proguard to shrink the Java bytecode in release builds.
  */
 def enableProguardInReleaseBuilds = false
+def releaseStoreFile = findProperty('SCANNFCE_UPLOAD_STORE_FILE') ?: System.getenv('SCANNFCE_UPLOAD_STORE_FILE')
+def releaseStorePassword = findProperty('SCANNFCE_UPLOAD_STORE_PASSWORD') ?: System.getenv('SCANNFCE_UPLOAD_STORE_PASSWORD')
+def releaseKeyAlias = findProperty('SCANNFCE_UPLOAD_KEY_ALIAS') ?: System.getenv('SCANNFCE_UPLOAD_KEY_ALIAS')
+def releaseKeyPassword = findProperty('SCANNFCE_UPLOAD_KEY_PASSWORD') ?: System.getenv('SCANNFCE_UPLOAD_KEY_PASSWORD')
 
 /**
  * The preferred build flavor of JavaScriptCore.
@@ -134,8 +138,8 @@ android {
         applicationId "com.scannfce"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "2.0.0"
     }
     splits {
         abi {
@@ -152,15 +156,21 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
+        release {
+            if (releaseStoreFile) {
+                storeFile file(releaseStoreFile)
+                storePassword releaseStorePassword
+                keyAlias releaseKeyAlias
+                keyPassword releaseKeyPassword
+            }
+        }
     }
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
         }
         release {
-            // Caution! In production, you need to generate your own keystore file.
-            // see https://facebook.github.io/react-native/docs/signed-apk-android.
-            signingConfig signingConfigs.debug
+            signingConfig releaseStoreFile ? signingConfigs.release : signingConfigs.debug
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }

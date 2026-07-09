@@ -8,12 +8,24 @@
       "**/*"
     ],
     "scheme": "scannfce",
+    "userInterfaceStyle": "light",
     "android": {
-      "package": "com.cunhaluisg5.Scan_NFCe",
-      "edgeToEdgeEnabled": true
+      "package": "com.scannfce",
+      "versionCode": 2,
+      "edgeToEdgeEnabled": true,
+      "permissions": [
+        "CAMERA",
+        "INTERNET",
+        "VIBRATE"
+      ],
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/icon.png",
+        "backgroundColor": "#0A0D1C"
+      }
     },
     "ios": {
-      "bundleIdentifier": "com.cunhaluisg5.ScanNFCe"
+      "bundleIdentifier": "com.scannfce",
+      "buildNumber": "2.0.0"
     },
     "icon": "./assets/icon.png",
     "splash": {
