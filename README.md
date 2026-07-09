@@ -1,6 +1,6 @@
 # Scan NFC-e
 
-Aplicativo mobile do ecossistema Scan NFC-e para leitura de QR Code de NFC-e de Minas Gerais, salvamento de notas, análise de gastos e comparação de preços entre compras.
+Aplicativo principal do ecossistema Scan NFC-e para leitura de QR Code de NFC-e de Minas Gerais, armazenamento de notas, análise de gastos e comparação de preços entre compras.
 
 ## Visão geral
 
@@ -78,7 +78,34 @@ npm run android
 npm run web
 npm run lint
 npm test
+npm run build
 ```
+
+## Docker
+
+Este projeto pode ser executado em Docker para homologação web, validação visual e apoio à integração contínua. A distribuição nativa Android continua sendo feita pelo fluxo normal do Expo e da build mobile.
+
+### Build manual da imagem
+
+```bash
+docker build ^
+  --build-arg EXPO_PUBLIC_API_URL=http://localhost:3000 ^
+  --build-arg EXPO_PUBLIC_API_TIMEOUT_MS=15000 ^
+  --build-arg EXPO_PUBLIC_HELP_URL=http://localhost:3001 ^
+  -t scan-nfce-web .
+```
+
+```bash
+docker run --rm -p 8081:80 scan-nfce-web
+```
+
+### Subida com Docker Compose
+
+```bash
+docker compose up --build
+```
+
+A aplicação web exportada ficará disponível em `http://localhost:8081`.
 
 ## Fluxo principal
 
@@ -100,12 +127,14 @@ npm test
 - QR Code incompatível: valide se a nota pertence ao fluxo de NFC-e de Minas Gerais
 - Expo Go incompatível: inicie o projeto com a versão do SDK suportada por `expo`
 - tela sem dados: verifique se a nota foi salva para o mesmo usuário autenticado
+- tela web em Docker sem comunicação com a API: revise a URL usada em `EXPO_PUBLIC_API_URL` no momento do build da imagem
 
 ## Publicação e operação
 
 - revise `app.json`, ícones, splash e permissões antes da release
 - use variáveis de ambiente separadas para desenvolvimento e produção
-- não versionar segredos nem URLs privadas
+- não versione segredos nem URLs privadas
+- use Docker como apoio para validação web, não como substituto da build nativa do aplicativo
 
 ## Capturas de tela
 

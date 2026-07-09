@@ -1,0 +1,11 @@
+services:
+  scan-nfce-web:
+    build:
+      context: .
+      args:
+        EXPO_PUBLIC_API_URL: ${EXPO_PUBLIC_API_URL:-http://localhost:3000}
+        EXPO_PUBLIC_API_TIMEOUT_MS: ${EXPO_PUBLIC_API_TIMEOUT_MS:-15000}
+        EXPO_PUBLIC_HELP_URL: ${EXPO_PUBLIC_HELP_URL:-http://localhost:3001}
+    ports:
+      - "8081:80"
+    restart: unless-stopped
